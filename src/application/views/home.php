@@ -2,8 +2,7 @@
 				<div class="page-header">
 
 					<h1>
-						CWD4<span style="font-size:35%">.</span>0
-						<small>Lubricating your web development <i class="icon-tint"></i></small>
+						Welcome to Orbital Bridge
 					</h1>
 
 				</div>
@@ -25,16 +24,14 @@
 							
 					<section class="span4">
 					
-						<h3><i class="icon-thumbs-up"></i> Browser Support</h3>
+						<h3><i class="icon-thumbs-up"></i> Libraries</h3>
 						
-						<p>The Common Web Design is tested and supported in the latest browser versions of Chrome, Firefox, Safari, Opera and Internet Explorer.</p>
+						<p>Orbital Bridge interfaces with several technologies and is extensible.</p>
 						
 						<ul>
-							<li>Latest Chrome/Safari/WebKit</li>
-							<li>Firefox 4+</li>
-							<li>Opera 11</li>
-							<li>Internet Explorer 7+</li>
-							<li>iOS Safari 4+</li>
+							<li>OwnCloud</li>
+							<li>CKAN</li>
+							<li>AMS</li>
 						</ul>
 					
 					</section>

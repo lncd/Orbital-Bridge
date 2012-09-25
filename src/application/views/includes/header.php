@@ -7,7 +7,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Common Web Design 4.0</title>
+	<title>Orbital Bridge</title>
 	<meta name="description" content="The Common Web Design is the new branding for the University of Lincoln's online services">
 	<meta name="author" content="Online Services Team; ost@lincoln.ac.uk">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
