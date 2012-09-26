@@ -34,12 +34,12 @@ class CKAN {
 	}
 	
 	/**
-	 * Builds the content common to every page
+	 * Imports datsset from SWORD to CKAN
 	 *
 	 *@return ARRAY
 	 */
 
-	public function import_SWORD()
+	public function import_SWORD_to_CKAN()
 	{
 		
 	}

@@ -42,7 +42,7 @@ class SWORDAPPClient {
                 	}
 		} else {
 			$sac_sdresponse = new SWORDAPPServiceDocument($sac_url, $sac_status);
-		}	
+		}
 
 		// Return the servicedocument object
 		return $sac_sdresponse;

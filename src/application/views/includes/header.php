@@ -40,7 +40,7 @@
 
 					<hgroup id="cwd-hgroup">
 
-						<h1>Orbital Bridge</h1>
+						<h1>Orbital</h1>
 
 					</hgroup>
 
