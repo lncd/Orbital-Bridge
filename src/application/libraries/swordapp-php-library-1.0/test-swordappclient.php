@@ -21,7 +21,7 @@
 	// The content type of the test file
 	$testcontenttype = "application/zip";
 
-	// The packaing format of the test fifle
+	// The packaing format of the test file
 	$testformat = "http://purl.org/net/sword-types/METSDSpaceSIP";
 	
 	require("swordappclient.php");
