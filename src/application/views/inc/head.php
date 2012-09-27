@@ -11,15 +11,15 @@
 	<meta name="description" content="The Common Web Design is the new branding for the University of Lincoln's online services">
 	<meta name="author" content="Online Services Team; ost@lincoln.ac.uk">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="<?php echo $_SERVER['CWD_BASE']; ?>/favicon.ico">
-	<link rel="apple-touch-icon" href="<?php echo $_SERVER['CWD_BASE']; ?>/icon.png">
+	<link rel="shortcut icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/favicon.ico">
+	<link rel="apple-touch-icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/icon.png">
 
-	<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE']; ?>/cwd.css">
+	<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/cwd.css">
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" type="text/css">
 
 	<!--[if (lt IE 9) & (!IEMobile)]>
-		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE']; ?>/ie.min.css">
-		<script src="<?php echo $_SERVER['CWD_BASE']; ?>/html5shiv.min.js"></script>
+		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/ie.min.css">
+		<script src="<?php echo $_SERVER['CWD_BASE_URI']; ?>/html5shiv.min.js"></script>
 	<![endif]-->
  
 </head>
@@ -54,20 +54,8 @@
 							<div class="nav-collapse">
 
 								<ul class="nav">
-									<li class="active"><a href="#">Home</a></li>
-									<li><a href="#">Link</a></li>
-
-									<li class="dropdown">
-										<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-											Dropdown Link
-											<b class="caret"></b>
-										</a>
-										<ul class="dropdown-menu">
-											<li><a href="#">Link</a></li>
-											<li><a href="#">Link</a></li>
-											<li><a href="#">Link</a></li>
-										</ul>
-									</li>
+									<li class="active"><a href="<?php echo site_url(); ?>">Home</a></li>
+									<li><a href="<?php echo site_url('tools'); ?>">Data Management Tools</a></li>
 								</ul>
 
 								<form class="navbar-form pull-right">

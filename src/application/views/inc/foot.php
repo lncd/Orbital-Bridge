@@ -5,15 +5,7 @@
 
 	</div><!--#wrap-->
 
-	<footer class="container" id="cwd-footer" role="contentinfo">		
-
-		<div class="row">
-		
-			<div class="span12" id="cwd-footer-divider">
-			
-			</div>
-			
-		</div>
+	<footer class="container" id="cwd-footer" role="contentinfo">
 
 		<div class="row">
 
@@ -46,7 +38,7 @@
 		
 	</footer>
 
-	<script src="<?php echo $_SERVER['CWD_BASE']; ?>/plugins.min.js"></script>
+	<script src="<?php echo $_SERVER['CWD_BASE_URI']; ?>/plugins.min.js"></script>
 
 </body>
 </html>
