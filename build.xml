@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Orbital Bridge" default="build">
 	<target name="build"
-		depends="prepare,lint,phploc,pdepend,phpmd,phpcs,phpcpd,phpdox,phpunit,phpcb"/>
+		depends="prepare,lint,phploc,pdepend,phpmd,phpcs,phpcpd,phpdox,phpcb"/>
 	
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="${basedir}/build/api"/>
