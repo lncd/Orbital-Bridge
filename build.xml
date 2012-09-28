@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Orbital Core" default="build">
+<project name="Orbital Bridge" default="build">
 	<target name="build"
-		depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpcb"/>
-	
-	<target name="minimal"
-		depends="prepare,lint,phploc,pdepend,phpcpd,phpdox,phpcb" />
+		depends="prepare,lint,phploc,pdepend,phpmd,phpcs,phpcpd,phpdox,phpunit,phpcb"/>
 	
 	<target name="clean" description="Cleanup build artifacts">
 		<delete dir="${basedir}/build/api"/>
@@ -59,15 +56,6 @@
 	</target>
 	
 	<target name="phpmd"
-		description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-		<exec executable="phpmd">
-			<arg path="${basedir}/src/application" />
-			<arg value="text" />
-			<arg value="${basedir}/build/phpmd.xml" />
-		</exec>
-	</target>
-	
-	<target name="phpmd-ci"
 		description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
 		<exec executable="phpmd">
 			<arg path="${basedir}/src/application" />
@@ -79,16 +67,6 @@
 	</target>
 	
 	<target name="phpcs"
-		description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-		<exec executable="phpcs">
-			<arg value="--standard=${basedir}/build/phpcs.xml" />
-			<arg value="--extensions=php" />
-			<arg value="--ignore=third_party/CIUnit" />
-			<arg path="${basedir}/src/application" />
-		</exec>
-	</target>
-	
-	<target name="phpcs-ci"
 		description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
 		<exec executable="phpcs" output="/dev/null">
 			<arg value="--report=checkstyle" />
