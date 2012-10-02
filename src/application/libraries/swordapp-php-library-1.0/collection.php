@@ -3,7 +3,7 @@
 require_once("utils.php");
 
 class Collection {
-	
+
 	// The title of the collection
 	public $sac_colltitle;
 
@@ -27,7 +27,7 @@ class Collection {
 
 	// A nested service document
 	public $sac_service;
-	
+
 	// Construct a new collection by passing in a title
 	function __construct($sac_newcolltitle) {
 		// Store the title
