@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		Welcome to Orbital <small>Beta</small>
+		<i class="icon-wrench"></i> Tools
 	</h1>
 
 </div>

@@ -7,7 +7,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title>Orbital Bridge</title>
+	<title><?php if(isset($title)) echo $title . ' - '; ?>Orbital</title>
 	<meta name="description" content="The Common Web Design is the new branding for the University of Lincoln's online services">
 	<meta name="author" content="Online Services Team; ost@lincoln.ac.uk">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,16 +54,8 @@
 							<div class="nav-collapse">
 
 								<ul class="nav">
-									<li class="active"><a href="<?php echo site_url(); ?>">Home</a></li>
-									<li><a href="<?php echo site_url('tools'); ?>">Data Management Tools</a></li>
-								</ul>
-
-								<form class="navbar-form pull-right">
-									<input type="search" class="search-query" placeholder="Search...">
-								</form>
-
-								<ul class="nav pull-right">
-									<li><a href="#">Username</a></li>
+									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>">Home</a></li>
+									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('tools'); ?>">Tools</a></li>
 								</ul>
 
 							</div>
