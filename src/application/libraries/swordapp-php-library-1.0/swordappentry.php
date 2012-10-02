@@ -6,7 +6,7 @@ class SWORDAPPEntry {
 
 	// The HTTP status code returned
 	public $sac_status;
-	
+
 	// The XML returned by the deposit
 	public $sac_xml;
 
@@ -19,7 +19,7 @@ class SWORDAPPEntry {
 	// The atom:content value
 	public $sac_content_src;
 	public $sac_content_type;
-	
+
 	// The authors
 	public $sac_authors;
 
@@ -64,27 +64,27 @@ class SWORDAPPEntry {
 
 		// Store the status message
 		switch($this->sac_status) {
-			case 201:
-				$this->sac_statusmessage = "Created";
-				break;
-			case 202:
-				$this->sac_statusmessage = "Accepted";
-				break;
-			case 401:
-				$this->sac_statusmessage = "Unauthorized";
-				break;
-			case 412:
-				$this->sac_statusmessage = "Precondition failed";
-				break;
-			case 413:
-				$this->sac_statusmessage = "Request entity too large";
-				break;
-			case 415:
-				$this->sac_statusmessage = "Unsupported media type";
-				break;
-			default:
-				$this->sac_statusmessage = "Unknown erorr (status code " . $this->sac_status . ")";
-				break;
+		case 201:
+			$this->sac_statusmessage = "Created";
+			break;
+		case 202:
+			$this->sac_statusmessage = "Accepted";
+			break;
+		case 401:
+			$this->sac_statusmessage = "Unauthorized";
+			break;
+		case 412:
+			$this->sac_statusmessage = "Precondition failed";
+			break;
+		case 413:
+			$this->sac_statusmessage = "Request entity too large";
+			break;
+		case 415:
+			$this->sac_statusmessage = "Unsupported media type";
+			break;
+		default:
+			$this->sac_statusmessage = "Unknown erorr (status code " . $this->sac_status . ")";
+			break;
 		}
 
 		// Initalise arrays
@@ -100,10 +100,10 @@ class SWORDAPPEntry {
 	function buildhierarchy($sac_dr, $sac_ns) {
 		// Set the default namespace
 		$sac_dr->registerXPathNamespace('atom', 'http://www.w3.org/2005/Atom');
-		
+
 		// Parse the results
 		$this->sac_id = $sac_dr->children($sac_ns['atom'])->id;
-		$sac_contentbits = $sac_dr->xpath("atom:content"); 
+		$sac_contentbits = $sac_dr->xpath("atom:content");
 		if (!empty($sac_contentbits)) {
 			$this->sac_content_src = $sac_contentbits[0]['src'];
 			$this->sac_content_type = $sac_contentbits[0]['type'];
@@ -114,13 +114,13 @@ class SWORDAPPEntry {
 			$sac_theauthor = $sac_author->children($sac_ns['atom'])->name . "";
 			$this->sac_authors[] = $sac_theauthor;
 		}
-		
+
 		// Store the contributors
 		foreach ($sac_dr->children($sac_ns['atom'])->contributor as $sac_contributor) {
 			$sac_thecontributor = $sac_contributor->children($sac_ns['atom'])->name . "";
 			$this->sac_contributors[] = $sac_thecontributor;
 		}
-		
+
 		// Store the links
 		foreach ($sac_dr->xpath("atom:link") as $sac_link) {
 			$this->sac_links[] = sac_clean($sac_link[0]['href']);
