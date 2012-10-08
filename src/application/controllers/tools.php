@@ -4,7 +4,6 @@ class Tools extends CI_Controller {
 
 	public function index()
 	{
-	
 		$header = array(
 			'page' => 'tools',
 			'title' => 'Tools'

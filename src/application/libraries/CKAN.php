@@ -39,31 +39,54 @@ class CKAN {
 	 *@return ARRAY
 	 */
 
-	public function create_dataset()
+	public function create_dataset($input_fields, $API_key)
 	{
 		//set POST variables
-		$url = 'http://ckan.lncd.org/api/rest/dataset';
-		
+		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
+
+
 		$fields = array(
-			'name' => 'test',
-			'title' => 'Changed Test Dataset'
+			'name' => $input_fields->uri_slug,
+			'title' => $input_fields->title,
+			'author' => $input_fields->author
 		);
+
 		$fields = json_encode($fields);
-		
+
+
 		//open connection
 		$ch = curl_init();
-	
+
 		//set the url, number of POST vars, POST data
 		curl_setopt($ch,CURLOPT_URL, $url);
 		curl_setopt($ch,CURLOPT_POST, count($fields));
 		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields);
-		curl_setopt($ch, CURLOPT_USERPWD, 'hnewton' . ":" . '');  
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/xml', 'Authorization: 62935967-73a5-474c-9ab3-22c849bbd1cd'));
-	
+		curl_setopt($ch, CURLOPT_USERPWD, 'hnewton' . ":" . '');
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $API_key));
+
 		//execute post
 		$result = curl_exec($ch);
-	
+
 		//close connection
 		curl_close($ch);
+	}
+
+	public function input($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
+	{
+		$ch = curl_init();
+		$timeout = 5;
+		curl_setopt($ch, CURLOPT_URL, $dataset_uri);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$data = json_decode($data);
+		
+		
+		$bridge->uri_slug = url_title($data->title, '_', TRUE);
+		$bridge->author = $data->author;
+		$bridge->title = $data->title;
+		
+		return $bridge;
 	}
 }
