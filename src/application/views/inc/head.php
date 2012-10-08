@@ -56,6 +56,7 @@
 								<ul class="nav">
 									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>">Home</a></li>
 									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('tools'); ?>">Tools</a></li>
+									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>">Contact</a></li>
 								</ul>
 
 							</div>
