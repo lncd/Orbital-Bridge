@@ -61,7 +61,7 @@ class CKAN {
 		curl_setopt($ch,CURLOPT_URL, $url);
 		curl_setopt($ch,CURLOPT_POST, count($fields));
 		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields);
-		curl_setopt($ch, CURLOPT_USERPWD, 'hnewton' . ":" . '');
+		//curl_setopt($ch, CURLOPT_USERPWD, 'username' . ":" . 'password');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $API_key));
 
 		//execute post
@@ -71,7 +71,7 @@ class CKAN {
 		curl_close($ch);
 	}
 
-	public function input($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
+	public function read($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
 	{
 		$ch = curl_init();
 		$timeout = 5;
