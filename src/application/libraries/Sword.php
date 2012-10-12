@@ -39,99 +39,12 @@ class Sword {
 
 	public function read($sword_input) //$sword_input, $library_to_send_it_to
 	{
-		//Get xml file contents
-		$xml = file_get_contents($sword_input);
-
-		$obj = new stdClass();
-
-		$xml = explode("\n",$xml);
-
-		$main_n = '';
-
 		//Convert to object
-		// $xml = simplexml_load_file('test.xml');
+		$obj = simplexml_load_file($sword_input);
 		
-		//old convert to object - use simpleXML?
-		foreach ($xml as $x)
-		{
-			$first_n = false;
-			$close_n = false;
-			if ($x != '')
-			{
-				$start_val = (strpos($x,">")+1);
-				$end_val = strrpos($x,"<") - $start_val;
-				$start_n = (strpos($x,"<")+1);
-				$end_n = strpos($x,">") - $start_n;
-				$n = strtolower(substr($x,$start_n,$end_n));
-				if (substr_count($x,"<") == 1)
-				{
-					if (!empty($main_n) && !stristr($n,"/"))
-					{
-						$submain_n = $n;
-						$first_n = true;
-					}
-					else
-					{
-						$main_n = $n;
-						$submain_n = '';
-						$first_n = true;
-					}
-				}
-				if (!empty($submain_n) && stristr($submain_n,"/"))
-				{
-					$submain_n = '';
-					$first_n = false;
-					$close_n = true;
-				}
-				if (!empty($main_n) && stristr($main_n,"/"))
-				{
-					$main_n = '';
-					$submain_n = '';
-					$first_n = false;
-					$close_n = true;
-				}
-				$value = substr($x,$start_val,$end_val);
-				if (!$close_n)
-				{
-					if (empty($main_n))
-					{
-						$obj->$n = $value;
-					}
-					else
-					{
-						if ($first_n)
-						{
-							if (empty($submain_n))
-							{
-								$obj->$main_n = new stdClass();
-							}
-							else
-							{
-								$obj->$main_n->$submain_n = new stdClass();
-							}
-						}
-						else
-						{
-							if (!empty($value))
-							{
-								if (empty($submain_n))
-								{
-									$obj->$main_n->$n = $value;
-								}
-								else
-								{
-									$obj->$main_n->$submain_n->$n = $value;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		$bridge->uri_slug = url_title($obj->title, '_', TRUE);
-		$bridge->author = $obj->creators_name->item->given . ' ' . $obj->creators_name->item->family;
-		$bridge->title = $obj->title;
+		$bridge->uri_slug = url_title($obj->eprint->title, '_', TRUE);
+		$bridge->author = $obj->eprint->creators_name->item->given . ' ' . $obj->eprint->creators_name->item->family;
+		$bridge->title = $obj->eprint->title;
 		
 		//Return the array
 		return $bridge;
@@ -203,7 +116,7 @@ class Sword {
 		curl_setopt($ch,CURLOPT_URL, $url);
 		curl_setopt($ch,CURLOPT_POST, strlen($sword_xml));
 		curl_setopt($ch,CURLOPT_POSTFIELDS, $sword_xml);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'X-On-Behalf-Of: sword-test'));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'/*, 'X-On-Behalf-Of: sword-test'*/));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 		//execute post
@@ -214,6 +127,5 @@ class Sword {
 		curl_close($ch);
 
 		var_dump($result);
-
 	}
 }
