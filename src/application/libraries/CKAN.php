@@ -46,8 +46,8 @@ class CKAN {
 
 
 		$fields = array(
-			'name' => $input_fields->uri_slug,
 			'title' => $input_fields->title,
+			'name' => $input_fields->uri_slug,
 			'author' => $input_fields->author
 		);
 
@@ -82,10 +82,15 @@ class CKAN {
 		curl_close($ch);
 		$data = json_decode($data);
 		
-		
-		$bridge->uri_slug = url_title($data->title, '_', TRUE);
-		$bridge->author = $data->author;
+		var_dump($data);
+		//Build bridge-object
 		$bridge->title = $data->title;
+		$bridge->uri_slug = url_title($data->title, '_', TRUE);
+		$bridge->creator = $data->author;
+		$bridge->subjects = array(); //JACS CODES
+		$bridge->date = $data->metadata_created;
+		$bridge->type = 'dataset';
+
 		
 		return $bridge;
 	}
