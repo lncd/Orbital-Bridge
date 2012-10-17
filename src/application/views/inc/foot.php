@@ -10,7 +10,8 @@
 		<div class="row">
 
 			<div class="span8">
-				&copy; University of Lincoln
+				&copy; University of Lincoln<br>
+				Orbital Bridge v0.1 "Arch"
 			</div>
 
 			<div class="span2">
