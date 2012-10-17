@@ -37,17 +37,47 @@ class Sword {
 	 * Sends SWORD object somewhere
 	 */
 
-	public function read($sword_input) //$sword_input, $library_to_send_it_to
+	public function read_eprints($sword_input) //$sword_input, $library_to_send_it_to
 	{
 		//Convert to object
 		$obj = simplexml_load_file($sword_input);
 		
-		$bridge->uri_slug = url_title($obj->eprint->title, '_', TRUE);
-		$bridge->author = $obj->eprint->creators_name->item->given . ' ' . $obj->eprint->creators_name->item->family;
-		$bridge->title = $obj->eprint->title;
+		//Create Bridge-Object
+		
+		$bridge_object = array();
+		foreach ($obj->eprint as $eprint_object)
+		{ 
+			$bridge->uri_slug = url_title($eprint_object->title, '_', TRUE);
+			$bridge->title = (string) $eprint_object->title;
+			$bridge->creators = array();
+			foreach ($eprint_object->creators->item as $item)
+			{
+				$person->given_name = (string) $item->name->given;
+				$person->family_name = (string) $item->name->family;
+				$person->id = (string) $item->id;
+				$bridge->creators[]	= $person;
+				unset($person);
+			}
+			$bridge->subjects = (string) $eprint_object->subjects->item;
+			$bridge->publisher = (string) $eprint_object->publisher;
+			$bridge->date = strtotime((string) $eprint_object->date);
+			$bridge->type = "dataset";
+			$bridge->keywords = array();
+			foreach ($eprint_object->keywords->item as $keyword)
+			{
+				$bridge->keywords[]	= (string) $keyword;
+				unset($keyword);
+			}
+			$bridge->abstract = (string) $eprint_object->abstract;
+			$bridge->data_type = (string) $eprint_object->data_type;
+			$bridge->official_url = (string)$eprint_object->official_url;
+			
+			$bridge_object[] = $bridge;
+			unset($bridge);
+		}
 		
 		//Return the array
-		return $bridge;
+		return $bridge_object;
 	}
 	
 		
