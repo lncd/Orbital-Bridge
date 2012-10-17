@@ -41,6 +41,9 @@
 $route['default_controller'] = 'home';
 $route['404_override'] = '';
 
+// Magic redirections!
+
+$route['project/c014fb3845e7b054/public'] = 'redirect/dataset/library-activity-data';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
