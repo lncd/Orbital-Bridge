@@ -79,43 +79,53 @@ class Sword {
 		//Return the array
 		return $bridge_object;
 	}
-	
-		
-	
-	public function create_SWORD($bridge_object) //$standard bridge object
+
+
+
+	public function create_SWORD($dataset) //$standard bridge object
 	{
 		$eprint_xml = new SimpleXMLElement("<eprints></eprints>");
 		$eprint = $eprint_xml->addChild('eprint');
 		$eprint->addAttribute('xmlns', 'http://eprints.org/ep2/data/2.0');
-		$eprint->addChild('eprintid', '1');
-		$eprint->addChild('rev_number', '2');
-		$eprint->addChild('eprint_status', 'archive');
-		$eprint->addChild('user_id', '1');
-		$eprint->addChild('dir', 'disk0/00/00/00/01');
-		$eprint->addChild('date_stamp', '2006-10-25 00:45:02');
-		$eprint->addChild('lastmod', '2006-10-25 00:45:02');
-		$eprint->addChild('status_changed', '2006-10-25 00:45:02');
-		$eprint->addChild('type', 'conference_item');
+		//$eprint->addChild('eprintid', '1');
+		//$eprint->addChild('rev_number', '2');
+		//$eprint->addChild('eprint_status', 'archive');
+		//$eprint->addChild('user_id', '1');
+		//$eprint->addChild('dir', 'disk0/00/00/00/01');
+		//$eprint->addChild('date_stamp', $bridge_object->date); //'2006-10-25 00:45:02'
+		//$eprint->addChild('lastmod', '2006-10-25 00:45:02');
+		//$eprint->addChild('status_changed', '2006-10-25 00:45:02');
+		$eprint->addChild('type', 'dataset');
+		$eprint->addChild('official_url', $dataset->get_uri_slug()); //'www.example.com/data'
 		$eprint->addChild('metadata_visibility', 'show');
 		$creators_name = $eprint->addChild('creators_name');
 		$item = $creators_name->addChild('item');
-		$item->addChild('family', 'Lericolais');
-		$item->addChild('given', 'Y.');
-		$eprint->addChild('title', 'On Testing The Atom Protocol...');
+		foreach($dataset->get_creators() as $creator)
+		{
+			$creator = explode(' ', $creator, 2);
+			$item->addChild('family', $creator[1]); //'Lericolais'
+			$item->addChild('given', $creator[0]); //'Y.'
+		}
+		$eprint->addChild('title', $dataset->get_title()); //'On Testing The Atom Protocol...'
 		$eprint->addChild('ispublished', 'pub');
 		$subjects = $eprint->addChild('subjects');
-		$subjects->addChild('item', 'GR');
-		$subjects->addChild('item', 'QR');
-		$subjects->addChild('item', 'BX');
-		$subjects->addChild('item', 'PN2000');
-		$eprint->addChild('full_text_status', 'public');
-		$eprint->addChild('pres_type', 'paper');
-		$eprint->addChild('abstract', 'This is where the abstract of this record would appear. This is only demonstration data.');
-		$eprint->addChild('date', '1998');
-		$eprint->addChild('event_title', '4th Conference on Animal Things');
-		$eprint->addChild('event_location', 'Dallas, Texas');
-		$eprint->addChild('event_dates', 'event_dates');
-		$eprint->addChild('fileinfo', 'application/pdf;http://devel.eprints.org/1/01/paper.pdf');
+		foreach($dataset->get_subjects() as $subject)
+		{
+			$subjects->addChild('item', (string) $subject); //'GR'
+		}
+		$keywords = $eprint->addChild('keywords');
+		foreach($dataset->get_keywords() as $keyword)
+		{
+			$subjects->addChild('item', (string) $keyword); //'GR'
+		}
+		//$eprint->addChild('full_text_status', 'public');
+		//$eprint->addChild('pres_type', 'paper');
+		//$eprint->addChild('abstract', 'This is where the abstract of this record would appear. This is only demonstration data.');
+		//$eprint->addChild('date', '1998');
+		//$eprint->addChild('event_title', '4th Conference on Animal Things');
+		//$eprint->addChild('event_location', 'Dallas, Texas');
+		//$eprint->addChild('event_dates', 'event_dates');
+		//$eprint->addChild('fileinfo', 'application/pdf;http://devel.eprints.org/1/01/paper.pdf');
 				
 		return($eprint_xml->asXML());
 	}
@@ -151,11 +161,8 @@ class Sword {
 
 		//execute post
 		$result = curl_exec($ch);
-		print_r(curl_getinfo($ch));
 
 		//close connection
 		curl_close($ch);
-
-		var_dump($result);
 	}
 }
