@@ -34,24 +34,19 @@ class CKAN {
 	}
 
 	/**
-	 * Imports datsset from SWORD to CKAN
+	 * Send CURL Request
 	 *
-	 *@return ARRAY
+	 * Sends the CURL request, performing the request sent by another function
+	 *
+	 * string $url     URL to send CURL request
+	 * array  $fields  Fields send over CURL
+	 * string $API_key API key for interfacing with CKAN
+	 *
+	 * @return null
 	 */
-
-	public function create_dataset($dataset, $API_key)
+	 
+	public function send_curl_request($url, $fields, $API_key)
 	{
-		//set POST variables
-		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
-
-		$fields = array(
-			'title' => $dataset->get_title(),
-			'name' => $dataset->get_uri_slug(),
-			'author' => $dataset->get_author()
-		);
-
-		$fields = json_encode($fields);
-
 
 		//open connection
 		$ch = curl_init();
@@ -70,6 +65,67 @@ class CKAN {
 		curl_close($ch);
 	}
 
+	/**
+	 * Creates dataset in CKAN
+	 *
+	 * string $dataset Dataset to create
+	 * string $API_key API key for interfacing with CKAN
+	 *
+	 * @return null
+	 */
+
+	public function create_dataset($dataset, $API_key)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
+
+		$fields = array(
+			'title' => $dataset->get_title(),
+			'name' => $dataset->get_uri_slug(),
+			'author' => $dataset->get_author()
+		);
+
+		$fields = json_encode($fields);
+		
+		send_curl_request($url, $fields, $API_key);
+	}
+		
+	
+	/**
+	 * Updates users permissions in datasets
+	 *
+	 * string $user    Uuser whose permissions will be updated
+	 * string $dataset Dataset to changeusers permissions to
+	 * array  $role    What permission to change to
+	 * string $API_key API key for interfacing with CKAN
+	 *
+	 * @return null
+	 */
+	
+	public function update_permissions($user, $dataset, $role, $API_key)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/user_role_update';
+
+		$fields = array(
+			'user' => $user,
+			'domain_object' => $dataset,
+			'roles' => $role //Must be in array of 1 object
+		);
+
+		$fields = json_encode($fields);
+
+		send_curl_request($url, $fields, $API_key);
+	}
+	
+	/**
+	 * Reads Dataset
+	 *
+	 * string $dataset_uri URI of dataset to read
+	 *
+	 * @return $dataset
+	 */
+	 
 	public function read($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
 	{
 		$ch = curl_init();
@@ -98,37 +154,5 @@ class CKAN {
 		$dataset->set_uri_slug($data->url);
 		
 		return $dataset;
-	}
-	
-	
-	public function update_permissions($user, $dataset, $role, $API_key)
-	{
-		//set POST variables
-		$url = 'https://ckan.lincoln.ac.uk/api/action/user_role_update';//{"user": "dread", "domain_object": "freshwateratlasrivers", "roles": ["admin"]}' -H "Authorization:{your-api-key}"
-
-		$fields = array(
-			'user' => $user,
-			'domain_object' => $dataset,
-			'roles' => $role
-		);
-
-		$fields = json_encode($fields);
-
-
-		//open connection
-		$ch = curl_init();
-
-		//set the url, number of POST vars, POST data
-		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_POST, count($fields));
-		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields);
-		//curl_setopt($ch, CURLOPT_USERPWD, 'username' . ":" . 'password');
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $API_key));
-
-		//execute post
-		$result = curl_exec($ch);
-
-		//close connection
-		curl_close($ch);
 	}
 }
