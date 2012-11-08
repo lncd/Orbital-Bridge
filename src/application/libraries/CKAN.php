@@ -92,7 +92,7 @@ class CKAN {
 
 
 	/**
-	 * Updates users permissions in datasets
+	 * Update users dataset permissions 
 	 *
 	 * string $user    User whose permissions will be updated
 	 * string $dataset Dataset to changeusers permissions to
@@ -126,7 +126,7 @@ class CKAN {
 	 * @return $dataset
 	 */
 
-	public function read($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
+	public function read_dataset($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
 	{
 		$ch = curl_init();
 		$timeout = 5;
@@ -152,6 +152,45 @@ class CKAN {
 			$dataset->add_keyword($tag);
 		}
 		$dataset->set_uri_slug($data->url);
+
+		return $dataset;
+	}
+	
+	
+	/**
+	 * Reads Group
+	 *
+	 * string $group URI of dataset to read
+	 *
+	 * @return $dataset
+	 */
+
+	public function read_group($group = 'https://ckan.lincoln.ac.uk/api/rest/group/')
+	{
+		$ch = curl_init();
+		$timeout = 5;
+		curl_setopt($ch, CURLOPT_URL, $group);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		$data = json_decode($data);
+		
+		//Build bridge-object
+
+		$this->_ci->load->model('Dataset_Object');
+		$dataset = new Dataset_Object();
+
+		$dataset->set_title($data->title);
+		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
+		$dataset->set_creator($data->name);
+		$dataset->set_subjects(array()); //JACS CODES
+		$dataset->set_date(strtotime($data->created));
+		foreach($data->tags as $tag)
+		{
+			$dataset->add_keyword($tag);
+		}
+		$dataset->set_uri_slug($group);
 
 		return $dataset;
 	}
