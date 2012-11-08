@@ -32,9 +32,13 @@ class Sword {
 	{
 		$this->_ci =& get_instance();
 	}
-
+	 	
 	/**
-	 * Sends SWORD object somewhere
+	 * Reads SWORD object and converts to bridge object
+	 *
+	 * string $sword_input URI of SWORD object to read
+	 *
+	 * @return $bridge_object
 	 */
 
 	public function read_eprints($sword_input) //$sword_input, $library_to_send_it_to
@@ -80,7 +84,13 @@ class Sword {
 		return $bridge_object;
 	}
 
-
+	/**
+	 * Creates SWORD object from bridge object
+	 *
+	 * array $dataset bridge object
+	 *
+	 * @return $eprint_xml->asXML()
+	 */
 
 	public function create_SWORD($dataset) //$standard bridge object
 	{
@@ -133,8 +143,11 @@ class Sword {
 	/**
 	 * Create Dataset.
 	 *
-	 * @variable object $config  
-	 * @variable object $archive
+	 * string $username Username (Orbital superuser)
+	 * string $password Password (Orbital Superusers password)
+	 * array  $dataset  bridge object
+	 *
+	 * @return null
 	 */
 	
 	function create_dataset($username = "sword-test", $password = "sword-test", $dataset)
