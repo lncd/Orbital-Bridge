@@ -40,14 +40,12 @@ class CKAN {
 	 *
 	 * string $url     URL to send CURL request
 	 * array  $fields  Fields send over CURL
-	 * string $API_key API key for interfacing with CKAN
 	 *
 	 * @return null
 	 */
 
-	public function send_curl_request($url, $fields, $API_key)
+	public function send_curl_request($url, $fields)
 	{
-
 		//open connection
 		$ch = curl_init();
 
@@ -56,7 +54,7 @@ class CKAN {
 		curl_setopt($ch,CURLOPT_POST, count($fields));
 		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields);
 		//curl_setopt($ch, CURLOPT_USERPWD, 'username' . ":" . 'password');
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $API_key));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $_SERVER['CKAN_API_KEY']));
 
 		//execute post
 		$result = curl_exec($ch);
@@ -69,12 +67,11 @@ class CKAN {
 	 * Creates dataset in CKAN
 	 *
 	 * string $dataset Dataset to create
-	 * string $API_key API key for interfacing with CKAN
 	 *
 	 * @return null
 	 */
 
-	public function create_dataset($dataset, $API_key)
+	public function create_dataset($dataset)
 	{
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
@@ -87,22 +84,21 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields, $API_key);
+		$this->send_curl_request($url, $fields);
 	}
 
 
 	/**
-	 * Update users dataset permissions 
+	 * Update users dataset permissions
 	 *
 	 * string $user    User whose permissions will be updated
 	 * string $dataset Dataset to changeusers permissions to
 	 * array  $role    What permission to change to
-	 * string $API_key API key for interfacing with CKAN
 	 *
 	 * @return null
 	 */
 
-	public function update_permissions($user, $dataset, $role, $API_key)
+	public function update_permissions($user, $dataset, $role)
 	{
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/action/user_role_update';
@@ -115,7 +111,7 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields, $API_key);
+		$this->send_curl_request($url, $fields);
 	}
 
 	/**
@@ -154,8 +150,8 @@ class CKAN {
 		$dataset->set_uri_slug($data->url);
 
 		return $dataset;
-	}	
-	
+	}
+
 	/**
 	 * Reads Group
 	 *
@@ -174,7 +170,7 @@ class CKAN {
 		$data = curl_exec($ch);
 		curl_close($ch);
 		$data = json_decode($data);
-		
+
 		//Build bridge-object
 
 		$this->_ci->load->model('Dataset_Object');
@@ -195,16 +191,15 @@ class CKAN {
 	}
 
 	/**
-	 * Update group 
+	 * Update group
 	 *
 	 * string $group    Group that will be updated
 	 * string $datasets Datasets it should contain
-	 * string $API_key  API key for interfacing with CKAN
 	 *
 	 * @return null
 	 */
-	 
-	public function update_group($group, $name, $title, $description, $API_key)
+
+	public function update_group($group, $name, $title, $description)
 	{
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/action/group_update';
@@ -218,19 +213,18 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields, $API_key);
+		$this->send_curl_request($url, $fields);
 	}
-	
+
 	/**
-	 * Read User 
+	 * Read User
 	 *
-	 * string $user user to read
-	 * string $API_key  API key for interfacing with CKAN
+	 * string $user    User to read
 	 *
 	 * @return null
 	 */
-	 
-	public function read_user($user, $API_key)
+
+	public function read_user($user)
 	{
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/action/user_show';
@@ -241,6 +235,25 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields, $API_key);
+		$this->send_curl_request($url, $fields);
+	}
+	
+	/**
+	 * Parse datastore JSON to CSV
+	 *
+	 * string $url Query string to read
+	 *
+	 * @return null
+	 */
+	 
+	 //UNFINISHED//
+
+	public function datastore_query_to_CSV($url)
+	{
+		$unprocessed = file_get_contents($url);
+
+		$processed = /* Change unprocessed json to csv here */;
+		
+		return $processed;
 	}
 }

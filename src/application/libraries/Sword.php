@@ -80,7 +80,7 @@ class Sword {
 			unset($bridge);
 		}
 		
-		//Return the array
+		//Return the bridge object array
 		return $bridge_object;
 	}
 
