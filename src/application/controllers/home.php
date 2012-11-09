@@ -8,6 +8,9 @@ class Home extends CI_Controller {
 			'page' => 'home'
 		);
 		
+		$this->load->library('ckan');
+		$this->ckan->read_user('hnewton', $_SERVER['CKAN_API_KEY']);
+		
 		$this->load->view('inc/head', $header);
 		$this->load->view('home');
 		$this->load->view('inc/foot');
