@@ -194,7 +194,7 @@ class CKAN {
 		return $dataset;
 	}
 
-/**
+	/**
 	 * Update group 
 	 *
 	 * string $group    Group that will be updated
@@ -203,8 +203,6 @@ class CKAN {
 	 *
 	 * @return null
 	 */
-	 
-	 //UNFINISHED
 	 
 	public function update_group($group, $name, $title, $description, $API_key)
 	{
@@ -216,6 +214,29 @@ class CKAN {
 			'name' => $name,
 			'title' => $title,
 			'description' => $description
+		);
+
+		$fields = json_encode($fields);
+
+		$this->send_curl_request($url, $fields, $API_key);
+	}
+	
+	/**
+	 * Read User 
+	 *
+	 * string $user user to read
+	 * string $API_key  API key for interfacing with CKAN
+	 *
+	 * @return null
+	 */
+	 
+	public function read_user($user, $API_key)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/user_show';
+
+		$fields = array(
+			'id' => $user
 		);
 
 		$fields = json_encode($fields);
