@@ -87,7 +87,7 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		send_curl_request($url, $fields, $API_key);
+		$this->send_curl_request($url, $fields, $API_key);
 	}
 
 
@@ -115,7 +115,7 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		send_curl_request($url, $fields, $API_key);
+		$this->send_curl_request($url, $fields, $API_key);
 	}
 
 	/**
@@ -154,8 +154,7 @@ class CKAN {
 		$dataset->set_uri_slug($data->url);
 
 		return $dataset;
-	}
-	
+	}	
 	
 	/**
 	 * Reads Group
@@ -193,5 +192,34 @@ class CKAN {
 		$dataset->set_uri_slug($group);
 
 		return $dataset;
+	}
+
+/**
+	 * Update group 
+	 *
+	 * string $group    Group that will be updated
+	 * string $datasets Datasets it should contain
+	 * string $API_key  API key for interfacing with CKAN
+	 *
+	 * @return null
+	 */
+	 
+	 //UNFINISHED
+	 
+	public function update_group($group, $name, $title, $description, $API_key)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/group_update';
+
+		$fields = array(
+			'id' => $group,
+			'name' => $name,
+			'title' => $title,
+			'description' => $description
+		);
+
+		$fields = json_encode($fields);
+
+		$this->send_curl_request($url, $fields, $API_key);
 	}
 }
