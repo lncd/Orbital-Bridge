@@ -34,30 +34,56 @@ class CKAN {
 	}
 
 	/**
-	 * Send CURL Request
+	 * Post CURL Request
 	 *
 	 * Sends the CURL request, performing the request sent by another function
 	 *
-	 * string $url     URL to send CURL request
+	 * string $url     URL to POST CURL request
 	 * array  $fields  Fields send over CURL
 	 *
 	 * @return null
 	 */
 
-	public function send_curl_request($url, $fields)
+	public function post_curl_request($url, $fields)
 	{
 		//open connection
 		$ch = curl_init();
 
 		//set the url, number of POST vars, POST data
-		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_POST, count($fields));
-		curl_setopt($ch,CURLOPT_POSTFIELDS, $fields);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 		//curl_setopt($ch, CURLOPT_USERPWD, 'username' . ":" . 'password');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $_SERVER['CKAN_API_KEY']));
 
 		//execute post
 		$result = curl_exec($ch);
+
+		//close connection
+		curl_close($ch);
+	}
+	
+	/**
+	 * Get CURL Request
+	 *
+	 * Sends the CURL request, performing the request sent by another function
+	 *
+	 * string $url     URL to GET CURL request
+	 *
+	 * @return null
+	 */
+
+	public function get_curl_request($url)
+	{
+		//open connection
+		$ch = curl_init();
+
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $_SERVER['CKAN_API_KEY']));
+
+		//execute post
+		return $result = curl_exec($ch);
 
 		//close connection
 		curl_close($ch);
@@ -84,7 +110,7 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields);
+		$this->post_curl_request($url, $fields);
 	}
 
 
@@ -111,7 +137,7 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields);
+		$this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -213,13 +239,13 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields);
+		$this->post_curl_request($url, $fields);
 	}
 
 	/**
 	 * Read User
 	 *
-	 * string $user    User to read
+	 * string $user User to read
 	 *
 	 * @return null
 	 */
@@ -235,7 +261,7 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->send_curl_request($url, $fields);
+		$this->post_curl_request($url, $fields);
 	}
 	
 	/**
@@ -245,15 +271,20 @@ class CKAN {
 	 *
 	 * @return null
 	 */
-	 
-	 //UNFINISHED//
 
 	public function datastore_query_to_CSV($url)
 	{
-		$unprocessed = file_get_contents($url);
-
-		$processed = /* Change unprocessed json to csv here */;
+		$unprocessed = json_decode($this->get_curl_request($url))->hits->hits;
+		$output = null;
 		
-		return $processed;
+		foreach ($unprocessed as $item)
+		{
+			$output['id'] = $item->_id;
+			foreach($item->_source as $key => $value)
+			{
+				$output[$key] = $value;
+			}
+		}
+		return $output;
 	}
 }
