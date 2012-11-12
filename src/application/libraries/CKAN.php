@@ -58,7 +58,7 @@ class CKAN {
 
 		//execute post
 		$result = curl_exec($ch);
-
+		
 		//close connection
 		curl_close($ch);
 	}
@@ -71,6 +71,7 @@ class CKAN {
 	 * string $url     URL to GET CURL request
 	 *
 	 * @return null
+	 * @access public
 	 */
 
 	public function get_curl_request($url)
@@ -84,7 +85,7 @@ class CKAN {
 
 		//execute post
 		return $result = curl_exec($ch);
-
+		
 		//close connection
 		curl_close($ch);
 	}
@@ -95,6 +96,7 @@ class CKAN {
 	 * string $dataset Dataset to create
 	 *
 	 * @return null
+	 * @access public
 	 */
 
 	public function create_dataset($dataset)
@@ -122,6 +124,7 @@ class CKAN {
 	 * array  $role    What permission to change to
 	 *
 	 * @return null
+	 * @access public
 	 */
 
 	public function update_permissions($user, $dataset, $role)
@@ -145,19 +148,13 @@ class CKAN {
 	 *
 	 * string $dataset_uri URI of dataset to read
 	 *
-	 * @return $dataset
+	 * @return $dataset The dataset is returned in array format
+	 * @access public
 	 */
 
 	public function read_dataset($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
 	{
-		$ch = curl_init();
-		$timeout = 5;
-		curl_setopt($ch, CURLOPT_URL, $dataset_uri);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$data = json_decode($data);
+		$data = json_decode($this->get_curl_request($dataset_uri));
 
 		//Build bridge-object
 
@@ -188,14 +185,8 @@ class CKAN {
 
 	public function read_group($group = 'https://ckan.lincoln.ac.uk/api/rest/group/')
 	{
-		$ch = curl_init();
-		$timeout = 5;
-		curl_setopt($ch, CURLOPT_URL, $group);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		$data = json_decode($data);
+		$data = json_decode($this->get_curl_request($group));
+
 
 		//Build bridge-object
 
@@ -269,7 +260,7 @@ class CKAN {
 	 *
 	 * string $url Query string to read
 	 *
-	 * @return null
+	 * @return array $output
 	 */
 
 	public function datastore_query_to_CSV($url)
