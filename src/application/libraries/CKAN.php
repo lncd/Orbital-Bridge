@@ -5,13 +5,10 @@
  *
  * Manages interfacing with CKAN.
  *
- * @category   Library
- * @package    Orbital
- * @subpackage Manager
- * @autho      Harry Newton <hnewton@lincoln.ac.uk>
- * @link       https://github.com/lncd/Orbital-Manager
- *
- * @todo Rewrite to use exceptions.
+ * @category    Library
+ * @package     Orbital
+ * @author      Harry Newton <hnewton@lincoln.ac.uk>
+ * @link        https://github.com/lncd/Orbital-Bridge
  */
 
 class CKAN {
@@ -42,6 +39,7 @@ class CKAN {
 	 * array  $fields  Fields send over CURL
 	 *
 	 * @return null
+	 * @access public
 	 */
 
 	public function post_curl_request($url, $fields)
@@ -68,7 +66,7 @@ class CKAN {
 	 *
 	 * Sends the CURL request, performing the request sent by another function
 	 *
-	 * string $url     URL to GET CURL request
+	 * string $url URL to GET CURL request
 	 *
 	 * @return null
 	 * @access public
@@ -91,9 +89,9 @@ class CKAN {
 	}
 
 	/**
-	 * Creates dataset in CKAN
+	 * Creates dataset
 	 *
-	 * string $dataset Dataset to create
+	 * object $dataset Dataset to create
 	 *
 	 * @return null
 	 * @access public
@@ -108,34 +106,6 @@ class CKAN {
 			'title' => $dataset->get_title(),
 			'name' => $dataset->get_uri_slug(),
 			'author' => $dataset->get_author()
-		);
-
-		$fields = json_encode($fields);
-
-		$this->post_curl_request($url, $fields);
-	}
-
-
-	/**
-	 * Update users dataset permissions
-	 *
-	 * string $user    User whose permissions will be updated
-	 * string $dataset Dataset to changeusers permissions to
-	 * array  $role    What permission to change to
-	 *
-	 * @return null
-	 * @access public
-	 */
-
-	public function update_permissions($user, $dataset, $role)
-	{
-		//set POST variables
-		$url = 'https://ckan.lincoln.ac.uk/api/action/user_role_update';
-
-		$fields = array(
-			'user' => $user,
-			'domain_object' => $dataset,
-			'roles' => $role //Must be in array of 1 object
 		);
 
 		$fields = json_encode($fields);
@@ -174,11 +144,38 @@ class CKAN {
 
 		return $dataset;
 	}
+	
+	/**
+	 * Update users dataset permissions
+	 *
+	 * string $user    User whose permissions will be updated
+	 * string $dataset Dataset to changeusers permissions to
+	 * array  $role    What permission to give the user
+	 *
+	 * @return null
+	 * @access public
+	 */
+
+	public function update_permissions($user, $dataset, $role)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/user_role_update';
+
+		$fields = array(
+			'user' => $user,
+			'domain_object' => $dataset,
+			'roles' => $role //Must be in array of 1 object
+		);
+
+		$fields = json_encode($fields);
+
+		$this->post_curl_request($url, $fields);
+	}
 
 	/**
 	 * Reads Group
 	 *
-	 * string $group URI of dataset to read
+	 * string $group URI of group to read
 	 *
 	 * @return $dataset
 	 */
@@ -210,8 +207,10 @@ class CKAN {
 	/**
 	 * Update group
 	 *
-	 * string $group    Group that will be updated
-	 * string $datasets Datasets it should contain
+	 * string $group       Group that will be updated
+	 * string $name        Name of the group
+	 * string $title       Title of the group
+	 * string $description Group description
 	 *
 	 * @return null
 	 */

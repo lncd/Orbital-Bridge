@@ -1,17 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * CKAN Library
+ * SWORD Library
  *
- * Manages interfacing with CKAN.
+ * Manages interfacing with SWORD endpoints.
  *
  * @category    Library
  * @package     Orbital
- * @subpackage  Manager
  * @author      Harry Newton <hnewton@lincoln.ac.uk>
- * @link        https://github.com/lncd/Orbital-Manager
- *
- * @todo Rewrite to use exceptions.
+ * @link        https://github.com/lncd/Orbital-Bridge
  */
 
 class Sword {
@@ -38,7 +35,8 @@ class Sword {
 	 *
 	 * string $sword_input URI of SWORD object to read
 	 *
-	 * @return $bridge_object
+	 * @return object $bridge_object The standard bridge object
+	 * @access public
 	 */
 
 	public function read_eprints($sword_input) //$sword_input, $library_to_send_it_to
@@ -90,6 +88,7 @@ class Sword {
 	 * array $dataset bridge object
 	 *
 	 * @return $eprint_xml->asXML()
+	 * @access public
 	 */
 
 	public function create_SWORD($dataset) //$standard bridge object
@@ -148,6 +147,7 @@ class Sword {
 	 * array  $dataset  bridge object
 	 *
 	 * @return null
+	 * @access public
 	 */
 	
 	function create_dataset($username = "sword-test", $password = "sword-test", $dataset)
