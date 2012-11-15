@@ -145,6 +145,41 @@ class CKAN {
 		return $dataset;
 	}
 	
+	
+	/**
+	 * Reads all Datasets
+	 *
+	 * string $uri URI of datasets API
+	 *
+	 * @return $datasets The datasets are returned in array format
+	 * @access public
+	 */
+
+	 //UNFINISHED//
+
+	public function read_datasets($uri = https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources)
+	{
+		$data = json_decode($this->get_curl_request($uri));
+
+		//Build bridge-object
+
+		$this->_ci->load->model('Dataset_Object');
+		$dataset = new Dataset_Object();
+
+		$dataset->set_title($data->title);
+		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
+		$dataset->set_creator($data->author);
+		$dataset->set_subjects(array()); //JACS CODES
+		$dataset->set_date(strtotime($data->metadata_created));
+		foreach($data->tags as $tag)
+		{
+			$dataset->add_keyword($tag);
+		}
+		$dataset->set_uri_slug($data->url);
+
+		return $dataset;
+	}
+	
 	/**
 	 * Update users dataset permissions
 	 *
