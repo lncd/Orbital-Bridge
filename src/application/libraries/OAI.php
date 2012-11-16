@@ -52,6 +52,7 @@ class OAI {
 		//set the url, number of POST vars, POST data
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 		//curl_setopt($ch, CURLOPT_USERPWD, 'username' . ":" . 'password');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $_SERVER['CKAN_API_KEY']));
@@ -61,6 +62,8 @@ class OAI {
 		
 		//close connection
 		curl_close($ch);
+		
+		return $result;
 	}
 	
 	/**
@@ -72,28 +75,45 @@ class OAI {
 
 	public function display_OAI_PMH($uri = 'https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources')
 	{
-		$fields = array(
-			'limit' => 30
-		);
-			
-		$data = $this->post_curl_request($uri, $fields);
-var_dump($data);
-		//USE SIMPLEXML TO BUILD OUTPUT
+		$fields = '{
+			"limit": 100
+		}';
 
-		$this->_ci->load->model('Dataset_Object');
-		$dataset = new Dataset_Object();
+		$datasets_data = json_decode($this->post_curl_request($uri, $fields));
 
-		$dataset->set_title($data->title);
-		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
-		$dataset->set_creator($data->author);
-		$dataset->set_subjects(array()); //JACS CODES
-		$dataset->set_date(strtotime($data->metadata_created));
-		foreach($data->tags as $tag)
+		$datasets = array();
+
+		//Build xml
+		$oai_xml = new SimpleXMLElement("<OAI-PMH></OAI-PMH>");
+		$oai_xml->addChild('responseDate', date('now'));
+		$oai_xml->addChild('request', 'http://eprints.lincoln.ac.uk/cgi/oai2');
+		$oai_xml->addChild('ListRecords');
+		
+		foreach ($datasets_data->result as $data)
 		{
-			$dataset->add_keyword($tag);
-		}
-		$dataset->set_uri_slug($data->url);
+			$record = $oai_xml->addChild('record');
+			$header = $record->addChild('header');
 
-		return $dataset;
+			$header->addChild('identifier', '');
+			$header->addChild('datestamp', date('now'));
+			$header->addChild('setSpec', '7374617475733D707562');
+			$header->addChild('setSpec', '7375626A656374733D6A6163735F47:6A6163735F47363030');
+			$header->addChild('setSpec', '74797065733D636F6E666572656E63655F6974656D');
+			$metadata = $record->addChild('metadata');
+			$oai_dc = $metadata->addChild('oai_dc:dc');
+			$oai_dc->addChild('title', $data->title);
+			$oai_dc->addChild('creator', $data->author);
+			$oai_dc->addChild('subject', '');
+			$oai_dc->addChild('description', '');
+			$oai_dc->addChild('type', $data->type);
+			$oai_dc->addChild('type', $data->type);
+			$oai_dc->addChild('format', '');
+			$oai_dc->addChild('identifier', '');
+			$oai_dc->addChild('format', '');
+			$oai_dc->addChild('identifier', '');
+			$oai_dc->addChild('identifier', '');
+			$oai_dc->addChild('relation', '');
+		}
+		return $oai_xml;
 	}
 }
