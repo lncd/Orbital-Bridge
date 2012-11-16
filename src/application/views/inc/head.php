@@ -66,13 +66,27 @@
 							</a>
 
 							<div class="nav-collapse">
-
 								<ul class="nav">
-									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>">Home</a></li>
-									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('tools'); ?>">Tools</a></li>
-									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>">Contact</a></li>
+									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>"><i class="icon-home"></i> Home</a></li>
+									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('tools'); ?>"><i class="icon-wrench"></i> Tools</a></li>
+									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>"><i class="icon-bullhorn"></i> Contact</a></li>
 								</ul>
+							</div>
+							
+							<div class="nav-collapse pull-right">
+								<ul class="nav">
 
+								<?php if ($this->session->userdata('access_token')): ?>
+								
+									<li><a href="<?php echo site_url('me'); ?>"><i class="icon-user"></i> <?php echo $this->session->userdata('user_name'); ?></a></li>
+									<li><a href="<?php echo site_url('signout'); ?>"><i class="icon-signout"></i> Sign Out</a></li>
+								
+								<?php else: ?>
+								
+									<li><a href="<?php echo site_url('signin'); ?>"><i class="icon-signin"></i> Sign In</a></li>
+								
+								<?php endif; ?>
+								</ul>
 							</div>
 						</div>
 					</div>

@@ -1,0 +1,3 @@
+[submodule "src/application/libraries/oauth"]
+	path = src/application/libraries/oauth
+	url = git@github.com:unilincoln-ost/codeigniter-oauth2.git
