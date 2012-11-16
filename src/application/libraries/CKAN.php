@@ -50,17 +50,20 @@ class CKAN {
 		//set the url, number of POST vars, POST data
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 		//curl_setopt($ch, CURLOPT_USERPWD, 'username' . ":" . 'password');
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $_SERVER['CKAN_API_KEY']));
 
 		//execute post
 		$result = curl_exec($ch);
-		
+
 		//close connection
 		curl_close($ch);
+		
+		return $result;
 	}
-	
+
 	/**
 	 * Get CURL Request
 	 *
@@ -82,10 +85,12 @@ class CKAN {
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $_SERVER['CKAN_API_KEY']));
 
 		//execute post
-		return $result = curl_exec($ch);
-		
+		$result = curl_exec($ch);
+
 		//close connection
 		curl_close($ch);
+		
+		return $result;
 	}
 
 	/**
@@ -144,8 +149,8 @@ class CKAN {
 
 		return $dataset;
 	}
-	
-	
+
+
 	/**
 	 * Reads all Datasets
 	 *
@@ -155,31 +160,40 @@ class CKAN {
 	 * @access public
 	 */
 
-	 //UNFINISHED//
+	//UNFINISHED//
 
-	public function read_datasets($uri = https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources)
+	public function read_datasets($uri = 'https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources')
 	{
-		$data = json_decode($this->get_curl_request($uri));
+		$fields = '{
+			"limit": 100
+		}';
+
+		$datasets_data = json_decode($this->post_curl_request($uri, $fields));
+
+		$datasets = array();
 
 		//Build bridge-object
-
-		$this->_ci->load->model('Dataset_Object');
-		$dataset = new Dataset_Object();
-
-		$dataset->set_title($data->title);
-		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
-		$dataset->set_creator($data->author);
-		$dataset->set_subjects(array()); //JACS CODES
-		$dataset->set_date(strtotime($data->metadata_created));
-		foreach($data->tags as $tag)
+		foreach ($datasets_data->result as $data)
 		{
-			$dataset->add_keyword($tag);
-		}
-		$dataset->set_uri_slug($data->url);
+			$this->_ci->load->model('Dataset_Object');
+			$dataset = new Dataset_Object();
 
-		return $dataset;
+			$dataset->set_title($data->title);
+			$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
+			$dataset->set_creator($data->author);
+			$dataset->set_subjects(array()); //JACS CODES
+			$dataset->set_date(strtotime($data->metadata_created));
+			foreach($data->tags as $tag)
+			{
+				$dataset->add_keyword($tag);
+			}
+			$dataset->set_uri_slug($data->url);
+
+			$datasets[] = $dataset;
+		}
+		return $datasets;
 	}
-	
+
 	/**
 	 * Update users dataset permissions
 	 *
@@ -288,7 +302,7 @@ class CKAN {
 
 		$this->post_curl_request($url, $fields);
 	}
-	
+
 	/**
 	 * Parse datastore JSON to CSV
 	 *
@@ -301,7 +315,7 @@ class CKAN {
 	{
 		$unprocessed = json_decode($this->get_curl_request($url))->hits->hits;
 		$output = null;
-		
+
 		foreach ($unprocessed as $item)
 		{
 			$output['id'] = $item->_id;
