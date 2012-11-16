@@ -221,6 +221,32 @@ class CKAN {
 		$this->post_curl_request($url, $fields);
 	}
 
+
+	/**
+	 * Creates group
+	 *
+	 * object $group Group to create
+	 *
+	 * @return null
+	 * @access public
+	 */
+
+	public function create_group($group)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
+
+		$fields = array(
+			'title' => $dataset->get_title(),
+			'name' => $dataset->get_uri_slug(),
+			'author' => $dataset->get_author()
+		);
+
+		$fields = json_encode($fields);
+
+		$this->post_curl_request($url, $fields);
+	}
+
 	/**
 	 * Reads Group
 	 *
@@ -229,28 +255,14 @@ class CKAN {
 	 * @return $dataset
 	 */
 
-	public function read_group($group = 'https://ckan.lincoln.ac.uk/api/rest/group/')
+	 //UNFINISHED//
+
+	public function read_group($group)
 	{
-		$data = json_decode($this->get_curl_request($group));
+		$url = 'https://ckan.lincoln.ac.uk/api/action/group_create';
 
+		//CREATE GROUP
 
-		//Build bridge-object
-
-		$this->_ci->load->model('Dataset_Object');
-		$dataset = new Dataset_Object();
-
-		$dataset->set_title($data->title);
-		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
-		$dataset->set_creator($data->name);
-		$dataset->set_subjects(array()); //JACS CODES
-		$dataset->set_date(strtotime($data->created));
-		foreach($data->tags as $tag)
-		{
-			$dataset->add_keyword($tag);
-		}
-		$dataset->set_uri_slug($group);
-
-		return $dataset;
 	}
 
 	/**
@@ -300,18 +312,18 @@ class CKAN {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
-	 * Parse datastore JSON to CSV
+	 * Parse datastore JSON to array
 	 *
 	 * string $url Query string to read
 	 *
 	 * @return array $output
 	 */
 
-	public function datastore_query_to_CSV($url)
+	public function datastore_query_to_array($url)
 	{
 		$unprocessed = json_decode($this->get_curl_request($url))->hits->hits;
 		$output = null;

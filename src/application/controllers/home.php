@@ -8,9 +8,6 @@ class Home extends CI_Controller {
 			'page' => 'home'
 		);
 		
-		$this->load->library('OAI');
-		echo'<pre>';print_r($this->oai->display_OAI_PMH());echo'</pre>';
-		
 		$this->load->view('inc/head', $header);
 		$this->load->view('home');
 		$this->load->view('inc/foot');
