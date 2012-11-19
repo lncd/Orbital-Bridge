@@ -85,6 +85,9 @@ class OAI {
 
 		//Build xml
 		$oai_xml = new SimpleXMLElement("<OAI-PMH></OAI-PMH>");
+		$oai_xml->addAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+		$oai_xml->addAttribute('xsi:schemaLocation', 'http://www.openarchives.org/OAI/2.0/ http://www.openarchives.org/OAI/2.0/OAI-PMH.xsd');
+		$oai_xml->addAttribute('xmlns', 'http://www.openarchives.org/OAI/2.0/');
 		$oai_xml->addChild('responseDate', date('now'));
 		$oai_xml->addChild('request', 'http://eprints.lincoln.ac.uk/cgi/oai2');
 		$oai_xml->addChild('ListRecords');
@@ -101,6 +104,10 @@ class OAI {
 			$header->addChild('setSpec', '74797065733D636F6E666572656E63655F6974656D');
 			$metadata = $record->addChild('metadata');
 			$oai_dc = $metadata->addChild('oai_dc:dc');
+			$oai_dc->addAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
+			$oai_dc->addAttribute('xsi:schemaLocation', 'http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd');
+			$oai_dc->addAttribute('xmlns:oai_dc', 'http://www.openarchives.org/OAI/2.0/oai_dc/');
+			$oai_dc->addAttribute('xmlns:dc', 'http://purl.org/dc/elements/1.1/');
 			$oai_dc->addChild('title', $data->title);
 			$oai_dc->addChild('creator', $data->author);
 			$oai_dc->addChild('subject', '');
