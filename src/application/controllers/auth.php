@@ -22,16 +22,32 @@ class Auth extends CI_Controller {
                 $token = $provider->access($_GET['code']);
 
                 $user = $provider->get_user_info($token);
-
-                // Do some funky database testing to see if the user already exists
-                $user = new User();
-
+                
                 // Assign user's data to session
                 $this->session->set_userdata('access_token', $token->access_token);
                 $this->session->set_userdata('user_id', $user->id);
                 $this->session->set_userdata('user_name', $user->name);
                 $this->session->set_userdata('user_sam', $user->sam);
+
+                // Do some funky database testing to see if the user already exists
+				$u = new User();
                 
+                $db_user = $u->where('auth_id', $user->id)->get();
+                
+                if ($db_user->count() === 1)
+                {
+	                
+	                $this->session->set_userdata('user_admin', (bool) $db_user->admin);
+                }
+                else
+                {
+	                // User doesn't exist. Save it up!
+	                $u->auth_id = $user->id;
+	                $u->save();
+	                
+	                $this->session->set_userdata('user_admin', FALSE);
+	                
+                }
                 redirect('me');
             }
 

@@ -70,6 +70,9 @@
 									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>"><i class="icon-home"></i> Home</a></li>
 									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('researchtools'); ?>"><i class="icon-wrench"></i> Research Tools</a></li>
 									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>"><i class="icon-bullhorn"></i> Contact</a></li>
+									<?php if ($this->session->userdata('user_admin')): ?>
+									<li<?php if($page === 'admin') echo ' class="active"'; ?>><a href="<?php echo site_url('admin'); ?>"><i class="icon-cogs"></i> Admin</a></li>
+									<?php endif; ?>
 								</ul>
 							</div>
 							
