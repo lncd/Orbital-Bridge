@@ -29,7 +29,7 @@ class Sword {
 	{
 		$this->_ci =& get_instance();
 	}
-	 	
+
 	/**
 	 * Reads SWORD object and converts to bridge object
 	 *
@@ -43,12 +43,12 @@ class Sword {
 	{
 		//Convert to object
 		$obj = simplexml_load_file($sword_input);
-		
+
 		//Create Bridge-Object
-		
+
 		$bridge_object = array();
 		foreach ($obj->eprint as $eprint_object)
-		{ 
+		{
 			$bridge->uri_slug = url_title($eprint_object->title, '_', TRUE);
 			$bridge->title = (string) $eprint_object->title;
 			$bridge->creators = array();
@@ -57,7 +57,7 @@ class Sword {
 				$person->given_name = (string) $item->name->given;
 				$person->family_name = (string) $item->name->family;
 				$person->id = (string) $item->id;
-				$bridge->creators[]	= $person;
+				$bridge->creators[] = $person;
 				unset($person);
 			}
 			$bridge->subjects = (string) $eprint_object->subjects->item;
@@ -67,17 +67,17 @@ class Sword {
 			$bridge->keywords = array();
 			foreach ($eprint_object->keywords->item as $keyword)
 			{
-				$bridge->keywords[]	= (string) $keyword;
+				$bridge->keywords[] = (string) $keyword;
 				unset($keyword);
 			}
 			$bridge->abstract = (string) $eprint_object->abstract;
 			$bridge->data_type = (string) $eprint_object->data_type;
 			$bridge->official_url = (string)$eprint_object->official_url;
-			
+
 			$bridge_object[] = $bridge;
 			unset($bridge);
 		}
-		
+
 		//Return the bridge object array
 		return $bridge_object;
 	}
@@ -135,10 +135,10 @@ class Sword {
 		//$eprint->addChild('event_location', 'Dallas, Texas');
 		//$eprint->addChild('event_dates', 'event_dates');
 		//$eprint->addChild('fileinfo', 'application/pdf;http://devel.eprints.org/1/01/paper.pdf');
-				
+
 		return($eprint_xml->asXML());
 	}
-	
+
 	/**
 	 * Create Dataset.
 	 *
@@ -149,7 +149,7 @@ class Sword {
 	 * @return null
 	 * @access public
 	 */
-	
+
 	function create_dataset($username = "sword-test", $password = "sword-test", $dataset)
 	{
 		//$dataset = file_get_contents("/Users/hnewton/Desktop/test-import.xml");

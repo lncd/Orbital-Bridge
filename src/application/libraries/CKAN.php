@@ -60,7 +60,7 @@ class CKAN {
 
 		//close connection
 		curl_close($ch);
-		
+
 		return $result;
 	}
 
@@ -89,7 +89,7 @@ class CKAN {
 
 		//close connection
 		curl_close($ch);
-		
+
 		return $result;
 	}
 
@@ -105,7 +105,7 @@ class CKAN {
 	public function create_dataset($dataset)
 	{
 		//$dataset is a bridge dataset object. use another function to create a dataset object from a source, which this function can use.
-	
+
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
 
@@ -236,12 +236,10 @@ class CKAN {
 	public function create_group($group)
 	{
 		//set POST variables
-		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
+		$url = 'https://ckan.lincoln.ac.uk/api/action/group_create';
 
 		$fields = array(
-			'title' => $dataset->get_title(),
-			'name' => $dataset->get_uri_slug(),
-			'author' => $dataset->get_author()
+			'name' => $group
 		);
 
 		$fields = json_encode($fields);
@@ -257,7 +255,7 @@ class CKAN {
 	 * @return $dataset
 	 */
 
-	 //UNFINISHED//
+	//UNFINISHED//
 
 	public function read_group($group)
 	{
@@ -288,6 +286,28 @@ class CKAN {
 			'name' => $name,
 			'title' => $title,
 			'description' => $description
+		);
+
+		$fields = json_encode($fields);
+
+		$this->post_curl_request($url, $fields);
+	}
+
+	/**
+	 * Delete group
+	 *
+	 * string $group Group that will be deleted
+	 *
+	 * @return null
+	 */
+
+	public function delete_group($group)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/group_delete';
+
+		$fields = array(
+			'id' => $group
 		);
 
 		$fields = json_encode($fields);
@@ -327,17 +347,42 @@ class CKAN {
 
 	public function datastore_query_to_array($url)
 	{
+		//$url is HTTPS. Make sure URL you paste has https, not http.
 		$unprocessed = json_decode($this->get_curl_request($url))->hits->hits;
-		$output = null;
+		$input_array = null;
 
+		//Make $unrocessed into an array
 		foreach ($unprocessed as $item)
 		{
-			$output['id'] = $item->_id;
+			$new_output = array();
+			$new_output['id'] = $item->_id;
+
 			foreach($item->_source as $key => $value)
 			{
-				$output[$key] = $value;
+				$new_output[$key] = $value;
 			}
+
+			$input_array[] = $new_output;
+			unset($new_output);
 		}
-		return $output;
+
+		//Add keys to output csv string
+		$keys = '';
+		foreach($input_array[0] as $key => $value)
+		{
+			$keys .= $key . ',';
+		}
+		$keys .= "\r\n";
+
+		//Implode array (Make into array of comma delimited rows)
+		foreach($input_array as $row)
+		{
+			$output_array[] = implode($row, ',');
+		}
+
+		//Implode array again (Make comma delimited rows into CSV) and add all fields to output csv string
+		$output[] = $keys . implode($output_array, "\r\n");
+
+		return $output[0];
 	}
 }
