@@ -52,9 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('database', 'session');
-
-$autoload['sparks'] = array('datamapper-orm/1.8.2');
+$autoload['libraries'] = array('database', 'datamapper', 'session');
 
 
 /*

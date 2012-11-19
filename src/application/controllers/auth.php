@@ -13,17 +13,18 @@ class Auth extends CI_Controller {
         
         if ( ! $this->input->get('code'))
         {
-            // Go auth!
             $provider->authorize();
         }
         else
         {
-            // Howzit?
             try
             {
                 $token = $provider->access($_GET['code']);
 
                 $user = $provider->get_user_info($token);
+
+                // Do some funky database testing to see if the user already exists
+                $user = new User();
 
                 // Assign user's data to session
                 $this->session->set_userdata('access_token', $token->access_token);
