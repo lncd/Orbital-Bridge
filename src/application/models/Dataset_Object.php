@@ -3,7 +3,7 @@
 /**
  * Bridge_Object Library
  *
- * Manages the Bridge Object.
+ * Manages the Dataset Bridge Object.
  *
  * @category   Library
  * @package    Orbital
