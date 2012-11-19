@@ -12,7 +12,7 @@
 	
 		<h2><i class="icon-check"></i> Before You Start</h2>
 		
-		<p>Before you start working on a research project, even before you submit a bid, you should consider how you're going to manage your research data. We recommend taking a look at the following tools to help you understand and plan for managing data.</p>
+		<p>Before you start working on a research project, even before you submit a bid, you should consider how you're going to manage your research data. We recommend taking a look at the following tools and resources to help you understand and plan for managing data.</p>
 	
 	</div>
 			
@@ -68,27 +68,13 @@
 
 <div class="row">
 			
-	<div class="span12">
+	<div class="span4">
 	
 		<h4>Blogs</h2>
 		
 		<p>The University's Blogs system is the best place for you to record what you're working on, be that in the form of a traditional 'journal-like' blog, a website explaining what you're doing, a private lab notebook or more. You can give other members of your research team the ability to add, edit and approve content as well, and there's even a social network built in to let you discuss things.</p>
 		
 		<p><a class="btn" href="http://blogs.lincoln.ac.uk"><i class="icon-chevron-right"></i> Go to Blogs</a></p>
-		
-	</div>
-			
-</div>
-
-<div class="row">
-
-	<div class="span4">
-	
-		<h4>ownCloud <small>Alpha</small></h4>
-		
-		<p>ownCloud provides your entire research group with a shared file space, stored securely on University servers and synchronised to every researcher's desktop. ownCloud is still in the early stages of being rolled out, but if you're interested in what it can offer please get in touch with us.</p>
-		
-		<p><a href="<?php echo site_url('contact'); ?>" class="btn"><i class="icon-chevron-right"></i> Contact us about ownCloud</a></p>
 		
 	</div>
 	
