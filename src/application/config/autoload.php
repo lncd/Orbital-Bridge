@@ -54,6 +54,8 @@ $autoload['packages'] = array();
 
 $autoload['libraries'] = array('database', 'session');
 
+$autoload['sparks'] = array('datamapper-orm/1.8.2');
+
 
 /*
 | -------------------------------------------------------------------
