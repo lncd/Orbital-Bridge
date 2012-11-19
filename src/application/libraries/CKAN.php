@@ -365,7 +365,8 @@ class CKAN {
 			$input_array[] = $new_output;
 			unset($new_output);
 		}
-		
+
+		//Add keys to output csv string
 		$keys = '';
 		foreach($input_array[0] as $key => $value)
 		{
@@ -379,7 +380,7 @@ class CKAN {
 			$output_array[] = implode($row, ',');
 		}
 
-		//Implode array again (Make comma delimited rows into CSV)
+		//Implode array again (Make comma delimited rows into CSV) and add all fields to output csv string
 		$output[] = $keys . implode($output_array, "\r\n");
 
 		return $output[0];
