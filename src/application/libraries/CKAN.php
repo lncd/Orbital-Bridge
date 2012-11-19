@@ -292,12 +292,11 @@ class CKAN {
 
 		$this->post_curl_request($url, $fields);
 	}
-	}
 
 	/**
 	 * Delete group
 	 *
-	 * string $group       Group that will be deleted
+	 * string $group Group that will be deleted
 	 *
 	 * @return null
 	 */
