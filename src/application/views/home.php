@@ -8,13 +8,13 @@
 
 <div class="row">
 	
-	<section class="span12">
+	<div class="span12">
 	
 		<h3><i class="icon-question-sign"></i> What is Orbital?</h3>
 		
 		<p>Orbital is a JISC-funded research project at the University of Lincoln looking at managing research data. As part of this we're building the tools, policies and training to help researchers manage their data.</p>
 		
-	</section>
+	</div>
 			
 </div>
 
@@ -22,17 +22,17 @@
 
 <div class="row">
 	
-	<section class="span4">
+	<div class="span4">
 	
 		<h3><i class="icon-wrench"></i> Tools</h3>
 		
 		<p>Orbital includes a suite of tools designed to help you plan, store and manage your research data. Take a look at the list of things we're working on.</p>
 		
-		<p><a href="<?php echo site_url('tools'); ?>" class="btn"><i class="icon-chevron-right"></i> View the Tools</a></p>
+		<p><a href="<?php echo site_url('researchtools'); ?>" class="btn"><i class="icon-chevron-right"></i> View the Tools</a></p>
 		
-	</section>
+	</div>
 			
-	<section class="span4">
+	<div class="span4">
 	
 		<h3><i class="icon-file"></i> Policies</h3>
 		
@@ -42,9 +42,9 @@
 		
 		<p>
 	
-	</section>
+	</div>
 	
-	<section class="span4">
+	<div class="span4">
 		
 		<h3><i class="icon-certificate"></i> Training</h3>
 	
@@ -52,6 +52,6 @@
 		
 		<p><a href="<?php echo site_url('contact'); ?>" class="btn"><i class="icon-chevron-right"></i> Contact Us</a></p>
 						
-	</section>
+	</div>
 			
 </div>

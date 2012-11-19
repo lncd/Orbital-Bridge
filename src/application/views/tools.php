@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-wrench"></i> Tools
+		<i class="icon-wrench"></i> Research Tools
 	</h1>
 
 </div>

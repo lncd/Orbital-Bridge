@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tools extends CI_Controller {
+class Researchtools extends CI_Controller {
 
 	public function index()
 	{

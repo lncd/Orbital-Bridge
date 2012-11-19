@@ -7,8 +7,8 @@ class Auth extends CI_Controller {
 		$this->load->library('oauth/libraries/oauth2');
 		
 		$provider = $this->oauth2->provider('unilincoln', array(
-            'id' => 'gpkZ902wxY1D5b2EX8F1n0F9i9J33sX9',
-            'secret' => '7E4v25QL2jGIXz97M40rzmN633NAP2V1'
+            'id' => $_SERVER['OAUTH_ID'],
+            'secret' => $_SERVER['OAUTH_SECRET']
         ));
         
         if ( ! $this->input->get('code'))
@@ -29,13 +29,14 @@ class Auth extends CI_Controller {
                 $this->session->set_userdata('access_token', $token->access_token);
                 $this->session->set_userdata('user_id', $user->id);
                 $this->session->set_userdata('user_name', $user->name);
+                $this->session->set_userdata('user_sam', $user->sam);
                 
-                redirect();
+                redirect('me');
             }
 
             catch (OAuth2_Exception $e)
             {
-                show_error('Oh, snap!');
+                show_error('Something unexpected happened when you were signing in, and we couldn\'t complete the process. Sorry about that.');
             }
 
         }
