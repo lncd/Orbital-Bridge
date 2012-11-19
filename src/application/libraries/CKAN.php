@@ -236,12 +236,10 @@ class CKAN {
 	public function create_group($group)
 	{
 		//set POST variables
-		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
+		$url = 'https://ckan.lincoln.ac.uk/api/action/group_create';
 
 		$fields = array(
-			'title' => $dataset->get_title(),
-			'name' => $dataset->get_uri_slug(),
-			'author' => $dataset->get_author()
+			'name' => $group
 		);
 
 		$fields = json_encode($fields);
