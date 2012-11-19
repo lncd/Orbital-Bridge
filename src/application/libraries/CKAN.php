@@ -292,6 +292,29 @@ class CKAN {
 
 		$this->post_curl_request($url, $fields);
 	}
+	}
+
+	/**
+	 * Delete group
+	 *
+	 * string $group       Group that will be deleted
+	 *
+	 * @return null
+	 */
+
+	public function delete_group($group)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/group_delete';
+
+		$fields = array(
+			'id' => $group
+		);
+
+		$fields = json_encode($fields);
+
+		$this->post_curl_request($url, $fields);
+	}
 
 	/**
 	 * Read User
