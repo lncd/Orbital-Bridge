@@ -104,6 +104,8 @@ class CKAN {
 
 	public function create_dataset($dataset)
 	{
+		//$dataset is a bridge dataset object. use another function to create a dataset object from a source, which this function can use.
+	
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/rest/dataset';
 
