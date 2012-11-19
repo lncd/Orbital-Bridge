@@ -7,8 +7,8 @@ class Auth extends CI_Controller {
 		$this->load->library('oauth/libraries/oauth2');
 		
 		$provider = $this->oauth2->provider('unilincoln', array(
-            'id' => 'gpkZ902wxY1D5b2EX8F1n0F9i9J33sX9',
-            'secret' => '7E4v25QL2jGIXz97M40rzmN633NAP2V1'
+            'id' => $_SERVER['OAUTH_ID'],
+            'secret' => $_SERVER['OAUTH_SECRET']
         ));
         
         if ( ! $this->input->get('code'))

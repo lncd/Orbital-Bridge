@@ -2,6 +2,17 @@
 
 class Me extends CI_Controller {
 
+	public function __construct()
+	{
+		parent::__construct();
+		
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+		
+	}
+
 	public function index()
 	{
 		$header = array(
