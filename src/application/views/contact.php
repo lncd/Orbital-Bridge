@@ -8,51 +8,47 @@
 
 <div class="row">
 	
-	<section class="span12">
+	<div class="span12">
 		
 		<p>We love hearing from people. Feel free to get in touch about your research project, Orbital, how we might be able to help you, or even just to say hello.</p>
 		
-	</section>
+	</div>
 			
 </div>
 
 <div class="row">
 	
-	<section class="span3">
+	<div class="span3">
 	
 		<h3><i class="icon-envelope"></i> Email</h3>
 		
 		<p>Always a good way to start a conversation, you can send us an email.</p>
 		
-	</section>
+	</div>
 			
-	<section class="span3">
+	<div class="span3">
 	
 		<h3><i class="icon-phone"></i> Phone</h3>
 		
 		<p>If you're more of a talkative type then you can give us a ring.</p>
-		
-		<p>
 	
-	</section>
+	</div>
 	
-	<section class="span3">
+	<div class="span3">
 	
 		<h3><i class="icon-user"></i> Face to Face</h3>
 		
 		<p>Rather chat to us in person? Just get in touch with us any of the other ways on this page and we'll figure something out.</p>
-		
-		<p>
 	
-	</section>
+	</div>
 	
-	<section class="span3">
+	<div class="span3">
 		
 		<h3><i class="icon-twitter"></i> Twitter</h3>
 	
 		<p>If you've got a quick question or just want to say hi, why not drop any of us a message on Twitter, or use our hashtag <b>#OrbitalMRD</b>?</p>
 						
-	</section>
+	</div>
 			
 </div>
 
