@@ -195,6 +195,28 @@ class CKAN {
 		}
 		return $datasets;
 	}
+	
+	/**
+	 * Delete dataset
+	 *
+	 * string $dataset Dataset that will be deleted
+	 *
+	 * @return null
+	 */
+
+	public function delete_dataset($dataset)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/package_delete';
+
+		$fields = array(
+			'id' => $dataset
+		);
+
+		$fields = json_encode($fields);
+
+		$this->post_curl_request($url, $fields);
+	}
 
 	/**
 	 * Update users dataset permissions

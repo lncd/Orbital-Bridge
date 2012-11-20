@@ -105,7 +105,7 @@ class CSV {
 	public function read_csv($url)
 	{
 		$bridge_object = null;
-		
+
 		return $bridge_object
 	}
 }
