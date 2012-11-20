@@ -103,9 +103,34 @@ class CSV {
 	 */
 	
 	public function read_csv($url)
-	{
-		$bridge_object = null;
+	{	
+		$rows = explode("\n", file_get_contents($url));
+		$output = array();
+		
+		foreach($rows as $row)
+		{
+			$output[] = explode(",", $row);
+		}
+		
+		return $output;
+	}
+	
+	/**
+	 * Creates CSV from bridge object
+	 *
+	 * string $bridge_object Bridge Object to convert to CSV
+	 *
+	 * @return object $csv CSV output
+	 * @access public
+	 */
 
-		return $bridge_object
+	public function create_csv($bridge_object)
+	{	
+		$output = '';
+		foreach($bridge_object as $array_item)
+		{
+			$output .= implode(",", $array_item) . "\n";
+		}
+		return $output;
 	}
 }
