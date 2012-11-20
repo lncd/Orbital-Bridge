@@ -67,13 +67,44 @@ class OAIPMH {
 	}
 	
 	/**
-	 * Displays OAI-PMH list of datasets
+	 * Displays OAI-PMH list of a groups datasets
+	 *
+	 * @access public
+	 */
+
+	public function display_OAI_PMH_group_datasets($uri = 'https://ckan.lincoln.ac.uk/api/action/group_package_show', $group)
+	{
+		$fields = '{
+			"limit": 100,
+			"id" : ' . $group . '
+		}';
+		
+		display_OAI_PMH($uri, $fields);
+	}
+	
+	/**
+	 * Displays OAI-PMH list of all datasets
+	 *
+	 * @access public
+	 */
+
+	public function display_OAI_PMH_all_datasets($uri = 'https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources', $group)
+	{
+		$fields = '{
+			"limit": 100
+		}';
+		
+		display_OAI_PMH($uri, $fields);
+	}
+	
+	/**
+	 * Displays OAI-PMH from either datasets in a group, or all datasets
 	 *
 	 * @return $OAI 
 	 * @access public
 	 */
 
-	public function display_OAI_PMH($uri = 'https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources')
+	public function display_OAI_PMH($uri, $fields)
 	{
 		$fields = '{
 			"limit": 100
