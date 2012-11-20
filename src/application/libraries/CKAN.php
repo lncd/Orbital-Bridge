@@ -338,14 +338,14 @@ class CKAN {
 	}
 
 	/**
-	 * Parse datastore JSON to array
+	 * Parse datastore JSON to CSV
 	 *
 	 * string $url Query string to read
 	 *
 	 * @return array $output
 	 */
 
-	public function datastore_query_to_array($url)
+	public function datastore_query_to_csv($url)
 	{
 		//$url is HTTPS. Make sure URL you paste has https, not http.
 		$unprocessed = json_decode($this->get_curl_request($url))->hits->hits;
