@@ -110,8 +110,7 @@ class CSV {
 		foreach($rows as $row)
 		{
 			$output[] = explode(",", $row);
-		}
-		
+		}		
 		return $output;
 	}
 	
@@ -124,7 +123,7 @@ class CSV {
 	 * @access public
 	 */
 
-	public function create_csv($bridge_object)
+	public function convert_tabular_to_text($bridge_object)
 	{	
 		$output = '';
 		foreach($bridge_object as $array_item)
