@@ -13,7 +13,7 @@
  * @todo Write library.
  */
 
-class OAI {
+class OAIPMH {
 
 	/**
 	 * CodeIgniter Instance.
