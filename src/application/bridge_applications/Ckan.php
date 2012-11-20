@@ -11,7 +11,7 @@
  * @link        https://github.com/lncd/Orbital-Bridge
  */
 
-class CKAN {
+class Ckan {
 
 	/**
 	 * CodeIgniter Instance.

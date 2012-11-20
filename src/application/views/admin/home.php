@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		My Research
+		<i class="icon-cogs"></i> Administration
 	</h1>
 
 </div>
@@ -10,13 +10,51 @@
 	
 	<div class="span12">
 	
-		<h3><i class="icon-list"></i> My Projects</h3>
+		<h3><i class="icon-list-alt"></i> Applications</h3>
 		
-		<p class="lead">Orbital doesn't currently know of any research projects you're involved in.</p>
+		<?php if($db_apps->count() > 0): ?>
 		
-		<p>You can start a new unfunded project from within Orbital, or import information about a funded project you've already created directly from the <a href="http://ams.lincoln.ac.uk">Awards Management System</a>.</p>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Configured</th>
+					<th>Instances</th>
+					<th>Available for Users</th>
+					<th>Options</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+			<?php
+			
+			foreach ($db_apps as $app)
+			{
+				?>
+				
+				<tr>
+					<td><?php echo $app->name; ?></td>
+					<td><?php echo (bool) $app->configuration_valid ? '<span class="label label-success">Yes</span>' : '<span class="label label-important">No</span>'; ?></td>
+					<td><span class="badge badge-info">?</span></td>
+					<td><?php echo (bool) $app->available_for_users ? '<span class="label label-success">Yes</span>' : '<span class="label label-warning">No</span>'; ?></td>
+					<td><a class="btn btn-small disabled">Configure</a></td>
+				</tr>
+				
+				<?php
+			}
+			
+			?>
+				
+			</tbody>
+		</table>
 		
-		<p><a class="btn btn-large btn-success"><i class="icon-magic"></i> Start a new unfunded project</a> <a class="btn btn-large btn-primary"><i class="icon-download"></i> Import a project from the AMS</a></p>
+		<?php else: ?>
+		
+		<p class="lead">There are no applications currently configured to work with Orbital.</p>
+		
+		<?php endif; ?>
+		
+		<p><a href="<?php echo site_url('admin/scan'); ?>"class="btn btn-primary"><i class="icon-search"></i> Scan for Applications</a></p>
 		
 	</div>
 			
@@ -28,14 +66,12 @@
 	
 	<div class="span12">
 	
-		<h3><i class="icon-user"></i> My Profile</h3>
+		<h3><i class="icon-magic"></i> Recipes</h3>
 		
-		<p>Your Staff Profile contains information about your research and publications, as well as your contact details and biography. The information is automatically generated from a number of different systems, including Orbital, Blogs and ePrints.</p>
+		<p class="lead">There are no recipes stored in Orbital.</p>
 		
-		<p>You can view your public profile, edit your biography and research interests using the University's Blogs platform, or manage your publications using the University's ePrints system.</p>
-		
-		<p><a href="http://staff.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam'); ?>" class="btn btn-primary"><i class="icon-chevron-right"></i> View my Staff Profile</a> <a href="http://blogs.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam'); ?>" class="btn"><i class="icon-chevron-right"></i> Edit my Staff Profile on Blogs</a> <a href="https://eprints.lincoln.ac.uk/cgi/users/home" class="btn"><i class="icon-chevron-right"></i> Manage my Publications on ePrints</a></p>
+		<p><a class="btn btn-success disabled"><i class="icon-plus"></i> Create Recipe</a></p>
 		
 	</div>
-	
+			
 </div>

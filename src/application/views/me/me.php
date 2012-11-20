@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		My Research
+		<i class="icon-user"></i> My Research
 	</h1>
 
 </div>
