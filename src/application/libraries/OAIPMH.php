@@ -121,6 +121,6 @@ class OAIPMH {
 			$oai_dc->addChild('identifier', '');
 			$oai_dc->addChild('relation', '');
 		}
-		return $oai_xml;
+		return $oai_xml->asxml();
 	}
 }

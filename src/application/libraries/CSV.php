@@ -92,4 +92,20 @@ class CSV {
 
 		return $result;
 	}
+	
+	/**
+	 * Reads CSV and converts to bridge object
+	 *
+	 * string $url URI of CSV to read
+	 *
+	 * @return object $bridge_object The standard bridge object
+	 * @access public
+	 */
+	
+	public function read_csv($url)
+	{
+		$bridge_object = null;
+		
+		return $bridge_object
+	}
 }
