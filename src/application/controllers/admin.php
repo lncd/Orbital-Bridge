@@ -38,8 +38,6 @@ class Admin extends CI_Controller {
 		
 		$app_files = get_filenames('application/bridge_applications');
 		
-		var_dump($app_files);
-		
 		foreach ($app_files as $app_file)
 		{
 		
@@ -48,16 +46,63 @@ class Admin extends CI_Controller {
 		
 			$this->load->library('../bridge_applications/' . $app_file, array(), $app_name);
 			
-			echo $this->$app_name->configuration;
+			$error = FALSE;
+			$error_message = NULL;
+			
+			$app_display_name = 'bridge_applications/' . $app_file;
+			
+			// Configuration sanity testing mode, ENGAGE!
+			
+			try
+			{
+			
+				// Does this app have a configuration variable?
+			
+				if (!isset($this->$app_name->configuration))
+				{
+					throw new Exception ('This application does not have a configuration variable, and cannot be installed.');
+				}
+				
+				// Does this app's config variable actually parse?
+				
+				if (! $config = json_decode($this->$app_name->configuration))
+				{
+					throw new Exception ('This application\'s configuration variable is not valid JSON, and cannot be parsed. This application cannot be installed.');
+					
+				}
+				
+				if (isset($config->name))
+				{
+					$app_display_name = $config->name;
+				}
+				else
+				{
+					throw new Exception ('This application\'s configuration does not include a name.');
+				}
+				
+				var_dump ($config);
+			
+			}
+			catch (Exception $e)
+			{
+				$error = TRUE;
+				$error_message = $e->getMessage();
+			}
+			
+			$discovered[$app_name] = array(
+				'name'			=> $app_display_name,
+				'filename'		=> $app_file,
+				'error'			=> $error,
+				'error_message'	=> $error_message
+			);
 		}
 		
-		/*
+		$data['discovered'] = $discovered;
 		
 		$this->load->view('inc/head', $header);
 		$this->load->view('admin/scan', $data);
 		$this->load->view('inc/foot');
-		
-		*/
+
 	}
 }
 

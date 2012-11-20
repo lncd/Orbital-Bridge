@@ -37,7 +37,7 @@
 					<td><?php echo (bool) $app->configuration_valid ? '<span class="label label-success">Yes</span>' : '<span class="label label-important">No</span>'; ?></td>
 					<td><span class="badge badge-info">?</span></td>
 					<td><?php echo (bool) $app->available_for_users ? '<span class="label label-success">Yes</span>' : '<span class="label label-warning">No</span>'; ?></td>
-					<td><a class="btn btn-small disabled">Configure</a></td>
+					<td><a class="btn btn-small disabled">Configure</a> <a class="btn btn-danger btn-small disabled">Delete</a></td>
 				</tr>
 				
 				<?php
