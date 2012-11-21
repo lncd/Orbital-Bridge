@@ -360,6 +360,55 @@ class Ckan {
 	}
 
 	/**
+	 * Read Users Datasets
+	 *
+	 * string $user User to read
+	 *
+	 * @return null
+	 */
+
+	public function read_user_datasets($user)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/user_show';
+
+		$fields = array(
+			'id' => $user
+		);
+
+		$fields = json_encode($fields);
+
+		$datasets = json_decode($this->post_curl_request($url, $fields));
+		
+		return $datasets->result->datasets;
+	}
+
+	/**
+	 * Read Users Activity
+	 *
+	 * string $user User to read
+	 *
+	 * @return null
+	 */
+
+	public function read_user_activity($user)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/user_show';
+
+		$fields = array(
+			'id' => $user
+		);
+
+		$fields = json_encode($fields);
+
+		$datasets = json_decode($this->post_curl_request($url, $fields));
+		
+		return $datasets->result->activity;
+	}
+
+
+	/**
 	 * Parse datastore JSON to CSV
 	 *
 	 * string $url Query string to read
