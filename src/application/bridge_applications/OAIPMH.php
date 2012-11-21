@@ -57,13 +57,13 @@ class OAIPMH {
 
 		//execute post
 		$result = curl_exec($ch);
-		
+
 		//close connection
 		curl_close($ch);
-		
+
 		return $result;
 	}
-	
+
 	/**
 	 * Displays OAI-PMH list of a groups datasets
 	 *
@@ -76,10 +76,10 @@ class OAIPMH {
 			"limit": 100,
 			"id" : ' . $group . '
 		}';
-		
-		display_OAI_PMH('https://ckan.lincoln.ac.uk/api/action/group_package_show', $fields);
+
+		return $this->display_OAI_PMH('https://ckan.lincoln.ac.uk/api/action/group_package_show', $fields);
 	}
-	
+
 	/**
 	 * Displays OAI-PMH list of all datasets
 	 *
@@ -91,26 +91,20 @@ class OAIPMH {
 		$fields = '{
 			"limit": 100
 		}';
-		
-		display_OAI_PMH('https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources', $fields);
+
+		return $this->display_OAI_PMH('https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources', $fields);
 	}
-	
+
 	/**
-	 * Displays OAI-PMH from either datasets in a group, or all datasets
+	 * Displays OAI-PMH from datasets
 	 *
-	 * @return $OAI 
+	 * @return $OAI
 	 * @access public
 	 */
 
 	public function display_OAI_PMH($uri, $fields)
 	{
-		$fields = '{
-			"limit": 100
-		}';
-
 		$datasets_data = json_decode($this->post_curl_request($uri, $fields));
-
-		$datasets = array();
 
 		//Build xml
 		$oai_xml = new SimpleXMLElement("<OAI-PMH></OAI-PMH>");
@@ -120,7 +114,7 @@ class OAIPMH {
 		$oai_xml->addChild('responseDate', date('now'));
 		$oai_xml->addChild('request', 'http://eprints.lincoln.ac.uk/cgi/oai2');
 		$oai_xml->addChild('ListRecords');
-		
+
 		foreach ($datasets_data->result as $data)
 		{
 			$record = $oai_xml->addChild('record');
