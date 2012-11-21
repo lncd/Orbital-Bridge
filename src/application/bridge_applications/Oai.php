@@ -13,7 +13,7 @@
  * @todo Write library.
  */
 
-class OAIPMH {
+class OAI {
 
 	/**
 	 * CodeIgniter Instance.
@@ -121,6 +121,6 @@ class OAIPMH {
 			$oai_dc->addChild('identifier', '');
 			$oai_dc->addChild('relation', '');
 		}
-		return $oai_xml->asxml();
+		return $oai_xml;
 	}
 }

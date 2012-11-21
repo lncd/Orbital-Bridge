@@ -12,7 +12,7 @@
  * @author  	Phil DeJarnett (up to v1.7.1)
  * @author  	Simon Stenhouse (up to v1.6.0)
  * @link		http://datamapper.wanwizard.eu/
- * @version 	1.8.2.1
+ * @version 	1.8.2
  */
 
 /**
@@ -23,7 +23,7 @@ define('DMZ_CLASSNAMES_KEY', '_dmz_classnames');
 /**
  * DMZ version
  */
-define('DMZ_VERSION', '1.8.2.1');
+define('DMZ_VERSION', '1.8.2');
 
 /**
  * Data Mapper Class
