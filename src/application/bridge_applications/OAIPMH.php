@@ -9,8 +9,6 @@
  * @package     Orbital
  * @author      Harry Newton <hnewton@lincoln.ac.uk>
  * @link        https://github.com/lncd/Orbital-Bridge
- *
- * @todo Write library.
  */
 
 class OAIPMH {
@@ -72,14 +70,14 @@ class OAIPMH {
 	 * @access public
 	 */
 
-	public function display_OAI_PMH_group_datasets($uri = 'https://ckan.lincoln.ac.uk/api/action/group_package_show', $group)
+	public function display_OAI_PMH_group_datasets($group)
 	{
 		$fields = '{
 			"limit": 100,
 			"id" : ' . $group . '
 		}';
 		
-		display_OAI_PMH($uri, $fields);
+		display_OAI_PMH('https://ckan.lincoln.ac.uk/api/action/group_package_show', $fields);
 	}
 	
 	/**
@@ -88,13 +86,13 @@ class OAIPMH {
 	 * @access public
 	 */
 
-	public function display_OAI_PMH_all_datasets($uri = 'https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources', $group)
+	public function display_OAI_PMH_all_datasets()
 	{
 		$fields = '{
 			"limit": 100
 		}';
 		
-		display_OAI_PMH($uri, $fields);
+		display_OAI_PMH('https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources', $fields);
 	}
 	
 	/**

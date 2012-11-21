@@ -195,7 +195,7 @@ class Ckan {
 		}
 		return $datasets;
 	}
-	
+
 	/**
 	 * Delete dataset
 	 *

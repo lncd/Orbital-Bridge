@@ -53,14 +53,14 @@ class Csv {
 	 */
 
 	public function read_csv($url)
-	{	
+	{
 		$rows = explode("\n", file_get_contents($url));
 		$output = array();
 
 		foreach($rows as $row)
 		{
 			$output[] = explode(",", $row);
-		}		
+		}
 		return $output;
 	}
 
@@ -74,7 +74,7 @@ class Csv {
 	 */
 
 	public function convert_tabular_to_text($bridge_object)
-	{	
+	{
 		$output = '';
 		foreach($bridge_object as $array_item)
 		{

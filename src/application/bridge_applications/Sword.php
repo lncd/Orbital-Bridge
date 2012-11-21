@@ -31,6 +31,8 @@ class Sword {
 	}
 
 	/**
+	 * Read ePrints
+	 *
 	 * Reads SWORD object and converts to bridge object
 	 *
 	 * string $sword_input URI of SWORD object to read
@@ -39,7 +41,7 @@ class Sword {
 	 * @access public
 	 */
 
-	public function read_eprints($sword_input) //$sword_input, $library_to_send_it_to
+	function read_eprints($sword_input) //$sword_input, $library_to_send_it_to
 	{
 		//Convert to object
 		$obj = simplexml_load_file($sword_input);
@@ -91,7 +93,7 @@ class Sword {
 	 * @access public
 	 */
 
-	public function create_SWORD($dataset) //$standard bridge object
+	function create_SWORD($dataset) //$standard bridge object
 	{
 		$eprint_xml = new SimpleXMLElement("<eprints></eprints>");
 		$eprint = $eprint_xml->addChild('eprint');
