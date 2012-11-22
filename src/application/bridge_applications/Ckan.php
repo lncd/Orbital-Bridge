@@ -135,7 +135,7 @@ class Ckan {
 
 		//Build bridge-object
 
-		$this->_ci->load->model('Dataset_Object');
+		$this->_ci->load->model('objects/Dataset_Object');
 		$dataset = new Dataset_Object();
 
 		$dataset->set_title($data->title);
@@ -162,22 +162,20 @@ class Ckan {
 	 * @access public
 	 */
 
-	//UNFINISHED//
-
-	public function read_datasets($uri = 'https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources')
+	public function read_datasets()
 	{
 		$fields = '{
 			"limit": 100
 		}';
 
-		$datasets_data = json_decode($this->post_curl_request($uri, $fields));
+		$datasets_data = json_decode($this->post_curl_request('https://ckan.lincoln.ac.uk/api/action/current_package_list_with_resources', $fields));
 
 		$datasets = array();
 
 		//Build bridge-object
 		foreach ($datasets_data->result as $data)
 		{
-			$this->_ci->load->model('Dataset_Object');
+			$this->_ci->load->model('objects/Dataset_Object');
 			$dataset = new Dataset_Object();
 
 			$dataset->set_title($data->title);
@@ -277,14 +275,17 @@ class Ckan {
 	 * @return $dataset
 	 */
 
-	//UNFINISHED//
-
 	public function read_group($group)
 	{
-		$url = 'https://ckan.lincoln.ac.uk/api/action/group_create';
+		$url = 'https://ckan.lincoln.ac.uk/api/action/group_show';
 
-		//CREATE GROUP
+		$fields = array(
+			'id' => $group
+		);
 
+		$fields = json_encode($fields);
+
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
