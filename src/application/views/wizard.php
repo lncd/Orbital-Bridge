@@ -10,10 +10,39 @@
 			
 	<div class="span12">
 	
-		<h2><i class="icon-check"></i> Before You Start</h2>
+		<h2><?php echo $title; ?></h2>
 		
-		<p>Before you start working on a research project, even before you submit a bid, you should consider how you're going to manage your research data. We recommend taking a look at the following tools and resources to help you understand and plan for managing data.</p>
+		<?php echo $this->typography->auto_typography($content) ?>
 	
 	</div>
 	
 </div>
+
+<?php if (count($options) > 0): ?>
+
+<hr>
+
+<?php foreach($options as $option): ?>
+
+<div class="row">
+			
+	<div class="span12">
+	
+		<div class="well">
+		
+			<p class="pull-right"><a href="#" class="btn btn-primary"><i class="icon-arrow-right"></i> <?php echo $option['button']; ?></a></p>
+			
+			<?php echo $this->typography->auto_typography($option['text']) ?>
+		
+		</div>
+	
+	</div>
+	
+</div>
+
+<?php
+
+endforeach;
+endif;
+
+?>
