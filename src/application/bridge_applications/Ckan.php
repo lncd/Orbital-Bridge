@@ -382,6 +382,60 @@ class Ckan {
 		
 		return $datasets->result->datasets;
 	}
+	
+	
+
+	/**
+	 * Read Users Datasets as RSS
+	 *
+	 * string $user User to read
+	 *
+	 * @return null
+	 */
+
+	public function read_user_datasets_rss($user)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/user_show';
+
+		$fields = array(
+			'id' => $user
+		);
+
+		$fields = json_encode($fields);
+
+		$datasets = json_decode($this->post_curl_request($url, $fields))->result->datasets;
+		
+		
+	    header("Content-Type: application/rss+xml; charset=ISO-8859-1");
+	 
+	 
+	    $rssfeed = '<?xml version="1.0" encoding="ISO-8859-1"?>';
+	    $rssfeed .= '<rss version="2.0">';
+	    $rssfeed .= '<channel>';
+	    $rssfeed .= '<title>RSS feed of users\' datasets</title>';
+	    $rssfeed .= '<link>https://orbital.lincoln.ac.uk/</link>';
+	    $rssfeed .= '<description>Users datasets RSS feed</description>';
+	    $rssfeed .= '<language>en-us</language>';
+	    //$rssfeed .= '<copyright>Copyright (C) 2009 mywebsite.com</copyright>';
+		
+		foreach ($datasets as $dataset)
+		{
+			$rssfeed .= '<item>';
+			$rssfeed .= '<title>' . $dataset->title . '</title>';
+			$rssfeed .= '<link>https://ckan.lincoln.ac.uk/dataset/' . $dataset->name . '</link>';
+			$rssfeed .= '<description>' . $dataset->notes . '</description>';
+			$rssfeed .= '<pubDate>' . date("D, d M Y H:i:s O", strtotime($dataset->metadata_created)) . '</pubDate>';
+			$rssfeed .= '<guid>https://ckan.lincoln.ac.uk/dataset/' . $dataset->name . '</guid>';
+			$rssfeed .= '</item>';
+		}
+	 
+	    $rssfeed .= '</channel>';
+	    $rssfeed .= '</rss>';
+	 
+	    return $rssfeed;
+
+	}
 
 	/**
 	 * Read Users Activity
