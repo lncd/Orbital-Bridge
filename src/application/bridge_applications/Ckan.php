@@ -382,8 +382,6 @@ class Ckan {
 		
 		return $datasets->result->datasets;
 	}
-	
-	
 
 	/**
 	 * Read Users Datasets as RSS
@@ -406,10 +404,7 @@ class Ckan {
 
 		$datasets = json_decode($this->post_curl_request($url, $fields))->result->datasets;
 		
-		
 	    header("Content-Type: application/rss+xml; charset=ISO-8859-1");
-	 
-	 
 	    $rssfeed = '<?xml version="1.0" encoding="ISO-8859-1"?>';
 	    $rssfeed .= '<rss version="2.0">';
 	    $rssfeed .= '<channel>';
@@ -434,7 +429,6 @@ class Ckan {
 	    $rssfeed .= '</rss>';
 	 
 	    return $rssfeed;
-
 	}
 
 	/**
@@ -460,7 +454,64 @@ class Ckan {
 		
 		return $datasets->result->activity;
 	}
+	
+	/**
+	 * Read Users Activity as RSS
+	 *
+	 * string $user User to read
+	 *
+	 * @return null
+	 */
+	 
+	 //**UNFINISHED**//
 
+	public function read_user_activity_rss($user)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/user_show';
+
+		$fields = array(
+			'id' => $user
+		);
+
+		$fields = json_encode($fields);
+
+		$datasets = json_decode($this->post_curl_request($url, $fields))->result->activity;
+		
+	    header("Content-Type: application/rss+xml; charset=ISO-8859-1");
+	    $rssfeed = '<?xml version="1.0" encoding="ISO-8859-1"?>';
+	    $rssfeed .= '<rss version="2.0">';
+	    $rssfeed .= '<channel>';
+	    $rssfeed .= '<title>RSS feed of users\' datasets</title>';
+	    $rssfeed .= '<link>https://orbital.lincoln.ac.uk/</link>';
+	    $rssfeed .= '<description>Users datasets RSS feed</description>';
+	    $rssfeed .= '<language>en-us</language>';
+	    //$rssfeed .= '<copyright>Copyright (C) 2009 mywebsite.com</copyright>';
+		
+		foreach ($datasets as $dataset)
+		{
+			if ( ! isset($dataset->groups))
+			{
+				$name = $dataset->groups[0];
+			}
+			else
+			{
+				$name = '#';
+			}
+			$rssfeed .= '<item>';
+			$rssfeed .= '<title>' . $dataset->message . '</title>';
+			$rssfeed .= '<link>https://ckan.lincoln.ac.uk/dataset/' . $name . '</link>';
+			//$rssfeed .= '<description>' . $dataset->notes . '</description>'; //This should be added
+			$rssfeed .= '<pubDate>' . date("D, d M Y H:i:s O", strtotime($name)) . '</pubDate>';
+			//$rssfeed .= '<guid>https://ckan.lincoln.ac.uk/dataset/' . $dataset->groups[0] . '</guid>'; //This should be added
+			$rssfeed .= '</item>';
+		}
+	 
+	    $rssfeed .= '</channel>';
+	    $rssfeed .= '</rss>';
+	 
+	    return $rssfeed;
+	}
 
 	/**
 	 * Parse datastore JSON to CSV
