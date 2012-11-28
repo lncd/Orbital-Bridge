@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Me extends CI_Controller {
+class Profile extends CI_Controller {
 
 	public function __construct()
 	{
@@ -20,7 +20,7 @@ class Me extends CI_Controller {
 		);
 		
 		$this->load->view('inc/head', $header);
-		$this->load->view('me/me');
+		$this->load->view('profile');
 		$this->load->view('inc/foot');
 	}
 }

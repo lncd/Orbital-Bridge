@@ -78,14 +78,15 @@
 
 								<?php if ($this->session->userdata('access_token')): ?>
 								
+									<?php if ($this->session->userdata('user_admin')): ?>
+									<li<?php if($page === 'admin') echo ' class="active"'; ?>><a href="<?php echo site_url('admin'); ?>"><i class="icon-cogs"></i> Site Admin</a></li>
+									<?php endif; ?>
+								
 									<li class="dropdown<?php if($page === 'me') echo ' active'; ?>">
 										<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> <?php echo $this->session->userdata('user_name'); ?> <b class="caret"></b></a>
 										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-											<li><a href="<?php echo site_url('me'); ?>"><i class="icon-list"></i> My Projects</a></li>
-											<li><a href="<?php echo site_url('me'); ?>"><i class="icon-user"></i> My Profile</a></li>
-											<?php if ($this->session->userdata('user_admin')): ?>
-										<li<?php if($page === 'admin') echo ' class="active"'; ?>><a href="<?php echo site_url('admin'); ?>"><i class="icon-cogs"></i> Site Admin</a></li>
-										<?php endif; ?>
+											<li><a href="<?php echo site_url('projects/my'); ?>"><i class="icon-beaker"></i> My Projects</a></li>
+											<li><a href="<?php echo site_url('profile'); ?>"><i class="icon-user"></i> My Profile</a></li>
 											<li><a href="<?php echo site_url('signout'); ?>"><i class="icon-signout"></i> Sign Out</a></li>
 										</ul>
 									</li>
