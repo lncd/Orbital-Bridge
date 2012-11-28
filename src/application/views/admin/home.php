@@ -14,7 +14,6 @@
 			<li class="active"><a href="#overview" data-toggle="tab"><i class="icon-dashboard"></i> Overview</a></li>
 			<li><a href="#applications" data-toggle="tab"><i class="icon-list-alt"></i> Applications</a></li>
 			<li><a href="#recipes" data-toggle="tab"><i class="icon-book"></i> Recipes</a></li>
-			<li><a href="#wizard" data-toggle="tab"><i class="icon-magic"></i> Wizard</a></li>
 			<li><a href="#pages" data-toggle="tab"><i class="icon-file"></i> Pages</a></li>
 		</ul>
 		<div class="tab-content">
@@ -81,13 +80,6 @@
 				<p class="lead">There are no recipes stored in Orbital.</p>
 				
 				<p><a class="btn btn-success disabled"><i class="icon-plus"></i> Create Recipe</a></p>
-				
-			</div>
-			<div class="tab-pane fade" id="wizard">
-			
-				<h3><i class="icon-magic"></i> Wizard</h3>
-		
-				<p class="lead">N/A</p>
 				
 			</div>
 			<div class="tab-pane fade" id="pages">

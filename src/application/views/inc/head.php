@@ -68,7 +68,6 @@
 							<div class="nav-collapse">
 								<ul class="nav">
 									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>"><i class="icon-home"></i> Home</a></li>
-									<li<?php if($page === 'wizard') echo ' class="active"'; ?>><a href="<?php echo site_url('wizard'); ?>"><i class="icon-magic"></i> Project Wizard</a></li>
 									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('researchtools'); ?>"><i class="icon-wrench"></i> Research Tools</a></li>
 									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>"><i class="icon-bullhorn"></i> Contact</a></li>
 								</ul>
