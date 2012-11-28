@@ -44,6 +44,9 @@ $route['404_override'] = '';
 $route['signin'] = 'auth/signin';
 $route['signout'] = 'auth/signout';
 
+$route['wizard'] = "wizard/view/start";
+$route['wizard/(:any)'] = "wizard/view/$1";
+
 // Magic redirections!
 
 $route['project/c014fb3845e7b054/public'] = 'redirect/dataset/library-activity-data';
