@@ -3,28 +3,50 @@
 class Csv {
 
 	public $configuration = '{
-		"name": "CSV",
-		"multi_instance": false,
-		"config_keys": [],
-		"objects": {
-			"tabular": {
-				"convert": {
-					"accepts": [
-						"text"
-					],
-					"config_keys": []
-				}
-			},
-			"text": {
-				"convert": {
-					"accepts": [
-						"tabular"
-					],
-					"config_keys": []
-				}
-			}
-		}
-	}';
+	"name": "CSV",
+	"multi_instance": false,
+	"config_keys": [],
+	"functions": [
+	    {
+	        "read_csv": {
+	            "name": "Read CSV",
+	            "description": "Reads CSV content and outputs it as an object ",
+	            "accepts": [
+	                {
+	                    "name": "url",
+	                    "description": "Location of CSV content",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$output",
+	                    "description": "CSV converted to an array of arrays",
+	                    "type": "array"
+	                }
+	            ]
+	        },
+	        "convert_tabular_to_text": {
+	            "name": "Convert tabular data to text",
+	            "description": "Converts tabular data to text ",
+	            "accepts": [
+	                {
+	                    "name": "$bridge_object",
+	                    "description": "object in tabular format",
+	                    "type": "object"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$output",
+	                    "description": "Text output",
+	                    "type": "text"
+	                }
+	            ]
+	        }
+	    }
+	]
+}';
 
 	/**
 	 * CodeIgniter Instance.
@@ -54,6 +76,7 @@ class Csv {
 
 	public function read_csv($url)
 	{
+		//Output as array of arrays
 		$rows = explode("\n", file_get_contents($url));
 		$output = array();
 
