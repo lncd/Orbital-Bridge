@@ -71,9 +71,6 @@
 									<li<?php if($page === 'wizard') echo ' class="active"'; ?>><a href="<?php echo site_url('wizard'); ?>"><i class="icon-magic"></i> Project Wizard</a></li>
 									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('researchtools'); ?>"><i class="icon-wrench"></i> Research Tools</a></li>
 									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>"><i class="icon-bullhorn"></i> Contact</a></li>
-									<?php if ($this->session->userdata('user_admin')): ?>
-									<li<?php if($page === 'admin') echo ' class="active"'; ?>><a href="<?php echo site_url('admin'); ?>"><i class="icon-cogs"></i> Admin</a></li>
-									<?php endif; ?>
 								</ul>
 							</div>
 							
@@ -82,8 +79,17 @@
 
 								<?php if ($this->session->userdata('access_token')): ?>
 								
-									<li<?php if($page === 'me') echo ' class="active"'; ?>><a href="<?php echo site_url('me'); ?>"><i class="icon-user"></i> <?php echo $this->session->userdata('user_name'); ?></a></li>
-									<li><a href="<?php echo site_url('signout'); ?>"><i class="icon-signout"></i> Sign Out</a></li>
+									<li class="dropdown<?php if($page === 'me') echo ' active'; ?>">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> <?php echo $this->session->userdata('user_name'); ?> <b class="caret"></b></a>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+											<li><a href="<?php echo site_url('me'); ?>"><i class="icon-list"></i> My Projects</a></li>
+											<li><a href="<?php echo site_url('me'); ?>"><i class="icon-user"></i> My Profile</a></li>
+											<?php if ($this->session->userdata('user_admin')): ?>
+										<li<?php if($page === 'admin') echo ' class="active"'; ?>><a href="<?php echo site_url('admin'); ?>"><i class="icon-cogs"></i> Site Admin</a></li>
+										<?php endif; ?>
+											<li><a href="<?php echo site_url('signout'); ?>"><i class="icon-signout"></i> Sign Out</a></li>
+										</ul>
+									</li>
 								
 								<?php else: ?>
 								

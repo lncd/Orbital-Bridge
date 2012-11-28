@@ -30,7 +30,7 @@
 	
 		<div class="well">
 		
-			<p class="pull-right"><a href="#" class="btn btn-primary"><i class="icon-arrow-right"></i> <?php echo $option['button']; ?></a></p>
+			<p class="pull-right"><a href="<?php echo site_url('wizard/' . $option['slug']); ?>" class="btn btn-primary"><i class="icon-arrow-right"></i> <?php echo $option['button']; ?></a></p>
 			
 			<?php echo $this->typography->auto_typography($option['text']) ?>
 		

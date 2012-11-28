@@ -17,12 +17,16 @@ class Wizard extends CI_Controller {
 		
 			$this->load->library('typography');
 			
+			$options = array();
+			
 			foreach ($page->wizard_option->order_by('order')->get() as $option)
 			{
+				$destination = $option->destination_page->get();
 				$options[] = array(
 					'title' => $option->title,
 					'text' => $option->text,
-					'button' => $option->button
+					'button' => $option->button,
+					'slug' => $destination->slug
 				);
 			}
 		
