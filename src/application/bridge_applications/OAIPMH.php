@@ -13,6 +13,48 @@
 
 class OAIPMH {
 
+	public $configuration = '{
+	"name": "OAIPMH",
+	"multi_instance": false,
+	"config_keys": [],
+	"functions": [
+	    {
+	        "read_OAI_PMH_group_datasets": {
+	            "name": "Read OAI_PMH group datasets",
+	            "description": "Read a groups datasets and output in OAI_PMH format ",
+	            "accepts": [
+	                {
+	                    "name": "$group",
+	                    "description": "Group to read datasets from",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$output",
+	                    "description": "OAI formatted list of datasets",
+	                    "type": "array"
+	                }
+	            ]
+	        },
+	        "convert_tabular_to_text": {
+	            "name": "Convert tabular data to text",
+	            "description": "Converts tabular data to text ",
+	            "accepts": [
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$output",
+	                    "description": "OAI formatted list of datasets",
+	                    "type": "array"
+	                }
+	            ]
+	        }
+	    }
+	]
+}';
+
+
 	/**
 	 * CodeIgniter Instance.
 	 *
@@ -70,7 +112,7 @@ class OAIPMH {
 	 * @access public
 	 */
 
-	public function display_OAI_PMH_group_datasets($group)
+	public function read_OAI_PMH_group_datasets($group)
 	{
 		$fields = '{
 			"limit": 100,
@@ -86,7 +128,7 @@ class OAIPMH {
 	 * @access public
 	 */
 
-	public function display_OAI_PMH_all_datasets()
+	public function read_OAI_PMH_all_datasets()
 	{
 		$fields = '{
 			"limit": 100
@@ -102,7 +144,7 @@ class OAIPMH {
 	 * @access public
 	 */
 
-	public function display_OAI_PMH($uri, $fields)
+	function create_OAI_PMH($uri, $fields)
 	{
 		$datasets_data = json_decode($this->post_curl_request($uri, $fields));
 

@@ -12,7 +12,255 @@
  */
 
 class Ckan {
-
+	
+	public $configuration = '{
+	"name": "CKAN",
+	"multi_instance": false,
+	"config_keys": [],
+	"functions": [
+	    {
+	        "create_dataset": {
+	            "name": "CreateDataset",
+	            "description": "Creates a new dataset",
+	            "accepts": [
+	                {
+	                    "name": "dataset",
+	                    "description": "dataset object used to create a new dataset in CKAN",
+	                    "type": "dataset"
+	                }
+	            ],
+	            "returns": []
+	        },
+	        "read_dataset": {
+	            "name": "ReadDataset",
+	            "description": "Reads a dataset",
+	            "accepts": [
+	                {
+	                    "name": "dataset_uri",
+	                    "description": "URI of dataset to read",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "dataset",
+	                    "description": "dataset object created from a dataset in CKAN",
+	                    "type": "dataset"
+	                }
+	            ]
+	        },
+	        "read_datasets": {
+	            "name": "ReadsDatasets",
+	            "description": "Reads all datasets",
+	            "accepts": [],
+	            "returns": [
+	                {
+	                    "name": "datasets",
+	                    "description": "array of dataset objects created from datasets in CKAN",
+	                    "type": "array"
+	                }
+	            ]
+	        },
+	        "delete_dataset": {
+	            "name": "DeleteDataset",
+	            "description": "Deletes a dataset",
+	            "accepts": [
+	                {
+	                    "name": "$dataset",
+	                    "description": "ID of dataset to delete",
+	                    "type": "dataset"
+	                }
+	            ],
+	            "returns": []
+	        },
+	        "update_permissions": {
+	            "name": "updatePermissions",
+	            "description": "Updates a users permissions to a dataset",
+	            "accepts": [
+	                {
+	                    "name": "user",
+	                    "description": "user identifier",
+	                    "type": "text"
+	                },
+	                {
+	                    "name": "dataset",
+	                    "description": "dataset user belongs to",
+	                    "type": "text"
+	                },
+	                {
+	                    "name": "role",
+	                    "description": "new role for user",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": []
+	        },
+	        "create_group": {
+	            "name": "CreateGroup",
+	            "description": "Creates a group",
+	            "accepts": [
+	                {
+	                    "name": "$group",
+	                    "description": "name of new group",
+	                    "type": "text"
+	                }
+	            ],
+	            "config_keys": []
+	        },
+	        "read_group": {
+	            "name": "ReadGroup",
+	            "description": "Reads a group",
+	            "accepts": [
+	                {
+	                    "name": "$group",
+	                    "description": "name of group to read",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$group",
+	                    "description": "group object read from the group in CKAN",
+	                    "type": "object"
+	                }
+	            ]
+	        },
+	        "update_group": {
+	            "name": "UpdateGroup",
+	            "description": "Updates a group",
+	            "accepts": [
+	                {
+	                    "name": "$group",
+	                    "description": "name of group to update",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": []
+	        },
+	        "delete_group": {
+	            "name": "DeleteGroup",
+	            "description": "Deletes a group",
+	            "accepts": [
+	                {
+	                    "name": "$group",
+	                    "description": "ID of group to delete",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": []
+	        },
+	        "read_user": {
+	            "name": "ReadUser",
+	            "description": "Reads a user",
+	            "accepts": [
+	                {
+	                    "name": "$user",
+	                    "description": "ID of user to read",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$user",
+	                    "description": "user object",
+	                    "type": "object"
+	                }
+	            ]
+	        },
+	        "read_user_datasets": {
+	            "name": "Read users datasets",
+	            "description": "Reads a users datasets",
+	            "accepts": [
+	                {
+	                    "name": "$user",
+	                    "description": "ID of user to read datasets from",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$datasets",
+	                    "description": "array of the users datasets",
+	                    "type": "array"
+	                }
+	            ]
+	        },
+	        "read_user_datasets_rss": {
+	            "name": "Read users datasets as RSS",
+	            "description": "Reads a users datasets as RSS",
+	            "accepts": [
+	                {
+	                    "name": "$user",
+	                    "description": "ID of user to read datasets from in RSS format",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$rssfeed",
+	                    "description": "datasets in RSS format",
+	                    "type": "text"
+	                }
+	            ]
+	        },
+	        "read_user_activity": {
+	            "name": "Read users activity",
+	            "description": "Reads a users activity",
+	            "accepts": [
+	                {
+	                    "name": "$user",
+	                    "description": "ID of user to read activity from",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$activity",
+	                    "description": "array of the users activity",
+	                    "type": "array"
+	                }
+	            ]
+	        },
+	        "read_user_activity_rss": {
+	            "name": "Read users activity as RSS",
+	            "description": "Reads a users activity as RSS",
+	            "accepts": [
+	                {
+	                    "name": "$user",
+	                    "description": "ID of user to read activity from in RSS format",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "$rssfeed",
+	                    "description": "activity in RSS format",
+	                    "type": "text"
+	                }
+	            ]
+	        },
+	        "datastore_query_to_csv": {
+	            "name": "Convert datastore query result to CSV format",
+	            "description": "Converts datastore query result to CSV format",
+	            "accepts": [
+	                {
+	                    "name": "$url",
+	                    "description": "URL of datastore query",
+	                    "type": "text"
+	                }
+	            ],
+	            "returns": [
+	                {
+	                    "name": "",
+	                    "description": "CSV formatted datastore query result",
+	                    "type": "text"
+	                }
+	            ]
+	        }
+	    }
+	]
+}';
+	
 	/**
 	 * CodeIgniter Instance.
 	 *
@@ -152,7 +400,6 @@ class Ckan {
 		return $dataset;
 	}
 
-
 	/**
 	 * Reads all Datasets
 	 *
@@ -195,6 +442,28 @@ class Ckan {
 	}
 
 	/**
+	 * Delete dataset
+	 *
+	 * string $dataset Dataset that will be deleted
+	 *
+	 * @return null
+	 */
+
+	public function delete_dataset($dataset)
+	{
+		//set POST variables
+		$url = 'https://ckan.lincoln.ac.uk/api/action/package_delete';
+
+		$fields = array(
+			'id' => $dataset
+		);
+
+		$fields = json_encode($fields);
+
+		$this->post_curl_request($url, $fields);
+	}
+
+	/**
 	 * Update users dataset permissions
 	 *
 	 * string $user    User whose permissions will be updated
@@ -214,28 +483,6 @@ class Ckan {
 			'user' => $user,
 			'domain_object' => $dataset,
 			'roles' => $role //Must be in array of 1 object
-		);
-
-		$fields = json_encode($fields);
-
-		$this->post_curl_request($url, $fields);
-	}
-
-	/**
-	 * Delete dataset
-	 *
-	 * string $dataset Dataset that will be deleted
-	 *
-	 * @return null
-	 */
-
-	public function delete_dataset($dataset)
-	{
-		//set POST variables
-		$url = 'https://ckan.lincoln.ac.uk/api/action/package_delete';
-
-		$fields = array(
-			'id' => $dataset
 		);
 
 		$fields = json_encode($fields);
