@@ -44,6 +44,8 @@ $route['404_override'] = '';
 $route['signin'] = 'auth/signin';
 $route['signout'] = 'auth/signout';
 
+$route['pages'] = 'pages';
+
 $route['wizard'] = "wizard/view/start";
 $route['wizard/(:any)'] = "wizard/view/$1";
 
