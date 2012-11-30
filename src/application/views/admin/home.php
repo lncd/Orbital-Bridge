@@ -85,9 +85,20 @@
 			<div class="tab-pane fade" id="pages">
 			
 				<h3><i class="icon-file"></i> Pages</h3>
-		
-				<p class="lead">N/A</p>
+				<table class="table">
 				
+				<?php
+				foreach($categories as $category)
+				{
+					foreach($category_pages[$category->id] as $page)
+					{
+						echo '<tr>' . '<td><a href="' . $page->slug . '">' . $page->title; echo '</a></td><td><p><a class="btn btn disabled"><i class="icon-pencil"></i> Edit</a></p>
+</td></tr>';
+					}
+				}				
+				?>
+				
+				</table>
 			</div>
 		</div>
 		

@@ -34,9 +34,8 @@ class Auth extends CI_Controller {
                 
                 $db_user = $u->where('auth_id', $user->id)->get();
                 
-                if ($db_user->count() === 1)
+                if ($db_user->result_count() === 1)
                 {
-	                
 	                $this->session->set_userdata('user_admin', (bool) $db_user->admin);
                 }
                 else
@@ -48,7 +47,7 @@ class Auth extends CI_Controller {
 	                $this->session->set_userdata('user_admin', FALSE);
 	                
                 }
-                redirect('projects');
+                redirect();
             }
 
             catch (OAuth2_Exception $e)

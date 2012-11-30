@@ -36,6 +36,8 @@ class Admin extends CI_Controller {
 		$a = new Application();
 		
 		$data['db_apps'] = $a->order_by('name')->get();
+		$data['categories'] = $categories;
+		$data['category_pages'] = $category_pages;
 		
 		$this->load->view('inc/head', $header);
 		$this->load->view('admin/home', $data);
@@ -44,8 +46,22 @@ class Admin extends CI_Controller {
 	
 	public function scan()
 	{
+		$p_c = new Page_category();
+		$categories = $p_c->get();
+		
+		foreach($categories as $category)
+		{
+			$p = new Page();
+			$p->where_related_page_category_link('page_category_id', $category->id);
+			$p->order_by('order');
+			$pages = $p->get();
+			$category_pages[$category->id] = $pages;
+		}
+		
 		$header = array(
-			'page' => 'admin'
+			'page' => 'admin',
+			'categories' => $categories,
+			'category_pages' => $category_pages
 		);
 		
 		$this->load->helper('file');
