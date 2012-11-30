@@ -28,7 +28,7 @@ class Pages extends CI_Controller {
 		
 		if ($page->result_count() === 1)
 		{		
-			$this->load->library('typography');
+			$this->load->helper('markdown');
 			
 			$data = array(
 				'title' => $page->title,
