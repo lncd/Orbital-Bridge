@@ -74,7 +74,7 @@
 									{
 									?>
 									<li class="dropdown<?php if($page === $category->title) echo ' active'; ?>">
-										<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <?php echo $category->title; ?> <b class="caret"></b></a>
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-<?php echo $category->icon; ?>"></i> <?php echo $category->title; ?> <b class="caret"></b></a>
 										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 										<?php
 										foreach($category_pages[$category->id] as $page)

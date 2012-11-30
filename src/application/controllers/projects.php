@@ -10,8 +10,22 @@ class Projects extends CI_Controller {
 			redirect('signin');
 		}
 	
+		$p_c = new Page_category();
+		$categories = $p_c->get();
+		
+		foreach($categories as $category)
+		{
+			$p = new Page();
+			$p->where_related_page_category_link('page_category_id', $category->id);
+			$p->order_by('order');
+			$pages = $p->get();
+			$category_pages[$category->id] = $pages;
+		}
+		
 		$header = array(
-			'page' => 'me'
+			'page' => 'me',
+			'categories' => $categories,
+			'category_pages' => $category_pages
 		);
 		
 		$this->load->view('inc/head', $header);
@@ -27,8 +41,22 @@ class Projects extends CI_Controller {
 			redirect('signin');
 		}
 	
+		$p_c = new Page_category();
+		$categories = $p_c->get();
+		
+		foreach($categories as $category)
+		{
+			$p = new Page();
+			$p->where_related_page_category_link('page_category_id', $category->id);
+			$p->order_by('order');
+			$pages = $p->get();
+			$category_pages[$category->id] = $pages;
+		}
+		
 		$header = array(
-			'page' => 'projects'
+			'page' => 'projects',
+			'categories' => $categories,
+			'category_pages' => $category_pages
 		);
 		
 		$this->load->view('inc/head', $header);

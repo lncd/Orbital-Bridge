@@ -50,7 +50,10 @@ $route['wizard/(:any)'] = "wizard/view/$1";
 $route['admin'] = "admin";
 $route['admin/(:any)'] = "admin/$1";
 
-$route['me'] = "me";
+$route['profile'] = 'profile';
+
+$route['projects'] = 'projects';
+$route['projects/(:any)'] = "projects/$1";
 
 // Magic redirections!
 

@@ -48,7 +48,7 @@ class Auth extends CI_Controller {
 	                $this->session->set_userdata('user_admin', FALSE);
 	                
                 }
-                redirect('me');
+                redirect('projects');
             }
 
             catch (OAuth2_Exception $e)
