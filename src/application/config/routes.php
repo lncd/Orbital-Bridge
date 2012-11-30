@@ -47,9 +47,16 @@ $route['signout'] = 'auth/signout';
 $route['wizard'] = "wizard/view/start";
 $route['wizard/(:any)'] = "wizard/view/$1";
 
+$route['admin'] = "admin";
+$route['admin/(:any)'] = "admin/$1";
+
+$route['me'] = "me";
+
 // Magic redirections!
 
 $route['project/c014fb3845e7b054/public'] = 'redirect/dataset/library-activity-data';
+
+$route['(:any)'] = "pages/view/$1";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

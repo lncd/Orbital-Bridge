@@ -68,7 +68,28 @@
 							<div class="nav-collapse">
 								<ul class="nav">
 									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>"><i class="icon-home"></i> Home</a></li>
-									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('researchtools'); ?>"><i class="icon-wrench"></i> Research Tools</a></li>
+									
+									<?php
+									foreach($categories as $category)
+									{
+									?>
+									<li class="dropdown<?php if($page === $category->title) echo ' active'; ?>">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#"> <?php echo $category->title; ?> <b class="caret"></b></a>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<?php
+										foreach($category_pages[$category->id] as $page)
+										{
+											echo'<li'; ?>><a href="<?php echo $page->slug; ?>"> <?php echo $page->title; ?></a></li><?php
+										}
+										?>
+										</ul>
+									</li>
+																	
+									
+									<?php	
+									}
+									?>
+
 									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>"><i class="icon-bullhorn"></i> Contact</a></li>
 								</ul>
 							</div>
