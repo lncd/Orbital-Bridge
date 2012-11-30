@@ -1,7 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pages extends DataMapper {
+class Page extends DataMapper {
 
 	var $table = 'pages';
+	
+		var $has_many = array(
+		'page_category_link' => array()
+	);
 
 }
