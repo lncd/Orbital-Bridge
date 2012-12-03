@@ -22,15 +22,56 @@ class Admin extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
-		$a = new Application();
+		$this->load->view('inc/head', $header);
+		$this->load->view('admin/home');
+		$this->load->view('inc/foot');
+	}
+	
+	public function applications()
+	{
 		
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$a = new Application();
 		$data['db_apps'] = $a->order_by('name')->get();
+		
+		$this->load->view('inc/head', $header);
+		$this->load->view('admin/applications', $data);
+		$this->load->view('inc/foot');
+	}
+	
+	public function recipes()
+	{
+		
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$this->load->view('inc/head', $header);
+		$this->load->view('admin/recipes');
+		$this->load->view('inc/foot');
+	}
+	
+	public function pages()
+	{
+		
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
 		
 		$p = new Page();
 		$data['pages'] = $p->order_by('title')->get();
 		
 		$this->load->view('inc/head', $header);
-		$this->load->view('admin/home', $data);
+		$this->load->view('admin/pages', $data);
 		$this->load->view('inc/foot');
 	}
 	

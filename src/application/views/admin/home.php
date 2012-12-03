@@ -6,101 +6,13 @@
 
 </div>
 
-<div class="row">
-	
-	<div class="span12">
-	
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#overview" data-toggle="tab"><i class="icon-dashboard"></i> Overview</a></li>
-			<li><a href="#applications" data-toggle="tab"><i class="icon-list-alt"></i> Applications</a></li>
-			<li><a href="#recipes" data-toggle="tab"><i class="icon-book"></i> Recipes</a></li>
-			<li><a href="#pages" data-toggle="tab"><i class="icon-file"></i> Pages</a></li>
-		</ul>
-		<div class="tab-content">
-			<div class="tab-pane fade in active" id="overview">
-				
-				<h3><i class="icon-dashboard"></i> Overview</h3>
-				
-				<p class="lead">No system notices.</p>
-				
-			</div>
-			<div class="tab-pane fade" id="applications">
-			
-				<h3><i class="icon-list-alt"></i> Applications</h3>
-		
-				<?php if($db_apps->count() > 0): ?>
-				
-				<table class="table table-bordered table-striped">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Configured</th>
-							<th>Instances</th>
-							<th>Available for Users</th>
-							<th>Options</th>
-						</tr>
-					</thead>
-					<tbody>
-						
-					<?php
-					
-					foreach ($db_apps as $app)
-					{
-						?>
-						
-						<tr>
-							<td><?php echo $app->name; ?></td>
-							<td><?php echo (bool) $app->configuration_valid ? '<span class="label label-success">Yes</span>' : '<span class="label label-important">No</span>'; ?></td>
-							<td><span class="badge badge-info">?</span></td>
-							<td><?php echo (bool) $app->available_for_users ? '<span class="label label-success">Yes</span>' : '<span class="label label-warning">No</span>'; ?></td>
-							<td><a class="btn btn-small disabled">Configure</a> <a class="btn btn-danger btn-small disabled">Delete</a></td>
-						</tr>
-						
-						<?php
-					}
-					
-					?>
-						
-					</tbody>
-				</table>
-				
-				<?php else: ?>
-				
-				<p class="lead">There are no applications currently configured to work with Orbital.</p>
-				
-				<?php endif; ?>
-				
-				<p><a href="<?php echo site_url('admin/scan'); ?>"class="btn btn-primary"><i class="icon-search"></i> Scan for Applications</a></p>
-				
-			</div>
-			<div class="tab-pane fade" id="recipes">
-			
-				<h3><i class="icon-book"></i> Recipes</h3>
-		
-				<p class="lead">There are no recipes stored in Orbital.</p>
-				
-				<p><a class="btn btn-success disabled"><i class="icon-plus"></i> Create Recipe</a></p>
-				
-			</div>
-			<div class="tab-pane fade" id="pages">
-			
-				<h3><i class="icon-file"></i> Pages</h3>
-				<table class="table table-bordered table-striped">
-				<thead><tr><th>Title</th><th>Options</th></tr></thead>
-					<tbody>
-					
-					<?php
-					
-						foreach($pages as $page)
-						{
-							echo '<tr>' . '<td>' . $page->title . '</td><td><a class="btn btn-small" href="' . site_url('admin/page/' . $page->id) . '">
-							<i class="icon-pencil"></i> Edit</a> <a class="btn btn-small btn-danger" href="' . site_url('admin/delete_page/' . $page->id) . '">
-							<i class="icon-trash"></i> Delete</a></td></tr>';
-						}					
-					?>
-					</tbody>
-				</table>
-			</div>
-		</div>		
-	</div>			
-</div>
+<ul class="nav nav-pills">
+	<li class="active"><a href="<?php echo site_url('admin'); ?>"><i class="icon-dashboard"></i> Overview</a></li>
+	<li><a href="<?php echo site_url('admin/applications'); ?>"><i class="icon-list-alt"></i> Applications</a></li>
+	<li><a href="<?php echo site_url('admin/recipes'); ?>"><i class="icon-book"></i> Recipes</a></li>
+	<li><a href="<?php echo site_url('admin/pages'); ?>"><i class="icon-file"></i> Pages</a></li>
+</ul>
+
+<hr>
+
+<p class="lead">No system notices.</p>
