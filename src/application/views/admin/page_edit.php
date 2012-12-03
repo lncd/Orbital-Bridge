@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-cogs"></i> <?php echo $page_data->title; ?>
+		<i class="icon-cogs"></i> <?php echo $page_data->title; ?><small> Edit</small>
 	</h1>
 
 </div>
@@ -18,7 +18,7 @@
 
 	$form_title = array(
 		'name'			=> 'page_title',
-		//'required'   	=> 'required',
+		'required'   	=> 'required',
 		'id'			=> 'page_title',
 		'placeholder'	=> $page_data->title,
 		'value'			=> set_value('page_title', $page_data->title),

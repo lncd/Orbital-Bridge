@@ -26,6 +26,9 @@ class Admin extends CI_Controller {
 		
 		$data['db_apps'] = $a->order_by('name')->get();
 		
+		$p = new Page();
+		$data['pages'] = $p->order_by('title')->get();
+		
 		$this->load->view('inc/head', $header);
 		$this->load->view('admin/home', $data);
 		$this->load->view('inc/foot');
@@ -153,6 +156,55 @@ class Admin extends CI_Controller {
 			$this->load->view('admin/page_edit', $data);
 			$this->load->view('inc/foot');
 		}	
+	}
+	
+	public function delete_page($id)
+	{
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$p = new Page();
+		$p->where('id', $id);
+		$pages = $p->get();
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+
+		$data['page_data'] = $pages;		
+		
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('page_title', 'Page Title', 'callback_page_title_check[' . $pages->title . ']');
+		$this->form_validation->set_message('page_title_check', 'You did not type the correct page title');
+		
+		if ($this->form_validation->run())
+		{
+			$p = new Page();
+			$p->where('id', $id)->get();
+			$p->delete();
+			$this->session->set_flashdata('message', 'Page Deleted');
+			redirect('admin');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_delete', $data);
+			$this->load->view('inc/foot');
+		}	
+	}
+
+	public function page_title_check($str, $page_title)
+	{
+		if ($str == $page_title)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 }
 
