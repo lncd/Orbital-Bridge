@@ -128,8 +128,6 @@ class Admin extends CI_Controller {
 				{
 					throw new Exception ('This application\'s configuration does not include a name.');
 				}
-				
-				var_dump ($config);
 			
 			}
 			catch (Exception $e)
