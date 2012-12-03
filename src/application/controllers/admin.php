@@ -15,22 +15,11 @@ class Admin extends CI_Controller {
 
 	public function index()
 	{
-		$p_c = new Page_category();
-		$categories = $p_c->get();
-		
-		foreach($categories as $category)
-		{
-			$p = new Page();
-			$p->where_related_page_category_link('page_category_id', $category->id);
-			$p->order_by('order');
-			$pages = $p->get();
-			$category_pages[$category->id] = $pages;
-		}
 		
 		$header = array(
 			'page' => 'admin',
-			'categories' => $categories,
-			'category_pages' => $category_pages
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
 		);
 		
 		$a = new Application();
@@ -45,23 +34,11 @@ class Admin extends CI_Controller {
 	}
 	
 	public function scan()
-	{
-		$p_c = new Page_category();
-		$categories = $p_c->get();
-		
-		foreach($categories as $category)
-		{
-			$p = new Page();
-			$p->where_related_page_category_link('page_category_id', $category->id);
-			$p->order_by('order');
-			$pages = $p->get();
-			$category_pages[$category->id] = $pages;
-		}
-		
+	{		
 		$header = array(
 			'page' => 'admin',
-			'categories' => $categories,
-			'category_pages' => $category_pages
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
 		);
 		
 		$this->load->helper('file');

@@ -77,9 +77,9 @@
 										<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-<?php echo $category->icon; ?>"></i> <?php echo $category->title; ?> <b class="caret"></b></a>
 										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 										<?php
-										foreach($category_pages[$category->id] as $page)
+										foreach($category_pages[$category->id] as $cat_page)
 										{
-											echo'<li'; ?>><a href="<?php echo $page->slug; ?>"> <?php echo $page->title; ?></a></li><?php
+											echo'<li><a href="' . $cat_page->slug . '">' . $cat_page->title . '</a></li>';
 										}
 										?>
 										</ul>
