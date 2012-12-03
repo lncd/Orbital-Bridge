@@ -4,8 +4,11 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
+		
 		$header = array(
-			'page' => 'home'
+			'page' => 'home',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
 		);
 		
 		$this->load->view('inc/head', $header);

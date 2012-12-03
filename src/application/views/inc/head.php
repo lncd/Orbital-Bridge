@@ -66,13 +66,58 @@
 							</a>
 
 							<div class="nav-collapse">
-
 								<ul class="nav">
-									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>">Home</a></li>
-									<li<?php if($page === 'tools') echo ' class="active"'; ?>><a href="<?php echo site_url('tools'); ?>">Tools</a></li>
-									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>">Contact</a></li>
-								</ul>
+									<li<?php if($page === 'home') echo ' class="active"'; ?>><a href="<?php echo site_url(); ?>"><i class="icon-home"></i> Home</a></li>
+									
+									<?php
+									foreach($categories as $category)
+									{
+									?>
+									<li class="dropdown<?php if($page === $category->title) echo ' active'; ?>">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-<?php echo $category->icon; ?>"></i> <?php echo $category->title; ?> <b class="caret"></b></a>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+										<?php
+										foreach($category_pages[$category->id] as $cat_page)
+										{
+											echo'<li><a href="' . $cat_page->slug . '">' . $cat_page->title . '</a></li>';
+										}
+										?>
+										</ul>
+									</li>
+																	
+									
+									<?php	
+									}
+									?>
 
+									<li<?php if($page === 'contact') echo ' class="active"'; ?>><a href="<?php echo site_url('contact'); ?>"><i class="icon-bullhorn"></i> Contact</a></li>
+								</ul>
+							</div>
+							
+							<div class="nav-collapse pull-right">
+								<ul class="nav">
+
+								<?php if ($this->session->userdata('access_token')): ?>
+								
+									<?php if ($this->session->userdata('user_admin')): ?>
+									<li<?php if($page === 'admin') echo ' class="active"'; ?>><a href="<?php echo site_url('admin'); ?>"><i class="icon-cogs"></i> Site Admin</a></li>
+									<?php endif; ?>
+								
+									<li class="dropdown<?php if($page === 'me') echo ' active'; ?>">
+										<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> <?php echo $this->session->userdata('user_name'); ?> <b class="caret"></b></a>
+										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+											<li><a href="<?php echo site_url('projects/my'); ?>"><i class="icon-beaker"></i> My Projects</a></li>
+											<li><a href="<?php echo site_url('profile'); ?>"><i class="icon-user"></i> My Profile</a></li>
+											<li><a href="<?php echo site_url('signout'); ?>"><i class="icon-signout"></i> Sign Out</a></li>
+										</ul>
+									</li>
+								
+								<?php else: ?>
+								
+									<li><a href="<?php echo site_url('signin'); ?>"><i class="icon-signin"></i> Sign In</a></li>
+								
+								<?php endif; ?>
+								</ul>
 							</div>
 						</div>
 					</div>
@@ -82,6 +127,11 @@
 			</header>
 
 
-
-
 			<div class="container">
+			
+			<?php
+			if($this->session->flashdata('message'))
+			{
+				echo '<div class="alert">' . $this->session->flashdata('message') . '</div>'; 
+			}
+			?>
