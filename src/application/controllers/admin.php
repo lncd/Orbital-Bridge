@@ -25,8 +25,6 @@ class Admin extends CI_Controller {
 		$a = new Application();
 		
 		$data['db_apps'] = $a->order_by('name')->get();
-		$data['categories'] = $categories;
-		$data['category_pages'] = $category_pages;
 		
 		$this->load->view('inc/head', $header);
 		$this->load->view('admin/home', $data);
@@ -116,34 +114,20 @@ class Admin extends CI_Controller {
 	{
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-		
-		$p_c = new Page();
-		$categories = $p_c->get();
-		
-		foreach($categories as $category)
-		{
-			$p = new Page();
-			
-			$p->where_related_page_category_link('page_category_id', $category->id);
-			$p->order_by('order');
-			$pages = $p->get();
-			$category_pages[$category->id] = $pages;
-		}
 
+		$p = new Page();
 		$p->where('id', $id);
 		$pages = $p->get();
 
 		$header = array(
 			'page' => 'admin',
-			'categories' => $categories,
-			'category_pages' => $category_pages
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
 		);
 
 		$a = new Application();
 		
 		$data['db_apps'] = $a->order_by('name')->get();
-		$data['categories'] = $categories;
-		$data['category_pages'] = $category_pages;
 		$data['page_data'] = $pages;
 		
 		
