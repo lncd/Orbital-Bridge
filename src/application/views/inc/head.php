@@ -127,6 +127,11 @@
 			</header>
 
 
-
-
 			<div class="container">
+			
+			<?php
+			if($this->session->flashdata('message'))
+			{
+				echo '<div class="alert">' . $this->session->flashdata('message') . '</div>'; 
+			}
+			?>

@@ -85,12 +85,22 @@
 			<div class="tab-pane fade" id="pages">
 			
 				<h3><i class="icon-file"></i> Pages</h3>
-		
-				<p class="lead">N/A</p>
-				
+				<table class="table table-bordered table-striped">
+				<thead><tr><th>Title</th><th>Options</th></tr></thead>
+					<tbody>
+					
+					<?php
+					
+						foreach($pages as $page)
+						{
+							echo '<tr>' . '<td>' . $page->title . '</td><td><a class="btn btn-small" href="' . site_url('admin/page/' . $page->id) . '">
+							<i class="icon-pencil"></i> Edit</a> <a class="btn btn-small btn-danger" href="' . site_url('admin/delete_page/' . $page->id) . '">
+							<i class="icon-trash"></i> Delete</a></td></tr>';
+						}					
+					?>
+					</tbody>
+				</table>
 			</div>
-		</div>
-		
-	</div>
-			
+		</div>		
+	</div>			
 </div>
