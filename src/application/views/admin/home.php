@@ -92,16 +92,13 @@
 				{
 					foreach($category_pages[$category->id] as $page)
 					{
-						echo '<tr>' . '<td><a href="' . $page->slug . '">' . $page->title; echo '</a></td><td><p><a class="btn btn disabled"><i class="icon-pencil"></i> Edit</a></p>
-</td></tr>';
+						echo '<tr>' . '<td>' . $page->title . '</td><td><p><a class="btn btn" href="' . site_url('admin/page/' . $page->id) . '"><i class="icon-p"></i> Edit</a></p></td></tr>';
 					}
-				}				
+				}
 				?>
-				
+
 				</table>
 			</div>
-		</div>
-		
-	</div>
-			
+		</div>		
+	</div>			
 </div>

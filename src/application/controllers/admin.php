@@ -134,6 +134,65 @@ class Admin extends CI_Controller {
 		$this->load->view('inc/foot');
 
 	}
+	
+	public function page($id)
+	{
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		$p_c = new Page();
+		$categories = $p_c->get();
+		
+		foreach($categories as $category)
+		{
+			$p = new Page();
+			
+			$p->where_related_page_category_link('page_category_id', $category->id);
+			$p->order_by('order');
+			$pages = $p->get();
+			$category_pages[$category->id] = $pages;
+		}
+
+		$p->where('id', $id);
+		$pages = $p->get();
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $categories,
+			'category_pages' => $category_pages
+		);
+
+		$a = new Application();
+		
+		$data['db_apps'] = $a->order_by('name')->get();
+		$data['categories'] = $categories;
+		$data['category_pages'] = $category_pages;
+		$data['page_data'] = $pages;
+		
+		
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('page_title', 'Page Title', 'required');
+		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
+		$this->form_validation->set_rules('page_slug', 'Page URL', 'required');
+		
+		if ($this->form_validation->run())
+		{
+			$p = new Page();
+			$p->where('id', $id)->get();
+			$p->title = $this->input->post('page_title');
+			$p->content = $this->input->post('page_content');
+			$p->slug = $this->input->post('page_slug');
+			$p->save();
+			$this->session->set_flashdata('message', 'Page updated');
+			redirect('admin');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_edit', $data);
+			$this->load->view('inc/foot');
+		}	
+	}
 }
 
 // EOF
