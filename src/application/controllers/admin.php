@@ -169,14 +169,25 @@ class Admin extends CI_Controller {
 
 	}
 	
-	public function page($id)
+	public function page($id = NULL)
 	{
+		if($id === NULL)
+		{
+			show_404();
+		}
+		$p = new Page();
+		if($p->where('id', $id)->count() > 0)
+		{
+			$pages = $p->where('id', $id)->get();
+		}
+		else
+		{
+			show_404();
+		}
+		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$p = new Page();
-		$p->where('id', $id);
-		$pages = $p->get();
 
 		$header = array(
 			'page' => 'admin',
@@ -216,14 +227,23 @@ class Admin extends CI_Controller {
 		}	
 	}
 	
-	public function delete_page($id)
-	{
+	public function delete_page($id = NULL)
+	{	
+		if($id === NULL)
+		{
+			show_404();
+		}
+		$p = new Page();
+		if($p->where('id', $id)->count() > 0)
+		{
+			$pages = $p->where('id', $id)->get();
+		}
+		else
+		{
+			show_404();
+		}
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-
-		$p = new Page();
-		$p->where('id', $id);
-		$pages = $p->get();
 
 		$header = array(
 			'page' => 'admin',
@@ -267,8 +287,23 @@ class Admin extends CI_Controller {
 		}
 	}
 	
-	public function page_category($id)
+	public function page_category($id = NULL)
 	{
+		if($id === NULL)
+		{
+			show_404();
+		}
+		
+		$c = new Page_category();
+		if($c->where('id', $id)->count() > 0)
+		{
+			$categories = $c->where('id', $id)->get();
+		}
+		else
+		{
+			show_404();
+		}
+		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -284,9 +319,6 @@ class Admin extends CI_Controller {
 
 		$a = new Application();
 		
-		$c = new Page_category();
-		$c->where('id', $id);
-		$categories = $c->get();
 		
 		$data['db_apps'] = $a->order_by('name')->get();
 		$data['category_data'] = $categories;
@@ -316,8 +348,23 @@ class Admin extends CI_Controller {
 		}	
 	}
 	
-	public function delete_page_category($id)
+	public function delete_page_category($id = NULL)
 	{
+		if($id === NULL)
+		{
+			show_404();
+		}
+		
+		$c = new Page_category();
+		if($c->where('id', $id)->count() > 0)
+		{
+			$categories = $c->where('id', $id)->get();
+		}
+		else
+		{
+			show_404();
+		}
+		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
@@ -331,9 +378,6 @@ class Admin extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 
-		$c = new Page_category();
-		$c->where('id', $id);
-		$categories = $c->get();
 		
 		$data['page_category_data'] = $categories;		
 		
