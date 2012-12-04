@@ -75,6 +75,23 @@ class Admin extends CI_Controller {
 		$this->load->view('inc/foot');
 	}
 	
+	public function categories()
+	{
+		
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$c = new Page_category();
+		$data['categories'] = $c->order_by('title')->get();
+		
+		$this->load->view('inc/head', $header);
+		$this->load->view('admin/categories', $data);
+		$this->load->view('inc/foot');
+	}
+	
 	public function scan()
 	{		
 		$header = array(
@@ -244,6 +261,53 @@ class Admin extends CI_Controller {
 		{
 			return FALSE;
 		}
+	}
+	
+	public function category($id)
+	{
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$p = new Page();
+		$p->where('id', $id);
+		$pages = $p->get();
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+
+		$a = new Application();
+		
+		$c = new Page_category();
+		$c->where('id', $id);
+		$categories = $c->get();
+		
+		$data['db_apps'] = $a->order_by('name')->get();
+		$data['category_data'] = $categories;
+		
+		
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('category_title', 'Category Title', 'required');
+		$this->form_validation->set_rules('category_slug', 'Category URL', 'required');
+		
+		if ($this->form_validation->run())
+		{
+			$c = new Page_category();
+			$c->where('id', $id)->get();
+			$c->title = $this->input->post('category_title');
+			$c->slug = $this->input->post('category_slug');
+			$c->save();
+			$this->session->set_flashdata('message', 'Category updated');
+			redirect('admin');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/category_edit', $data);
+			$this->load->view('inc/foot');
+		}	
 	}
 }
 
