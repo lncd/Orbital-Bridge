@@ -204,6 +204,8 @@ class Admin extends CI_Controller {
 			$p->slug = $this->input->post('page_slug');
 			$p->save();
 			$this->session->set_flashdata('message', 'Page updated');
+			$this->session->set_flashdata('message_type', 'success');
+
 			redirect('admin');
 		}
 		else
@@ -241,6 +243,8 @@ class Admin extends CI_Controller {
 			$p->where('id', $id)->get();
 			$p->delete();
 			$this->session->set_flashdata('message', 'Page Deleted');
+			$this->session->set_flashdata('message_type', 'success');
+
 			redirect('admin');
 		}
 		else
@@ -300,6 +304,8 @@ class Admin extends CI_Controller {
 			$c->slug = $this->input->post('category_slug');
 			$c->save();
 			$this->session->set_flashdata('message', 'Category updated');
+			$this->session->set_flashdata('message_type', 'success');
+
 			redirect('admin');
 		}
 		else
@@ -332,8 +338,8 @@ class Admin extends CI_Controller {
 		$data['page_category_data'] = $categories;		
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('category_title', 'Category Title', 'callback_page_category_title_check[' . $categories->title . ']');
-		$this->form_validation->set_message('category_title_check', 'You did not type the correct category title');
+		$this->form_validation->set_rules('page_category_title', 'Category Title', 'callback_page_category_title_check[' . $categories->title . ']');
+		$this->form_validation->set_message('page_category_title_check', 'You did not type the correct category title');
 		
 		if ($this->form_validation->run())
 		{
@@ -341,6 +347,7 @@ class Admin extends CI_Controller {
 			$c->where('id', $id)->get();
 			$c->delete();
 			$this->session->set_flashdata('message', 'Category Deleted');
+			$this->session->set_flashdata('message_type', 'success');
 			redirect('admin');
 		}
 		else
