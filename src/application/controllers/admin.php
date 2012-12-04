@@ -75,7 +75,7 @@ class Admin extends CI_Controller {
 		$this->load->view('inc/foot');
 	}
 	
-	public function categories()
+	public function page_categories()
 	{
 		
 		$header = array(
@@ -88,7 +88,7 @@ class Admin extends CI_Controller {
 		$data['categories'] = $c->order_by('title')->get();
 		
 		$this->load->view('inc/head', $header);
-		$this->load->view('admin/categories', $data);
+		$this->load->view('admin/page_categories', $data);
 		$this->load->view('inc/foot');
 	}
 	
@@ -263,7 +263,7 @@ class Admin extends CI_Controller {
 		}
 	}
 	
-	public function category($id)
+	public function page_category($id)
 	{
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -305,9 +305,62 @@ class Admin extends CI_Controller {
 		else
 		{
 			$this->load->view('inc/head', $header);
-			$this->load->view('admin/category_edit', $data);
+			$this->load->view('admin/page_category_edit', $data);
 			$this->load->view('inc/foot');
 		}	
+	}
+	
+	public function delete_page_category($id)
+	{
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$p = new Page();
+		$p->where('id', $id);
+		$pages = $p->get();
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+
+		$c = new Page_category();
+		$c->where('id', $id);
+		$categories = $c->get();
+		
+		$data['page_category_data'] = $categories;		
+		
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('category_title', 'Category Title', 'callback_page_category_title_check[' . $categories->title . ']');
+		$this->form_validation->set_message('category_title_check', 'You did not type the correct category title');
+		
+		if ($this->form_validation->run())
+		{
+			$c = new Page_category();
+			$c->where('id', $id)->get();
+			$c->delete();
+			$this->session->set_flashdata('message', 'Category Deleted');
+			redirect('admin');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_category_delete', $data);
+			$this->load->view('inc/foot');
+		}	
+	}
+
+	public function page_category_title_check($str, $category_title)
+	{
+		if ($str == $category_title)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 }
 

@@ -11,7 +11,7 @@
 	<li><a href="<?php echo site_url('admin/applications'); ?>"><i class="icon-list-alt"></i> Applications</a></li>
 	<li><a href="<?php echo site_url('admin/recipes'); ?>"><i class="icon-book"></i> Recipes</a></li>
 	<li><a href="<?php echo site_url('admin/pages'); ?>"><i class="icon-file"></i> Pages</a></li>
-	<li class="active"><a href="<?php echo site_url('admin/categories'); ?>"><i class="icon-file"></i> Categories</a></li>
+	<li class="active"><a href="<?php echo site_url('admin/page_categories'); ?>"><i class="icon-file"></i> Categories</a></li>
 </ul>
 
 <hr>
@@ -26,8 +26,8 @@
 	
 		foreach($categories as $category)
 		{
-			echo '<tr>' . '<td>' . $category->title . '</td><td><a class="btn btn-small" href="' . site_url('admin/category/' . $category->id) . '">
-			<i class="icon-pencil"></i> Edit</a> <a class="btn btn-small btn-danger" href="' . site_url('admin/delete_category/' . $category->id) . '">
+			echo '<tr>' . '<td>' . $category->title . '</td><td><a class="btn btn-small" href="' . site_url('admin/page_category/' . $category->id) . '">
+			<i class="icon-pencil"></i> Edit</a> <a class="btn btn-small btn-danger" href="' . site_url('admin/delete_page_category/' . $category->id) . '">
 			<i class="icon-trash"></i> Delete</a></td></tr>';
 		}					
 	?>

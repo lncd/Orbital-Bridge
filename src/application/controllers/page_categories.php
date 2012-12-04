@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Categories extends CI_Controller {
+class Page_categories extends CI_Controller {
 
 	public function view($slug)
 	{
@@ -25,7 +25,7 @@ class Categories extends CI_Controller {
 			);
 			
 			$this->load->view('inc/head', $header);
-			$this->load->view('pages', $data);
+			$this->load->view('page_categories', $data);
 			$this->load->view('inc/foot');			
 		}
 		else
