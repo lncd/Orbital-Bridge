@@ -14,7 +14,7 @@
 	
 	echo validation_errors();
 
-	echo form_open('admin/category/' . $category_data->id, array('class' => 'form-horizontal'));
+	echo form_open('admin/page_category/' . $category_data->id, array('class' => 'form-horizontal'));
 
 	$form_title = array(
 		'name'			=> 'category_title',
@@ -48,6 +48,21 @@
 	echo '<div class = "input-prepend"><span class="add-on">' . site_url('category') . '/</span>';
 	echo form_input($form_slug);
 	echo '</div></div></div>';
+
+	foreach($pages as $page)
+	{
+		$form_pages = array(
+			'name'			=> 'pages[]',
+			'id'			=> 'page_' . $page->id,
+			'value'			=> $page->id
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label($page->title, 'page_' . $page->id, array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_checkbox($form_pages);
+		echo '</div></div>';
+	}
 
 	echo '<div class="form-actions">';
 	echo '<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>';

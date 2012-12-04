@@ -322,6 +322,7 @@ class Admin extends CI_Controller {
 		
 		$data['db_apps'] = $a->order_by('name')->get();
 		$data['category_data'] = $categories;
+		$data['pages'] = $this->bridge->pages();
 		
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
@@ -334,7 +335,18 @@ class Admin extends CI_Controller {
 			$c->where('id', $id)->get();
 			$c->title = $this->input->post('category_title');
 			$c->slug = $this->input->post('category_slug');
-			$c->save();
+			if ($this->input->post('pages'))
+			{
+				foreach($this->input->post('pages') as $new_page)
+				{
+					$page_object = new Page();
+					$page_object->where('id', $new_page)->get();
+					$page_cat_link = new Page_category_link();
+					$page_cat_link->order = 0;
+					$page_cat_link->save(array('page_category' => $c, 'page' => $page_object));
+					//$categories[] = new Page_category($new_page_category);
+				}
+			}
 			$this->session->set_flashdata('message', 'Category updated');
 			$this->session->set_flashdata('message_type', 'success');
 
