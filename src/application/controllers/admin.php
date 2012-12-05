@@ -363,13 +363,15 @@ class Admin extends CI_Controller {
 			if ($this->input->post('pages_list'))
 			{
 				$pages_array = explode(',', $this->input->post('pages_list'));
+				$order = 1;
 				foreach($pages_array as $new_page)
 				{
 					$page_object = new Page();
 					$page_object->where('id', $new_page)->get();
 					$new_page_cat_link = new Page_category_link();
-					$new_page_cat_link->order = 0;
+					$new_page_cat_link->order = $order;
 					$new_page_cat_link->save(array('page_category' => $c, 'page' => $page_object));
+					$order++;
 				}
 			}
 			$this->session->set_flashdata('message', 'Category updated');
