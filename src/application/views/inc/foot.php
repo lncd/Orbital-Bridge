@@ -40,6 +40,7 @@
 	</footer>
 
 	<script src="<?php echo $_SERVER['CWD_BASE_URI']; ?>/plugins.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/rapheal.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/morris.min.js"></script>
 	

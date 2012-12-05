@@ -47,6 +47,7 @@ $route['signout'] = 'auth/signout';
 $route['wizard'] = "wizard/view/start";
 $route['wizard/(:any)'] = "wizard/view/$1";
 
+$route['test'] = "test"; //DELETE THIS LINE
 $route['admin'] = "admin";
 $route['admin/(:any)'] = "admin/$1";
 

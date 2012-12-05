@@ -16,6 +16,8 @@
 
 	<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/cwd.css">
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/smoothness/jquery-ui-1.9.2.custom.min.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/orbital.css">
 
 	<!--[if (lt IE 9) & (!IEMobile)]>
 		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/ie.min.css">
@@ -79,7 +81,7 @@
 										<?php
 										foreach($category_pages[$category->id] as $cat_page)
 										{
-											echo'<li><a href="' . $cat_page->slug . '">' . $cat_page->title . '</a></li>';
+											echo'<li><a href="' . base_url() . $cat_page->slug . '">' . $cat_page->title . '</a></li>';
 										}
 										?>
 										</ul>
