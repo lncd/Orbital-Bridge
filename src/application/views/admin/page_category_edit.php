@@ -51,10 +51,19 @@
 
 	foreach($pages as $page)
 	{
+		$checked = "";
+		if (isset($page_category_page_checked))
+		{
+			if (in_array($page->id, $page_category_page_checked))
+			{
+				$checked = "checked";
+			}
+		}
 		$form_pages = array(
 			'name'			=> 'pages[]',
 			'id'			=> 'page_' . $page->id,
-			'value'			=> $page->id
+			'value'			=> $page->id,
+			'checked'		=> $checked
 		);
 	
 		echo '<div class="control-group">';

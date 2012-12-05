@@ -318,11 +318,17 @@ class Admin extends CI_Controller {
 
 		$a = new Application();
 		
+		$p_c_l = new Page_category_link();
+		$page_category_pages_checked = $p_c_l->where('page_category_id', $id)->get();
+		
+		foreach($page_category_pages_checked as $page_category_page_checked)
+		{
+			$data['page_category_page_checked'][] = $page_category_page_checked->page_id;
+		}
 		
 		$data['db_apps'] = $a->order_by('name')->get();
 		$data['category_data'] = $categories;
-		$data['pages'] = $this->bridge->pages();
-		
+		$data['pages'] = $this->bridge->pages();		
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('category_title', 'Category Title', 'required');
@@ -336,13 +342,15 @@ class Admin extends CI_Controller {
 			$c->title = $this->input->post('category_title');
 			$c->slug = $this->input->post('category_slug');
 			
-			$page_cat_link = new Page_category_link();
-			$page_cat_link->where('page_category_id', $id)->get();
-			$page_cat_link->delete();
+			$page_cat_links = new Page_category_link();
+			$page_cat_links->where('page_category_id', $id)->get();
+			foreach ($page_cat_links as $page_cat_link)
+			{
+				$page_cat_link->delete();
+			}
 			
 			if ($this->input->post('pages'))
-			{
-				
+			{				
 				foreach($this->input->post('pages') as $new_page)
 				{
 					$page_object = new Page();
