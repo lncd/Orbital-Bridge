@@ -319,11 +319,10 @@ class Admin extends CI_Controller {
 			'javascript' => '$(function() {
 				$( "#sortable1, #sortable2" ).sortable({
 					connectWith: ".connectedSortable",
-					dropOnEmpty: false,
-					update: function( event, ui ) {
+						update: function( event, ui ) {
 						$("#pages_list").val($("#sortable1").sortable("toArray"));
 					}
-				}).disableSelection();
+				}).disableSelection();	
 			});'
 		);
 

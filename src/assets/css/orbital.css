@@ -1,2 +1,12 @@
 /* Connected Sortable */
-.connectedSortable { background-color: gray; min-height: 10px; border-color: black}
+.connectedSortable {
+	background-color: gray;
+	min-height: 10px;
+	border-color: black;
+	}
+
+ul, li {
+    list-style-type: none;
+    margin: 0;
+    }
+    
