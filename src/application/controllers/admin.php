@@ -315,6 +315,7 @@ class Admin extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 
+		//The javscript for the sortable list of pages.
 		$footer = array(
 			'javascript' => '$(function() {
 				$( "#sortable1, #sortable2" ).sortable({

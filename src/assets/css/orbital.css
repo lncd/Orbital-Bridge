@@ -1,8 +1,7 @@
 /* Connected Sortable */
 .connectedSortable {
-	background-color: gray;
-	min-height: 10px;
-	border-color: black;
+	background-color: #eeeeee;
+	min-height: 20px;
 	}
 
 ul, li {
