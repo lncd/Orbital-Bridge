@@ -18,18 +18,25 @@
 		
 <table class="table table-bordered table-striped">
 	<thead>
-		<tr><th>Title</th><th>Options</th></tr>
+		<tr><th>Title</th><th>Active</th><th>Options</th></tr>
 	</thead>
 	<tbody>
 	
 	<?php
 	
-		foreach($categories as $category)
-		{
-			echo '<tr>' . '<td>' . $category->title . '</td><td><a class="btn btn-small" href="' . site_url('admin/page_category/' . $category->id) . '">
-			<i class="icon-pencil"></i> Edit</a> <a class="btn btn-small btn-danger" href="' . site_url('admin/delete_page_category/' . $category->id) . '">
-			<i class="icon-trash"></i> Delete</a></td></tr>';
-		}					
+	foreach ($categories as $category)
+	{
+		?>
+	
+		<tr>
+			<td><?php echo $category->title; ?></td>
+			<td><?php echo (bool) $category->active ? '<span class="label label-success">Yes</span>' : '<span class="label label-important">No</span>'; ?></td>
+			<td><a class="btn btn-small" href="<?php echo site_url('admin/page_category/' . $category->id); ?>"><i class="icon-pencil"></i> Edit</a> <a class="btn btn-small btn-danger" href="<?php echo site_url('admin/delete_page_category/' . $category->id); ?>"><i class="icon-trash"></i> Delete</a></td></tr>
+	
+			<?php
+	}
+	
 	?>
+	
 	</tbody>
 </table>
