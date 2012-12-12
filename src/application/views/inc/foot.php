@@ -40,6 +40,9 @@
 	</footer>
 
 	<script src="<?php echo $_SERVER['CWD_BASE_URI']; ?>/plugins.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/jquery-ui.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/rapheal.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/morris.min.js"></script>
 	
 	<script type="text/javascript">
 		var uvOptions = {};
@@ -49,6 +52,15 @@
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
 		})();
 	</script>
+	
+	<?php
+	
+	if (isset($javascript))
+	{
+		echo '<script type="text/javascript">' . $javascript . '</script>';
+	}
+	
+	?>
 
 </body>
 </html>

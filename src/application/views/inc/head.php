@@ -7,15 +7,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title><?php if(isset($title)) echo $title . ' - '; ?>Orbital</title>
-	<meta name="description" content="The Common Web Design is the new branding for the University of Lincoln's online services">
-	<meta name="author" content="Online Services Team; ost@lincoln.ac.uk">
+	<title><?php if(isset($title)) echo $title . ' - '; ?>Research Dashboard</title>
+	<meta name="description" content="Research Dashboard gives you an overview of all your research at the University of Lincoln">
+	<meta name="author" content="LNCD; lncd@lincoln.ac.uk">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/favicon.ico">
 	<link rel="apple-touch-icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/icon.png">
 
 	<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/cwd.css">
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/smoothness/jquery-ui-1.9.2.custom.min.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/orbital.css">
 
 	<!--[if (lt IE 9) & (!IEMobile)]>
 		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/ie.min.css">
@@ -54,7 +56,7 @@
 
 					<hgroup id="cwd-hgroup">
 
-						<h1>Orbital</h1>
+						<h1>Research Dashboard</h1>
 
 					</hgroup>
 
@@ -79,7 +81,7 @@
 										<?php
 										foreach($category_pages[$category->id] as $cat_page)
 										{
-											echo'<li><a href="' . $cat_page->slug . '">' . $cat_page->title . '</a></li>';
+											echo'<li><a href="' . base_url() . $cat_page->slug . '">' . $cat_page->title . '</a></li>';
 										}
 										?>
 										</ul>
@@ -132,6 +134,6 @@
 			<?php
 			if($this->session->flashdata('message'))
 			{
-				echo '<div class="alert">' . $this->session->flashdata('message') . '</div>'; 
+				echo '<div class="alert alert-' . $this->session->flashdata('message_type') . '">' . $this->session->flashdata('message') . '</div>'; 
 			}
 			?>
