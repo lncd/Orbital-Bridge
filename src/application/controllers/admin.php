@@ -215,7 +215,7 @@ class Admin extends CI_Controller {
 			$this->session->set_flashdata('message', 'Page updated');
 			$this->session->set_flashdata('message_type', 'success');
 
-			redirect('admin');
+			redirect('admin/pages');
 		}
 		else
 		{
@@ -263,7 +263,7 @@ class Admin extends CI_Controller {
 			$this->session->set_flashdata('message', 'Page Deleted');
 			$this->session->set_flashdata('message_type', 'success');
 
-			redirect('admin');
+			redirect('admin/pages');
 		}
 		else
 		{
@@ -352,6 +352,15 @@ class Admin extends CI_Controller {
 		{
 			$c->title = $this->input->post('category_title');
 			$c->slug = $this->input->post('category_slug');
+			
+			if ($this->input->post('category_active'))
+			{
+				$c->active = TRUE;
+			}
+			else
+			{
+				$c->active = FALSE;
+			}
 
 			$page_cat_links = new Page_category_link();
 			$page_cat_links->where('page_category_id', $id)->get();
@@ -374,10 +383,13 @@ class Admin extends CI_Controller {
 					$order++;
 				}
 			}
+			
+			$c->save();
+			
 			$this->session->set_flashdata('message', 'Category updated');
 			$this->session->set_flashdata('message_type', 'success');
 
-			redirect('admin');
+			redirect('admin/page_categories');
 		}
 		else
 		{
@@ -430,7 +442,7 @@ class Admin extends CI_Controller {
 			$c->delete();
 			$this->session->set_flashdata('message', 'Category Deleted');
 			$this->session->set_flashdata('message_type', 'success');
-			redirect('admin');
+			redirect('admin/page_categories');
 		}
 		else
 		{

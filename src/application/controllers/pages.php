@@ -19,6 +19,8 @@ class Pages extends CI_Controller {
 		{		
 			$this->load->helper('markdown');
 			
+			$header['page'] = $slug;
+			
 			$data = array(
 				'title' => $page->title,
 				'content' => $page->content
