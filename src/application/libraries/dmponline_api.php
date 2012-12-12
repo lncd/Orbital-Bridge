@@ -127,6 +127,18 @@ class Dmponline_api {
 		return $result;
 	}
 
+	/**
+	 * Request API key
+	 *
+	 * Log in to the system; get a new api_key
+	 *
+	 * string $email    The users email
+	 * string $password The users password
+	 *
+	 * @return $api_key
+	 * @access public
+	 */
+
 	public function request_api_key($email, $password)
 	{		
 		$fields = array(
@@ -137,6 +149,17 @@ class Dmponline_api {
 		return $this->post_curl_request('https://dmponline.dcc.ac.uk/api/v1/authenticate', $fields);
 	}
 
+	/**
+	 * Revoke API key
+	 *
+	 * Log out; expire the supplied api_key
+	 *
+	 * string $api_key The api key to expire
+	 *
+	 * @return BOOL
+	 * @access public
+	 */
+
 	public function revoke_api_key($api_key)
 	{		
 		$fields = array(
@@ -146,6 +169,17 @@ class Dmponline_api {
 		return $this->delete_curl_request('https://dmponline.dcc.ac.uk/api/v1/authenticate', $fields);
 	}
 
+	/**
+	 * Get templates
+	 *
+	 * Get list of template editions available to the current api_key with their associated {editionKey} identifiers
+	 *
+	 * string $api_key The api key to expire
+	 *
+	 * @return array
+	 * @access public
+	 */
+
 	public function get_templates($api_key)
 	{		
 		$fields = array(
@@ -153,5 +187,112 @@ class Dmponline_api {
 		);
 
 		return $this->get_curl_request('https://dmponline.dcc.ac.uk/api/v1/templates', $fields);
+	}
+
+	/**
+	 * Get template questions
+	 *
+	 * Get default list of questions, including {questionKey} that make up the template edition
+	 *
+	 * string $editionKey The template edition
+	 * string $api_key    The api key to expire
+	 *
+	 * @return array
+	 * @access public
+	 */
+
+	public function get_template_questions($editionKey, $api_key)
+	{		
+		$fields = array(
+			'api_key' => $api_key
+		);
+
+		return $this->get_curl_request('https://dmponline.dcc.ac.uk/api/v1/templates/' . $editionKey, $fields);
+	}
+
+	/**
+	 * Get template users
+	 *
+	 * Get list of users that have used the template in a plan
+	 *
+	 * string $api_key The api key to expire
+	 *
+	 * @return array
+	 * @access public
+	 */
+
+	public function get_template_users($editionKey, $api_key)
+	{		
+		$fields = array(
+			'api_key' => $api_key
+		);
+
+		return $this->get_curl_request('https://dmponline.dcc.ac.uk/api/v1/templates/' . $editionKey . '/users', $fields);
+	}
+
+	/**
+	 * Get template edition instances
+	 *
+	 * Get a list of template edition instances (phases in user plans)
+	 *
+	 * string $editionKey The template edition
+	 * string $api_key The api key to expire
+	 *
+	 * @return array
+	 * @access public
+	 */
+
+	public function get_specific_template_instances($editionKey, $api_key)
+	{		
+		$fields = array(
+			'api_key' => $api_key
+		);
+
+		return $this->get_curl_request('https://dmponline.dcc.ac.uk/api/v1/templates/' . $editionKey . '/instances', $fields);
+	}
+
+	/**
+	 * Get template edition instances
+	 *
+	 * Get all questions and answers entered for the template edition instance
+	 *
+	 * string $editionKey The template edition
+	 * string $editionKey The instance
+	 * string $api_key    The api key to expire
+	 *
+	 * @return array
+	 * @access public
+	 */
+
+	public function get_template_instance_questions_answers($editionKey, $instanceKey, $api_key)
+	{		
+		$fields = array(
+			'api_key' => $api_key
+		);
+
+		return $this->get_curl_request('https://dmponline.dcc.ac.uk/api/v1/templates/' . $editionKey . '/instance/' . $instanceKey, $fields);
+	}
+
+	/**
+	 * Get answers to question in template edition
+	 *
+	 * Retrieve all answers for a specific question, including associated information such as user reference and last updated date
+	 *
+	 * string $editionKey The template edition
+	 * string $editionKey The instance
+	 * string $api_key    The api key to expire
+	 *
+	 * @return array
+	 * @access public
+	 */
+
+	public function get_specific_template_answers($editionKey, $questionKey, $api_key)
+	{		
+		$fields = array(
+			'api_key' => $api_key,
+			'questionKey' => $questionKey
+		);
+
+		return $this->get_curl_request('https://dmponline.dcc.ac.uk/api/v1/templates/' . $editionKey . '/answers', $fields);
 	}
 }

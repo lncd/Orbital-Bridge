@@ -3,10 +3,7 @@
 class Dmp extends CI_Controller {
 	
 	public function index()
-	{
-		$this->load->library('dmponline_api');
-		var_dump($this->dmponline_api->request_api_key('hnewton@lincoln.ac.uk', 'testpassword'));
-		
+	{		
 		$header = array(
 			'page' => 'home',
 			'categories' => $this->bridge->categories(),
