@@ -186,11 +186,14 @@ class Admin extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-
 		$header = array(
 			'page' => 'admin',
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$footer = array(
+			'javascript' => '$("#page_content").markItUp(markdownSettings);'
 		);
 
 		$a = new Application();
@@ -221,7 +224,7 @@ class Admin extends CI_Controller {
 		{
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/page_edit', $data);
-			$this->load->view('inc/foot');
+			$this->load->view('inc/foot', $footer);
 		}
 	}
 
