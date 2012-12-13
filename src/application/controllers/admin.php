@@ -228,6 +228,53 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function add_page()
+	{
+		$p = new Page();
+
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$footer = array(
+			'javascript' => '$("#page_content").markItUp(markdownSettings);'
+		);
+
+		$a = new Application();
+
+		$data['db_apps'] = $a->order_by('name')->get();
+
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('page_title', 'Page Title', 'required');
+		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
+		$this->form_validation->set_rules('page_slug', 'Page URL', 'required');
+
+		if ($this->form_validation->run())
+		{
+			$p = new Page();
+			$p->title = $this->input->post('page_title');
+			$p->content = $this->input->post('page_content');
+			$p->slug = $this->input->post('page_slug');
+			$p->save();
+			$this->session->set_flashdata('message', 'Page updated');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('admin/pages');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_add', $data);
+			$this->load->view('inc/foot', $footer);
+		}
+	}
+
 	public function delete_page($id = NULL)
 	{
 		if($id === NULL)
