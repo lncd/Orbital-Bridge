@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = 'home';
+$route['default_controller'] = 'pages/view/home';
 $route['404_override'] = '';
 
 $route['signin'] = 'auth/signin';
@@ -47,6 +47,7 @@ $route['signout'] = 'auth/signout';
 $route['wizard'] = "wizard/view/start";
 $route['wizard/(:any)'] = "wizard/view/$1";
 
+$route['dmp'] = "dmp";
 $route['admin'] = "admin";
 $route['admin/(:any)'] = "admin/$1";
 

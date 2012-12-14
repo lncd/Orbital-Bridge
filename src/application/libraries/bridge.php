@@ -9,6 +9,12 @@ class Bridge {
 		return $p_c->get();
     }
     
+    public function pages()
+    {
+    	$p_c = new Page();
+		return $p_c->get();
+    }
+    
     public function category_pages()
     {
 	    $categories = $this->categories();

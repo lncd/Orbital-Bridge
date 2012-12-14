@@ -6,7 +6,7 @@
 
 </div>
 		
-<p>Your Staff Profile contains information about your research and publications, as well as your contact details and biography. The information is automatically generated from a number of different systems, including Orbital, Blogs and ePrints.</p>
+<p class="lead">Your Staff Profile contains information about your research and publications, as well as your contact details and biography. The information is automatically generated from a number of different systems, including the Research Dashboard, Staff Profile and ePrints.</p>
 
 <p>You can view your public profile, edit your biography and research interests using the University's Blogs platform, or manage your publications using the University's ePrints system.</p>
 
