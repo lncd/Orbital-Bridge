@@ -525,7 +525,7 @@ class Admin extends CI_Controller {
 		$data['page_category_data'] = $categories;
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('page_category_title', 'Category Title', 'callback_page_category_title_check[' . $categories->title . ']');
+		$this->form_validation->set_rules('category_title', 'Category Title', 'callback_page_category_title_check[' . $categories->title . ']');
 		$this->form_validation->set_message('page_category_title_check', 'You did not type the correct category title');
 
 		if ($this->form_validation->run())
@@ -542,6 +542,18 @@ class Admin extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/page_category_delete', $data);
 			$this->load->view('inc/foot');
+		}
+	}
+
+	public function page_category_title_check($str, $category_title)
+	{
+		if ($str == $category_title)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
 		}
 	}
 
@@ -602,18 +614,6 @@ class Admin extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/page_categories_order', $data);
 			$this->load->view('inc/foot', $footer);
-		}
-	}
-
-	public function page_category_title_check($str, $category_title)
-	{
-		if ($str == $category_title)
-		{
-			return TRUE;
-		}
-		else
-		{
-			return FALSE;
 		}
 	}
 }
