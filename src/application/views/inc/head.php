@@ -11,11 +11,11 @@
 	<meta name="description" content="The Researcher Dashboard gives you an overview of all your research at the University of Lincoln">
 	<meta name="author" content="LNCD; lncd@lincoln.ac.uk">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/favicon.ico">
-	<link rel="apple-touch-icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/icon.png">
+	<link rel="shortcut icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>favicon.ico">
+	<link rel="apple-touch-icon" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>icon.png">
 
-	<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/cwd.css">
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>cwd.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/smoothness/jquery-ui-1.9.2.custom.min.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/orbital.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/style.css">
