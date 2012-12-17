@@ -203,9 +203,9 @@ class Admin extends CI_Controller {
 
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('page_title', 'Page Title', 'required');
+		$this->form_validation->set_rules('page_title', 'page_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page.title]');
+		$this->form_validation->set_rules('page_slug', 'page_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page.slug]');
 		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
-		$this->form_validation->set_rules('page_slug', 'Page URL', 'required');
 
 		if ($this->form_validation->run())
 		{
@@ -224,6 +224,53 @@ class Admin extends CI_Controller {
 		{
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/page_edit', $data);
+			$this->load->view('inc/foot', $footer);
+		}
+	}
+
+	public function add_page()
+	{
+		$p = new Page();
+
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$footer = array(
+			'javascript' => '$("#page_content").markItUp(markdownSettings);'
+		);
+
+		$a = new Application();
+
+		$data['db_apps'] = $a->order_by('name')->get();
+
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('page_title', 'Page Title', 'required');
+		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
+		$this->form_validation->set_rules('page_slug', 'Page URL', 'required');
+
+		if ($this->form_validation->run())
+		{
+			$p = new Page();
+			$p->title = $this->input->post('page_title');
+			$p->content = $this->input->post('page_content');
+			$p->slug = $this->input->post('page_slug');
+			$p->save();
+			$this->session->set_flashdata('message', 'Page updated');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('admin/pages');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_add', $data);
 			$this->load->view('inc/foot', $footer);
 		}
 	}
@@ -288,6 +335,53 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function add_category()
+	{
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$footer = array(
+			'javascript' => '$("#page_content").markItUp(markdownSettings);'
+		);
+
+		$a = new Application();
+
+		$data['db_apps'] = $a->order_by('name')->get();
+
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('category_title', 'category_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.title]');
+		$this->form_validation->set_rules('category_slug', 'category_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.slug]');
+
+
+		if ($this->form_validation->run())
+		{
+			$p_c = new Page_category();
+			$p_c->title = $this->input->post('category_title');
+			$p_c->slug = $this->input->post('category_slug');
+			$p_c->order = 0;
+			$p_c->active = (bool) $this->input->post('category_active');
+			$p_c->icon = $this->input->post('category_icon');
+			$p_c->save();
+			$this->session->set_flashdata('message', 'Page updated');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('admin/page_categories');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_category_add', $data);
+			$this->load->view('inc/foot', $footer);
+		}
+	}
+
 	public function page_category($id = NULL)
 	{
 		if($id === NULL)
@@ -345,8 +439,8 @@ class Admin extends CI_Controller {
 		$data['pages'] = $this->bridge->pages();
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('category_title', 'Category Title', 'required');
-		$this->form_validation->set_rules('category_slug', 'Category URL', 'required');
+		$this->form_validation->set_rules('category_title', 'category_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.title]');
+		$this->form_validation->set_rules('category_slug', 'category_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.slug]');
 
 		$c = new Page_category();
 		$c->where('id', $id)->get();
@@ -422,10 +516,6 @@ class Admin extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$p = new Page();
-		$p->where('id', $id);
-		$pages = $p->get();
-
 		$header = array(
 			'page' => 'admin',
 			'categories' => $this->bridge->categories(),
@@ -435,7 +525,7 @@ class Admin extends CI_Controller {
 		$data['page_category_data'] = $categories;
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('page_category_title', 'Category Title', 'callback_page_category_title_check[' . $categories->title . ']');
+		$this->form_validation->set_rules('category_title', 'Category Title', 'callback_page_category_title_check[' . $categories->title . ']');
 		$this->form_validation->set_message('page_category_title_check', 'You did not type the correct category title');
 
 		if ($this->form_validation->run())
@@ -464,6 +554,65 @@ class Admin extends CI_Controller {
 		else
 		{
 			return FALSE;
+		}
+	}
+
+	public function order_page_categories()
+	{
+		$c = new Page_category();
+		$categories = $c->get();
+
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+
+		//The javscript for the sortable list of pages.
+		$footer = array(
+			'javascript' => '$(function() {
+				$( "#sortable1" ).sortable({
+					update: function( event, ui ) {
+						$("#pages_list").val($("#sortable1").sortable("toArray"));
+					}
+				}).disableSelection();	
+			});'
+		);
+
+		$a = new Application();
+
+		$data['categories'] = $this->bridge->categories();
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('pages_list', 'Pages List', 'required');
+		if ($this->form_validation->run())
+		{
+			$categories_array = explode(',', $this->input->post('pages_list'));
+			$order = 1;
+			foreach($categories_array as $category)
+			{
+				$category_object = new Page_category();
+				$category_object->where('id', $category)->get();
+				$category_object->order = $order;
+				$category_object->save();
+				$order++;				
+			}
+			
+			$c->save();
+			
+			$this->session->set_flashdata('message', 'Category updated');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('admin/page_categories');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_categories_order', $data);
+			$this->load->view('inc/foot', $footer);
 		}
 	}
 }

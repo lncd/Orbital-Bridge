@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-cogs"></i> <?php echo $page_data->title; ?><small> Edit</small>
+		<i class="icon-cogs"></i> Page<small> Add</small>
 	</h1>
 
 </div>
@@ -14,13 +14,13 @@
 	
 	echo validation_errors();
 
-	echo form_open('admin/page/' . $page_data->id, array('class' => 'form-horizontal'));
+	echo form_open('admin/add_page/', array('class' => 'form-horizontal'));
 
 	$form_title = array(
 		'name'			=> 'page_title',
 		'required'   	=> 'required',
 		'id'			=> 'page_title',
-		'value'			=> set_value('page_title', $page_data->title),
+		'value'			=> set_value('page_title', ''),
 		'maxlength'		=> '200',
 		'class'			=> 'input-xlarge'
 	);
@@ -36,7 +36,7 @@
 		'name'			=> 'page_content',
 		'required'   	=> 'required',
 		'id'			=> 'page_content',
-		'value'			=> set_value('page_content', $page_data->content),
+		'value'			=> set_value('page_content', ''),
 		'rows'			=> '10',
 		'class'			=> 'input-block-level',
 		'style'			=> 'width:100%;'
@@ -53,24 +53,19 @@
 		'name'			=> 'page_slug',
 		'required'   	=> 'required',
 		'id'			=> 'page_slug',
-		'value'			=> set_value('page_slug', $page_data->slug),
+		'value'			=> set_value('page_slug', ''),
 		'maxlength'		=> '200',
 		'class'			=> 'input-medium'
 	);
 
-	if (! (bool) $page_data->protected)
-	{
-
-		echo '<div class="control-group">';
-		echo form_label('Page URL', 'page_slug', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo '<div class = "input-prepend"><span class="add-on">' . site_url() . '</span>';
-		echo form_input($form_slug);
-		echo '</div>';
-		echo '<span class="help-block">The page URL is used to view the page.</span>';
-		echo '</div></div>';
-		
-	}
+	echo '<div class="control-group">';
+	echo form_label('Page URL', 'page_slug', array('class' => 'control-label'));
+	echo '<div class="controls">';
+	echo '<div class = "input-prepend"><span class="add-on">' . site_url() . '</span>';
+	echo form_input($form_slug);
+	echo '</div>';
+	echo '<span class="help-block">The page URL is used to view the page.</span>';
+	echo '</div></div>';
 
 	echo '<div class="form-actions">';
 	echo '<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>';

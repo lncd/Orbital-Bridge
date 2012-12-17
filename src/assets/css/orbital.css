@@ -1,11 +1,11 @@
-/* Connected Sortable */
-.connectedSortable {
+.sortable_item {
+	list-style-type: none;
+	margin: 0;
+	cursor: move;
 	background-color: #eeeeee;
 	min-height: 20px;
-	}
+}
 
-ul, li {
-    list-style-type: none;
-    margin: 0;
-    }
-    
+.sortable_item li {
+	padding: 4px;
+}

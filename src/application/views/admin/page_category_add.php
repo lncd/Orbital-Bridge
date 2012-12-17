@@ -1,7 +1,7 @@
-<div class="page-header">
+<div class="category-header">
 
 	<h1>
-		<i class="icon-cogs"></i> <?php echo $category_data->title; ?><small> Edit</small>
+		<i class="icon-cogs"></i> Category<small> Add</small>
 	</h1>
 
 </div>
@@ -14,13 +14,12 @@
 	
 	echo validation_errors();
 
-	echo form_open('admin/page_category/' . $category_data->id, array('class' => 'form-horizontal', 'name' => 'category_pages_form'));
+	echo form_open('admin/add_category/', array('class' => 'form-horizontal'));
 
 	$form_title = array(
 		'name'			=> 'category_title',
 		'required'   	=> 'required',
 		'id'			=> 'category_title',
-		'value'			=> set_value('category_title', $category_data->title),
 		'maxlength'		=> '200',
 		'class'			=> 'input-xlarge'
 	);
@@ -36,7 +35,6 @@
 		'name'			=> 'category_icon',
 		'required'   	=> 'required',
 		'id'			=> 'category_icon',
-		'value'			=> set_value('category_icon', $category_data->icon),
 		'maxlength'		=> '200',
 		'class'			=> 'input-medium'
 	);
@@ -52,7 +50,6 @@
 		'name'			=> 'category_slug',
 		'required'   	=> 'required',
 		'id'			=> 'category_slug',
-		'value'			=> set_value('category_slug', $category_data->slug),
 		'maxlength'		=> '200',
 		'class'			=> 'input-medium'
 	);
@@ -80,7 +77,7 @@
 		'name'			=> 'category_active',
 		'id'			=> 'category_active',
 		'value'			=> 'active',
-		'checked'		=> (bool) $category_data->active
+		'checked'		=> (bool) FALSE
 	);
 
 	echo '<div class="control-group">';
@@ -90,66 +87,6 @@
 	echo '<span class="help-block">Should this category be visible in the navigation bar?</span>';
 	echo '</div></div>';
 	
-	?>
-	
-	<h3>Pages</h3>
-	
-	<p>You can add available pages to this category and change the order of pages within the category by dragging and dropping.</p>
-
-	<div class="row">
-		<div class="span6">
-		
-		<?php
-		
-		echo '<h4>In Category</h4>
-		<ul id="sortable1" class="connectedSortable sortable_item">';
-		
-		foreach($pages as $page)
-		{		
-			if (isset($page_category_page_checked))
-			{
-				if (in_array($page->id, $page_category_page_checked))
-				{
-					echo '<li class="ui-state-highlight" id="' . $page->id . '">' . $page->title . '</li>';
-				}
-			}
-		}
-		
-		echo '</ul>';
-		
-		?>
-		
-		</div>
-		<div class="span6">
-		
-		<?php
-		echo '<h4>Available</h4>
-		<ul id="sortable2" class="connectedSortable sortable_item">';
-		
-		foreach($pages as $page)
-		{		
-			if (isset($page_category_page_checked))
-			{
-				if ( ! in_array($page->id, $page_category_page_checked))
-				{
-					echo '<li class="ui-state-default" id="' . $page->id . '">' . $page->title . '</li>';
-				}
-			}
-			else
-			{
-				echo '<li class="ui-state-default" id="' . $page->id . '">' . $page->title . '</li>';
-			}
-		}
-		
-		echo '</ul>';
-		
-		?>
-		
-		</div>
-	</div>
-	
-	<?php
-	
 	echo '<div class="form-actions">';
 	echo '<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>';
 	echo '</div>';
@@ -157,6 +94,6 @@
 	echo form_close();
 
 	?>
-	
+
 	</div>
 </div>

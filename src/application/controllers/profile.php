@@ -22,37 +22,58 @@ class Profile extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
-		$footer['javascript'] = "Morris.Bar({
-			element: 'eprints-output-history',
-			data: [
-				{ y: '2002', a: 1 },
-				{ y: '2008', a: 1 },
-				{ y: '2009', a: 2 },
-				{ y: '2010', a: 3 },
-				{ y: '2011', a: 1 },
-				{ y: '2012', a: 2 }
-			],
-			xkey: 'y',
-			ykeys: ['a'],
-			labels: ['Publications'],
-			hideHover: true
-		});
+		$footer = array();
 		
-		Morris.Donut({
-			element: 'eprints-types',
-			data: [
-				{ label: 'Article', value: 2 },
-				{ label: 'Book Section', value: 4 },
-				{ label: 'Conference or Workshop Item (Other)', value: 2 },
-				{ label: 'Conference or Workshop Item (Paper)', value: 3 },
-				{ label: 'Conference or Workshop Item (Poster)', value: 2 },
-				{ label: 'Teaching Resource', value: 1 },
-				{ label: 'Thesis (Masters)', value: 1 }
-			]
-		});";
+		$data['eprints_research_total'] = FALSE;
+		
+		if ($eprints_stats = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'] . 'eprints/stats?oauth_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_id')))
+		{
+			
+			$eprints_data = json_decode($eprints_stats);
+			
+			$data['eprints_research_total'] = $eprints_data->results->total;
+			$data['eprints_years'] = FALSE;
+			$data['eprints_types'] = FALSE;
+			
+			$ep_years = array();
+			
+			foreach ($eprints_data->results->years as $year => $value)
+			{
+				$data['eprints_years'] = TRUE;
+				$ep_years[] = '{ y: \'' . $year . '\', a: ' . $value . ' }';
+			}
+			
+			$ep_types = array();
+			
+			foreach ($eprints_data->results->types as $type => $value)
+			{
+				$data['eprints_types'] = TRUE;
+				$ep_types[] = '{ label: \'' . $type . '\', value: ' . $value . ' }';
+			}
+			
+			if ($data['eprints_years'] OR $data['eprints_types'])
+			{
+			
+				$footer['javascript'] = "Morris.Bar({
+					element: 'eprints-output-history',
+					data: [" . implode(',', $ep_years) . "],
+					xkey: 'y',
+					ykeys: ['a'],
+					labels: ['Publications'],
+					hideHover: true
+				});
+				
+				Morris.Donut({
+					element: 'eprints-types',
+					data: [" . implode(',', $ep_types) . "]
+				});";
+				
+			}
+			
+		}
 		
 		$this->load->view('inc/head', $header);
-		$this->load->view('profile');
+		$this->load->view('profile', $data);
 		$this->load->view('inc/foot', $footer);
 	}
 }
