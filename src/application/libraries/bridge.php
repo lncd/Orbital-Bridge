@@ -5,14 +5,16 @@ class Bridge {
     public function categories()
     {
     	$p_c = new Page_category();
+    	$p_c->order_by('order');
     	$p_c->where('active', 1);
 		return $p_c->get();
     }
     
     public function pages()
     {
-    	$p_c = new Page();
-		return $p_c->get();
+    	$p = new Page();
+    	$p->order_by('order');
+		return $p->get();
     }
     
     public function category_pages()
