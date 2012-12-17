@@ -335,6 +335,50 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function add_category()
+	{
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$footer = array(
+			'javascript' => '$("#page_content").markItUp(markdownSettings);'
+		);
+
+		$a = new Application();
+
+		$data['db_apps'] = $a->order_by('name')->get();
+
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('category_title', 'Category Title', 'required');
+		if ($this->form_validation->run())
+		{
+			$p_c = new Page_category();
+			$p_c->title = $this->input->post('category_title');
+			$p_c->slug = $this->input->post('category_slug');
+			$p_c->order = 0;
+			$p_c->active = (bool) $this->input->post('category_active');
+			$p_c->icon = $this->input->post('category_icon');
+			$p_c->save();
+			$this->session->set_flashdata('message', 'Page updated');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('admin/page_categories');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_category_add', $data);
+			$this->load->view('inc/foot', $footer);
+		}
+	}
+
 	public function page_category($id = NULL)
 	{
 		if($id === NULL)
@@ -468,10 +512,6 @@ class Admin extends CI_Controller {
 
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-
-		$p = new Page();
-		$p->where('id', $id);
-		$pages = $p->get();
 
 		$header = array(
 			'page' => 'admin',
