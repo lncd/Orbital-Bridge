@@ -41,5 +41,4 @@
 	</tbody>
 </table>
 
-<a class="btn" href="<?php echo site_url('admin/page_categories/order'); ?>"><i class="icon-list-ol"></i> Reorder Categories</a>
-<a class="btn btn-small btn-success" href="<?php echo site_url('admin/category/add'); ?>"><i class="icon-plus"></i> Add Category</a>
+<p><a class="btn btn-success" href="<?php echo site_url('admin/category/add'); ?>"><i class="icon-plus"></i> Add Category</a> <a class="btn" href="<?php echo site_url('admin/page_categories/order'); ?>"><i class="icon-list-ol"></i> Reorder Categories</a></p>
