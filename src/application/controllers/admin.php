@@ -203,9 +203,9 @@ class Admin extends CI_Controller {
 
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('page_title', 'Page Title', 'required');
+		$this->form_validation->set_rules('page_title', 'page_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page.title]');
+		$this->form_validation->set_rules('page_slug', 'page_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page.slug]');
 		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
-		$this->form_validation->set_rules('page_slug', 'Page URL', 'required');
 
 		if ($this->form_validation->run())
 		{
@@ -356,7 +356,10 @@ class Admin extends CI_Controller {
 
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('category_title', 'Category Title', 'required');
+		$this->form_validation->set_rules('category_title', 'category_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.title]');
+		$this->form_validation->set_rules('category_slug', 'category_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.slug]');
+
+
 		if ($this->form_validation->run())
 		{
 			$p_c = new Page_category();
@@ -436,8 +439,8 @@ class Admin extends CI_Controller {
 		$data['pages'] = $this->bridge->pages();
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('category_title', 'Category Title', 'required');
-		$this->form_validation->set_rules('category_slug', 'Category URL', 'required');
+		$this->form_validation->set_rules('category_title', 'category_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.title]');
+		$this->form_validation->set_rules('category_slug', 'category_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.slug]');
 
 		$c = new Page_category();
 		$c->where('id', $id)->get();
