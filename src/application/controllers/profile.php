@@ -43,6 +43,8 @@ class Profile extends CI_Controller {
 				$ep_years[] = '{ y: \'' . $year . '\', a: ' . $value . ' }';
 			}
 			
+			$ep_years = ksort($ep_years);
+			
 			$ep_types = array();
 			
 			foreach ($eprints_data->results->types as $type => $value)
@@ -50,6 +52,8 @@ class Profile extends CI_Controller {
 				$data['eprints_types'] = TRUE;
 				$ep_types[] = '{ label: \'' . $type . '\', value: ' . $value . ' }';
 			}
+			
+			$ep_types = asort($ep_types);
 			
 			if ($data['eprints_years'] OR $data['eprints_types'])
 			{
