@@ -39,3 +39,5 @@
 	?>
 	</tbody>
 </table>
+
+<a class="btn btn-small btn-success" href="<?php echo site_url('admin/page/add'); ?>"><i class="icon-plus"></i> Add Page</a>

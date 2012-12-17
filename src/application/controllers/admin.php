@@ -228,6 +228,53 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function add_page()
+	{
+		$p = new Page();
+
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$footer = array(
+			'javascript' => '$("#page_content").markItUp(markdownSettings);'
+		);
+
+		$a = new Application();
+
+		$data['db_apps'] = $a->order_by('name')->get();
+
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('page_title', 'Page Title', 'required');
+		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
+		$this->form_validation->set_rules('page_slug', 'Page URL', 'required');
+
+		if ($this->form_validation->run())
+		{
+			$p = new Page();
+			$p->title = $this->input->post('page_title');
+			$p->content = $this->input->post('page_content');
+			$p->slug = $this->input->post('page_slug');
+			$p->save();
+			$this->session->set_flashdata('message', 'Page updated');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('admin/pages');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_add', $data);
+			$this->load->view('inc/foot', $footer);
+		}
+	}
+
 	public function delete_page($id = NULL)
 	{
 		if($id === NULL)
@@ -452,6 +499,66 @@ class Admin extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/page_category_delete', $data);
 			$this->load->view('inc/foot');
+		}
+	}
+
+	public function order_page_categories()
+	{
+		$c = new Page_category();
+		$categories = $c->get();
+
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+
+		$header = array(
+			'page' => 'admin',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+
+		//The javscript for the sortable list of pages.
+		$footer = array(
+			'javascript' => '$(function() {
+				$( "#sortable1" ).sortable({
+					connectWith: ".connectedSortable",
+						update: function( event, ui ) {
+						$("#pages_list").val($("#sortable1").sortable("toArray"));
+					}
+				}).disableSelection();	
+			});'
+		);
+
+		$a = new Application();
+
+		$data['categories'] = $this->bridge->categories();
+
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('pages_list', 'Pages List', 'required');
+		if ($this->form_validation->run())
+		{
+			$categories_array = explode(',', $this->input->post('pages_list'));
+			$order = 1;
+			foreach($categories_array as $category)
+			{
+				$category_object = new Page_category();
+				$category_object->where('id', $category)->get();
+				$category_object->order = $order;
+				$category_object->save();
+				$order++;				
+			}
+			
+			$c->save();
+			
+			$this->session->set_flashdata('message', 'Category updated');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('admin/page_categories');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/page_categories_order', $data);
+			$this->load->view('inc/foot', $footer);
 		}
 	}
 
