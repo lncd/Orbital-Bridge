@@ -31,7 +31,7 @@
 	?>
 	
 	
-	<p>You reorder categories by dragging and dropping.</p>
+	<p>You can reorder categories by dragging and dropping.</p>
 
 	<div class="row">
 		<div class="span6">
