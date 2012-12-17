@@ -13,7 +13,6 @@ class Bridge {
     public function pages()
     {
     	$p = new Page();
-    	$p->order_by('order');
 		return $p->get();
     }
     
