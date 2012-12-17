@@ -102,7 +102,7 @@
 		<?php
 		
 		echo '<h4>In Category</h4>
-		<ul id="sortable1" class="connectedSortable">';
+		<ul id="sortable1" class="connectedSortable sortable_item">';
 		
 		foreach($pages as $page)
 		{		
@@ -124,7 +124,7 @@
 		
 		<?php
 		echo '<h4>Available</h4>
-		<ul id="sortable2" class="connectedSortable">';
+		<ul id="sortable2" class="connectedSortable sortable_item">';
 		
 		foreach($pages as $page)
 		{		

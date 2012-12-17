@@ -39,7 +39,7 @@
 		<?php
 		
 		echo '<h4>Categories</h4>
-		<ul id="sortable1" class="connectedSortable">';
+		<ul id="sortable1" class="connectedSortable sortable_item">';
 		
 		foreach($categories as $category)
 		{		
