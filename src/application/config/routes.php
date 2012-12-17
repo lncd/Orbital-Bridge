@@ -50,6 +50,8 @@ $route['wizard/(:any)'] = "wizard/view/$1";
 $route['dmp'] = "dmp";
 $route['admin'] = "admin";
 $route['admin/(:any)'] = "admin/$1";
+$route['admin/page/add'] = "admin/add_page";
+$route['admin/page_categories/order'] = "admin/order_page_categories";
 
 $route['profile'] = 'profile';
 

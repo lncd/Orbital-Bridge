@@ -18,6 +18,8 @@
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700" rel="stylesheet" type="text/css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/smoothness/jquery-ui-1.9.2.custom.min.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/orbital.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/style.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/markdown/style.css">
 
 	<!--[if (lt IE 9) & (!IEMobile)]>
 		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/ie.min.css">

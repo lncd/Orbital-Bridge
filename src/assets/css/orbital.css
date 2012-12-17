@@ -4,7 +4,7 @@
 	min-height: 20px;
 	}
 
-ul, li {
+.sortable_item {
     list-style-type: none;
     margin: 0;
     }
