@@ -520,8 +520,7 @@ class Admin extends CI_Controller {
 		$footer = array(
 			'javascript' => '$(function() {
 				$( "#sortable1" ).sortable({
-					connectWith: ".connectedSortable",
-						update: function( event, ui ) {
+					update: function( event, ui ) {
 						$("#pages_list").val($("#sortable1").sortable("toArray"));
 					}
 				}).disableSelection();	

@@ -58,14 +58,19 @@
 		'class'			=> 'input-medium'
 	);
 
-	echo '<div class="control-group">';
-	echo form_label('Page URL', 'page_slug', array('class' => 'control-label'));
-	echo '<div class="controls">';
-	echo '<div class = "input-prepend"><span class="add-on">' . site_url('page') . '/</span>';
-	echo form_input($form_slug);
-	echo '</div>';
-	echo '<span class="help-block">The page URL is used to view the page.</span>';
-	echo '</div></div>';
+	if (! (bool) $page_data->protected)
+	{
+
+		echo '<div class="control-group">';
+		echo form_label('Page URL', 'page_slug', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo '<div class = "input-prepend"><span class="add-on">' . site_url() . '</span>';
+		echo form_input($form_slug);
+		echo '</div>';
+		echo '<span class="help-block">The page URL is used to view the page.</span>';
+		echo '</div></div>';
+		
+	}
 
 	echo '<div class="form-actions">';
 	echo '<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>';

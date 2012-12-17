@@ -33,28 +33,19 @@
 	
 	<p>You can reorder categories by dragging and dropping.</p>
 
-	<div class="row">
-		<div class="span6">
-
-		<?php
-		
-		echo '<h4>Categories</h4>
-		<ul id="sortable1" class="connectedSortable sortable_item">';
-		
-		foreach($categories as $category)
-		{		
-			echo '<li class="ui-state-highlight" id="' . $category->id . '">' . $category->title . '</li>';	
-		}
-		
-		echo '</ul>';
-		
-		?>
-		
-		</div>
-		<div class="span6">
-				
-		</div>
-	</div>
+	<?php
+	
+	echo '<h4>Categories</h4>
+	<ul id="sortable1" class="connectedSortable sortable_item">';
+	
+	foreach($categories as $category)
+	{		
+		echo '<li class="ui-state-highlight" id="' . $category->id . '">' . $category->title . '</li>';	
+	}
+	
+	echo '</ul>';
+	
+	?>
 	
 	<?php
 	
