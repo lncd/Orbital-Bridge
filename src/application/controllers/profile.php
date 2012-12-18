@@ -26,7 +26,7 @@ class Profile extends CI_Controller {
 		
 		$data['eprints_research_total'] = FALSE;
 		
-		if ($eprints_stats = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'] . 'eprints/stats?oauth_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_id')))
+		if ($eprints_stats = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'] . 'eprints/stats?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_id')))
 		{
 			
 			$eprints_data = json_decode($eprints_stats);
