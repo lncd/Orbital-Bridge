@@ -19,10 +19,51 @@
 <h2><i class="icon-dashboard"></i> Research Overview</h2>
 
 <div class="alert alert-info">
-	<strong>Note:</strong> This data is currently based on a best guess, and may not be entirely accurate. We will be improving the accuracy of this data over the course of the Orbital project.
+	<strong>Note:</strong> This data is currently based on a best guess, and may not be entirely accurate. We will be improving the accuracy of this data over the course of the Orbital project. This data is collected from the University's ePrints repository, and is not collected in real-time. There may be a delay in new publications appearing.
 </div>
 
-<p class="lead">You have <b><?php echo $eprints_research_total; ?></b> publications in ePrints.</p>
+<div class="row">
+
+	<div class="span4">
+	
+		<div class="xwell">
+	
+			<h4>Total Publications</h4>
+		
+			<p class="bignumber"><?php echo number_format($eprints_research_total); ?></p>
+		
+		</div>
+	
+	</div>
+
+	<div class="span4">
+	
+		<div class="xwell">
+	
+			<h4>Total Views</h4>
+		
+			<p><span class="bignumber"><?php echo number_format($eprints_views); ?></span></p>
+
+		
+		</div>
+	
+	</div>
+	
+	<div class="span4">
+	
+		<div class="xwell">
+	
+			<h4>Views This Month</h4>
+		
+			<p><span class="bignumber"><?php echo number_format($eprints_views_month); ?></span><span class="subnumber"> (<?php echo number_format($eprints_views_month_prev); ?> last month)</span></p>
+		
+		</div>
+	
+	</div>
+
+</div>
+
+<hr>
 
 <?php if($eprints_years OR $eprints_types): ?>
 
@@ -33,7 +74,7 @@
 		<h4>Publications by Year</h4>
 		
 		<?php if ($eprints_years): ?>
-		<div id="eprints-output-history" style="width:100%; height:300px;"></div>
+		<div id="eprints-output-history" style="width:100%; height:250px;"></div>
 		<?php else: ?>
 		<p>There isn't enough data available to display your publication history.</p>
 		<?php endif; ?>
@@ -45,7 +86,7 @@
 		<h4>Type of Publication</h4>
 		
 		<?php if ($eprints_types): ?>
-		<div id="eprints-types" style="width:100%; height:300px;"></div>
+		<div id="eprints-types" style="width:100%; height:250px;"></div>
 		<?php else: ?>
 		<p>There isn't enough data available to display the types of publications you have in ePrints.</p>
 		<?php endif; ?>
@@ -56,5 +97,8 @@
 
 <?php 
 endif;
+?>
+
+<?php
 endif;
 ?>
