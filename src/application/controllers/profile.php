@@ -34,10 +34,35 @@ class Profile extends CI_Controller {
 			$data['eprints_research_total'] = $eprints_data->results->total;
 			$data['eprints_years'] = FALSE;
 			$data['eprints_types'] = FALSE;
+			$data['eprints_views'] = $eprints_data->results->views->total;
+			
+			$v_year = date('Y', strtotime('first day of this month'));
+			$v_month = date('m', strtotime('first day of this month'));
+			
+			$v_year_prev = date('Y', strtotime('first day of last month'));
+			$v_month_prev = date('m', strtotime('first day of last month'));
+			
+			if (isset($eprints_data->results->views->breakdown->{$v_year}->{$v_month}))
+			{
+				$data['eprints_views_month'] = $eprints_data->results->views->breakdown->{$v_year}->{$v_month};
+			}
+			else
+			{
+				$data['eprints_views_month'] = 0;
+			}
+			
+			if (isset($eprints_data->results->views->breakdown->{$v_year}->{$v_month}))
+			{
+				$data['eprints_views_month_prev'] = $eprints_data->results->views->breakdown->{$v_year_prev}->{$v_month_prev};
+			}
+			else
+			{
+				$data['eprints_views_month_prev'] = 0;
+			}
 			
 			$ep_years = array();
 			
-			$stats_years = (array) $eprints_data->results->years;
+			$stats_years = (array) $eprints_data->results->publication_years;
 			
 			ksort($stats_years);
 			
