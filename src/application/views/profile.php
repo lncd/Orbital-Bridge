@@ -26,38 +26,25 @@
 
 	<div class="span4">
 	
-		<div class="xwell">
+		<h4>Total Publications</h4>
 	
-			<h4>Total Publications</h4>
-		
-			<p class="bignumber"><?php echo number_format($eprints_research_total); ?></p>
-		
-		</div>
+		<p class="bignumber"><?php echo number_format($eprints_research_total); ?></p>
 	
 	</div>
 
 	<div class="span4">
 	
-		<div class="xwell">
+		<h4>Total Views</h4>
 	
-			<h4>Total Views</h4>
-		
-			<p><span class="bignumber"><?php echo number_format($eprints_views); ?></span></p>
-
-		
-		</div>
+		<p><span class="bignumber"><?php echo number_format($eprints_views); ?></span></p>
 	
 	</div>
 	
 	<div class="span4">
 	
-		<div class="xwell">
+		<h4>Views This Month</h4>
 	
-			<h4>Views This Month</h4>
-		
-			<p><span class="bignumber"><?php echo number_format($eprints_views_month); ?></span><span class="subnumber"> (<?php echo number_format($eprints_views_month_prev); ?> last month)</span></p>
-		
-		</div>
+		<p><span class="bignumber"><?php echo number_format($eprints_views_month); ?></span><span class="subnumber"> (<?php echo number_format($eprints_views_month_prev); ?> last month)</span></p>
 	
 	</div>
 

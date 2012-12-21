@@ -48,6 +48,10 @@ $route['wizard'] = "wizard/view/start";
 $route['wizard/(:any)'] = "wizard/view/$1";
 
 $route['dmp'] = "dmp";
+
+$route['overview'] = "overview";
+$route['overview/(:any)'] = "overview/$1";
+
 $route['admin'] = "admin";
 $route['admin/(:any)'] = "admin/$1";
 $route['admin/page/add'] = "admin/add_page";
