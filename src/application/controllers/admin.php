@@ -529,6 +529,7 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
+			$this->form_validation->set_message('category_title_check', 'This category title is already in use.');
 			return FALSE;
 		}
 	}
@@ -544,6 +545,7 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
+			$this->form_validation->set_message('category_slug_check', 'This category URL is already in use');
 			return FALSE;
 		}
 	}
