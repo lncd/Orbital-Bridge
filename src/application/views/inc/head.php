@@ -20,6 +20,7 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/orbital.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/style.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/markdown/style.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gantt.css">
 
 	<!--[if (lt IE 9) & (!IEMobile)]>
 		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/ie.min.css">
