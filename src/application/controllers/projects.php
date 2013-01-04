@@ -25,22 +25,46 @@ class Projects extends CI_Controller {
 		
 		foreach ($projects->results as $project)
 		{
-			if ($project->end_date_unix > time())
+			if (isset($project->end_date_unix) AND $project->end_date_unix !== NULL)
 			{
-				$projects_active[] = $project;
-				$gantt_array[] = '{
-				"name": "' . $project->title . '",
-				"values": [{
-					"from": "/Date(' . $project->start_date_unix * 1000 . ')/",
-					"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
-					"desc": "' . $project->title . '",
-					"label": "' . $project->title . '",
-					"customClass": "ganttRed"}
+				if ($project->end_date_unix > time())
+				{
+					$projects_active[] = $project;
+					$gantt_array[] = '{
+					"name": "' . $project->title . '",
+					"values": [{
+						"from": "/Date(' . $project->start_date_unix * 1000 . ')/",
+						"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
+						"desc": "' . $project->title . '<br>Starts: ' . $project->start_date . '<br>Ends: ' . $project->end_date . '",
+						"label": "' . $project->title . '",
+						}
 					]}';
+				}
+				else
+				{
+					$projects_inactive[] = $project;
+				}
 			}
 			else
 			{
-				$projects_inactive[] = $project;
+				if ($project->end_date_unix > time())
+				{
+					$projects_active[] = $project;
+					$gantt_array[] = '{
+					"name": "' . $project->title . '",
+					"values": [{
+						"from": "/Date(' . $project->start_date_unix * 1000 . ')/",
+						"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
+						"desc": "' . $project->title . '<br>Starts: ' . $project->start_date . '<br>Ends: ' . $project->end_date . '",
+						"label": "' . $project->title . '",
+						"customClass": "barFade"
+						}
+					]}';
+				}
+				else
+				{
+					$projects_inactive[] = $project;
+				}
 			}
 		}
 		

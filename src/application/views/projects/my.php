@@ -36,14 +36,14 @@
 		
 		<table id="inactive" class="table table-bordered table-striped" style="display:none">
 			<tbody>
-			<?php
-				foreach($inactive as $project)
-				{
-					echo '<tr>';
-					echo "<td><a href = '#'>" . $project->title . '</a></td>';
-					echo '</tr>';
-				}
-			?>
+				<?php
+					foreach($inactive as $project)
+					{
+						echo '<tr>';
+						echo "<td><a href = '#'>" . $project->title . '</a></td>';
+						echo '</tr>';
+					}
+				?>
 			</tbody>
 		</table>
 	</div>
