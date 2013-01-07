@@ -4,7 +4,6 @@ class Projects extends CI_Controller {
 	
 	public function my()
 	{
-	
 		if (!$this->session->userdata('access_token'))
 		{
 			redirect('signin');
@@ -111,6 +110,11 @@ class Projects extends CI_Controller {
 	
 	public function project($project_id)
 	{
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+		
 		$projects = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects/id/' . $project_id . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
 		
 		if ($http_response_header[0] === 'HTTP/1.0 404 Not Found')

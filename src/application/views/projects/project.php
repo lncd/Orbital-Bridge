@@ -34,16 +34,18 @@
 	<div class="span8">
 		<h3>Project Lead</h3>
 		<ul class="nav nav-pills nav-stacked">
-			<li>Project Lead</li>
-			<li>dfghjk</li>
+			<li><a href="#">Name</a></li>
+			<li><a href="#">Name</a></li>
+			<li><a href="#">Name</a></li>
 		</ul>
 	</div>
 
 	<div class="span4">
 		<h3>Other Links</h3>
 		<ul class="nav nav-pills nav-stacked">
-			<li>Other Links</li>
-			<li>dfghjk</li>
+			<li><a href="#">Other Links</a></li>
+			<li><a href="#">Other Links</a></li>
+			<li><a href="#">Other Links</a></li>
 		</ul>
 	</div>
 </div>
