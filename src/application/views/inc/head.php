@@ -135,8 +135,8 @@
 			<div class="container">
 			
 			<?php
-			if($this->session->flashdata('message'))
-			{
-				echo '<div class="alert alert-' . $this->session->flashdata('message_type') . '">' . $this->session->flashdata('message') . '</div>'; 
-			}
+				if($this->session->flashdata('message'))
+				{
+					echo '<div class="alert alert-' . $this->session->flashdata('message_type') . '">' . $this->session->flashdata('message') . '</div>'; 
+				}
 			?>

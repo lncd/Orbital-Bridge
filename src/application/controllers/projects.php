@@ -74,17 +74,16 @@ class Projects extends CI_Controller {
 			);
 					
 		$footer['javascript'] = '$("#inactive_button").click(function () {
-			$(\'#inactive\').toggle(\'blind\');
+				$(\'#inactive\').toggle(\'blind\');
 			});
 			
 			$("#projectsTimeline").gantt({
-			source: [' .implode(',', $gantt_array) . '],
-			scale: "weeks",
-			minScale: "weeks",
-			maxScale: "months"
-});
-
-';
+				source: [' .implode(',', $gantt_array) . '],
+				scale: "weeks",
+				minScale: "weeks",
+				maxScale: "months"
+			});
+			';
 		
 		$this->load->view('inc/head', $header);
 		$this->load->view('projects/my', $data);
@@ -107,6 +106,34 @@ class Projects extends CI_Controller {
 		
 		$this->load->view('inc/head', $header);
 		$this->load->view('projects/start');
+		$this->load->view('inc/foot');
+	}
+	
+	public function project($project_id)
+	{
+		$projects = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects/id/' . $project_id . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
+		
+		if ($http_response_header[0] === 'HTTP/1.0 404 Not Found')
+        {
+        	show_404();
+        }
+        else
+        {
+	        $projects = json_decode($projects);
+        }
+		
+		$data = array(
+			'project' => $projects->result
+			);
+			
+		$header = array(
+			'page' => 'projects',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$this->load->view('inc/head', $header);
+		$this->load->view('projects/project', $data);
 		$this->load->view('inc/foot');
 	}
 	

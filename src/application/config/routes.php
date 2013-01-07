@@ -60,8 +60,8 @@ $route['admin/category/add'] = "admin/add_category";
 
 $route['profile'] = 'profile';
 
-$route['projects'] = 'projects';
-$route['projects/(:any)'] = "projects/$1";
+$route['projects'] = 'projects/my';
+$route['projects/(:any)'] = "projects/project/$1";
 
 // Magic redirections!
 
