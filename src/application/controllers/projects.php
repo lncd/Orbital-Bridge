@@ -18,7 +18,7 @@ class Projects extends CI_Controller {
 		$gantt_array = array();
 		
 		$projects = json_decode(file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_id')));
-		
+
 		$projects_active = array();
 		$projects_inactive = array();
 		
@@ -29,6 +29,15 @@ class Projects extends CI_Controller {
 			if ($project->end_date_unix > time() OR $project->end_date_unix === NULL)
 			{
 				$projects_active[] = $project;
+				if ($project->end_date_unix === NULL)
+				{
+					$project->end_date_unix = time() + 604800;
+					$class = 'barFade';
+				}
+				else
+				{
+					$class = '';
+				}
 				$gantt_array[] = '{
 				"name": "' . $project->title . '",
 				"values": [{
@@ -36,6 +45,7 @@ class Projects extends CI_Controller {
 					"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
 					"desc": "' . $project->title . '<br>Starts: ' . $project->start_date . '<br>Ends: ' . $project->end_date . '",
 					"label": "' . $project->title . '",
+					"customClass": "' . $class . '"
 					}
 				]}';
 			}
