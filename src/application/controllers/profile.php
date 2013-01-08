@@ -37,10 +37,10 @@ class Profile extends CI_Controller {
 			$data['eprints_views'] = $eprints_data->results->views->total;
 			
 			$v_year = date('Y', strtotime('first day of this month'));
-			$v_month = date('m', strtotime('first day of this month'));
+			$v_month = date('n', strtotime('first day of this month'));
 			
 			$v_year_prev = date('Y', strtotime('first day of last month'));
-			$v_month_prev = date('m', strtotime('first day of last month'));
+			$v_month_prev = date('n', strtotime('first day of last month'));
 			
 			if (isset($eprints_data->results->views->breakdown->{$v_year}->{$v_month}))
 			{
