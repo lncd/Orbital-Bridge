@@ -104,6 +104,42 @@ class Projects extends CI_Controller {
 		$this->load->view('inc/foot');
 	}
 	
+	public function create_unfunded()
+	{	
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+		
+		$header = array(
+			'page' => 'projects',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('project_title', 'project_title', 'trim|required|max_length[255]|min_length[3]');
+		$this->form_validation->set_rules('project_description', 'Project Description', 'required');
+
+		if ($this->form_validation->run())
+		{
+			$this->session->set_flashdata('message', 'Project created successfully! (Project not really created, this is just a test!)');
+			$this->session->set_flashdata('message_type', 'success');
+
+			redirect('projects');
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/create_unfunded');
+			$this->load->view('inc/foot');
+		}
+		
+	}
+	
 	public function project($project_id)
 	{
 		if (!$this->session->userdata('access_token'))

@@ -19,7 +19,8 @@
 		
 		<p>You can start a new unfunded project from within Orbital, or import information about a funded project you've already created directly from the <a href="http://ams.lincoln.ac.uk">Awards Management System</a>.</p>
 		
-		<p><a href="<?php echo site_url('projects/start'); ?>" class="btn btn-large btn-primary"><i class="icon-arrow-right"></i> Next</a></p>
+			<a href="<?php echo site_url('projects/start'); ?>" class="btn btn-large btn-primary disabled"><i class="icon-arrow-right"></i> Import from AMS</a>
+			<a href="<?php echo site_url('projects/create_unfunded'); ?>" class="btn btn-large"><i class="icon-arrow-right"></i> Continue new unfunded project</a>
 		
 	</div>
 			

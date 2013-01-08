@@ -40,7 +40,7 @@
 
 <?php endif; ?>
 		
-<p><a class="btn btn-success" href="#"><i class="icon-plus"></i> Add New Project</a></p>
+<p><a class="btn btn-success" href="projects/start"><i class="icon-plus"></i> Add New Project</a></p>
 
 <?php if (count($active) > 0): ?>
 
