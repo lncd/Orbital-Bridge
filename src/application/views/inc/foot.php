@@ -45,6 +45,7 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/morris.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/markitup.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/markitup/markdown.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery-gantt.min.js"></script>
 	
 	<script type="text/javascript">
 		var uvOptions = {};
