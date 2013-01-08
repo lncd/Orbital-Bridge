@@ -6,6 +6,34 @@
 
 </div>
 
+<div class="row">
+
+	<div class="span4">
+	
+		<h4>Total Projects</h4>
+	
+		<p class="bignumber"><?php echo number_format($total_projects); ?></p>
+	
+	</div>
+
+	<div class="span4">
+	
+		<h4>Current Projects</h4>
+	
+		<p><span class="bignumber"><?php echo number_format($total_current_projects); ?></span></p>
+	
+	</div>
+	
+	<div class="span4">
+	
+		<h4>Total Funding (Sterling)</h4>
+	
+		<p><span class="bignumber">&pound;<?php echo number_format($total_funding); ?></span></p>
+	
+	</div>
+
+</div>
+
 <div id="projectsTimeline" class="gantt"></div>
 
 <div class="row">

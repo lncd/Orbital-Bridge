@@ -17,59 +17,45 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 		
-		$projects = json_decode(file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN']));
+		$projects = json_decode(file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_id')));
 		
 		$projects_active = array();
 		$projects_inactive = array();
 		
+		$total_funding = 0;
+		
 		foreach ($projects->results as $project)
 		{
-			if (isset($project->end_date_unix) AND $project->end_date_unix !== NULL)
+			if ($project->end_date_unix > time() OR $project->end_date_unix === NULL)
 			{
-				if ($project->end_date_unix > time())
-				{
-					$projects_active[] = $project;
-					$gantt_array[] = '{
-					"name": "' . $project->title . '",
-					"values": [{
-						"from": "/Date(' . $project->start_date_unix * 1000 . ')/",
-						"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
-						"desc": "' . $project->title . '<br>Starts: ' . $project->start_date . '<br>Ends: ' . $project->end_date . '",
-						"label": "' . $project->title . '",
-						}
-					]}';
-				}
-				else
-				{
-					$projects_inactive[] = $project;
-				}
+				$projects_active[] = $project;
+				$gantt_array[] = '{
+				"name": "' . $project->title . '",
+				"values": [{
+					"from": "/Date(' . $project->start_date_unix * 1000 . ')/",
+					"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
+					"desc": "' . $project->title . '<br>Starts: ' . $project->start_date . '<br>Ends: ' . $project->end_date . '",
+					"label": "' . $project->title . '",
+					}
+				]}';
 			}
 			else
 			{
-				if ($project->end_date_unix > time())
-				{
-					$projects_active[] = $project;
-					$gantt_array[] = '{
-					"name": "' . $project->title . '",
-					"values": [{
-						"from": "/Date(' . $project->start_date_unix * 1000 . ')/",
-						"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
-						"desc": "' . $project->title . '<br>Starts: ' . $project->start_date . '<br>Ends: ' . $project->end_date . '",
-						"label": "' . $project->title . '",
-						"customClass": "barFade"
-						}
-					]}';
-				}
-				else
-				{
-					$projects_inactive[] = $project;
-				}
+				$projects_inactive[] = $project;
+			}
+			
+			if ($project->funding !== NULL AND $project->funding->currency_name === 'Sterling')
+			{
+				$total_funding += $project->funding->amount;
 			}
 		}
 		
 		$data = array(
 			'active' => $projects_active,
-			'inactive' => $projects_inactive
+			'inactive' => $projects_inactive,
+			'total_projects' => count($projects_active) + count($projects_inactive),
+			'total_current_projects' => count($projects_active),
+			'total_funding' => $total_funding
 			);
 					
 		$footer['javascript'] = '$("#inactive_button").click(function () {
