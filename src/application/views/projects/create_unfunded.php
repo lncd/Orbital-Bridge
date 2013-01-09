@@ -59,6 +59,49 @@
 		echo form_textarea($form_description);
 		echo '<span class="help-block">You can use Markdown to add formatting to this project.</span>';
 		echo '</div></div>';
+		
+	
+		$form_project_type = array(
+			'name'		=> 'project_type',
+			'id'		=> 'project_type',
+			'value'		=> 'public'
+		);
+	
+		$project_type['funded'] = 'Funded';
+		$project_type['unfunded'] = 'No funding';
+	
+		echo '<div class="control-group">';
+		echo form_label('Project type', 'project_type', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_dropdown('project_type', $project_type, set_value('project_type', 'unfunded'), 'id="project_type" class="span4"');
+		echo '</div></div>';
+		
+		$form_project_funding_currency = array(
+			'name'		=> 'project_funding_currency',
+			'id'		=> 'project_funding_currency',
+			'value'		=> '1'
+		);
+
+		$funding_type['1'] = '&pound; (Sterling)';
+	
+		echo '<div class="control-group">';
+		echo form_label('Funding Currency', 'project_funding_currency', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_dropdown('project_funding_currency', $funding_type, set_value('project_funding_currency', '1'), 'id="project_funding_currency" class="span4"');
+		echo '</div></div>';
+	
+		$form_funding_amount = array(
+			'name'			=> 'project_funding_amount',
+			'id'			=> 'project_funding_amount',
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Funding Amount', 'project_funding_amount', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_funding_amount);
+		echo '</div></div>';
 	
 	
 		$form_start_date = array(
@@ -66,7 +109,7 @@
 			'required'   	=> 'required',
 			'id'			=> 'project_start_date',
 			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
+			'class'			=> 'input-xlarge datepicker'
 		);
 	
 		echo '<div class="control-group">';
@@ -79,7 +122,7 @@
 			'name'			=> 'project_end_date',
 			'id'			=> 'project_end_date',
 			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
+			'class'			=> 'input-xlarge datepicker'
 		);
 	
 		echo '<div class="control-group">';
@@ -98,4 +141,10 @@
 		
 	</div>
 			
+	<script>
+		$(document).ready(function() {
+			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+		});
+	</script>
+
 </div>

@@ -127,6 +127,32 @@ class Projects extends CI_Controller {
 
 		if ($this->form_validation->run())
 		{
+
+			$fields = '{
+				"title" : "' . $this->input->post('project_title') . '",' .
+				'"lead" : "' . $this->input->post('project_lead') . '",' .
+				'"description" : "' . $this->input->post('project_description') . '",' .
+				'"funded" : "';
+				
+				if ($this->input->post('project_type') === 'funded')
+				{
+					$fields .= '1",';
+				}
+				else
+				{
+					$fields .= '0",';
+				}			
+					
+				$fields .=
+				'"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
+				'"funding_amount" : "' . $this->input->post('project_funding_amount') . '",' .
+				'"start_date" : "' . $this->input->post('project_start_date') . '",' .
+				'"end_date" : "' . $this->input->post('project_end_date') . '"' .
+				'}';
+			
+			//POST to N2
+			$this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects', $fields, 'Bearer 123456'); //$access_token));
+			
 			$this->session->set_flashdata('message', 'Project created successfully! (Project not really created, this is just a test!)');
 			$this->session->set_flashdata('message_type', 'success');
 
@@ -174,6 +200,40 @@ class Projects extends CI_Controller {
 		$this->load->view('inc/foot');
 	}
 	
+
+	/**
+	 * Post CURL Request
+	 *
+	 * Sends the CURL request, performing the request sent by another function
+	 *
+	 * string $url     URL to POST CURL request
+	 * array  $fields  Fields send over CURL
+	 *
+	 * @return null
+	 * @access public
+	 */
+
+	public function post_curl_request($url, $fields, $access_token)
+	{
+		//open connection
+		$ch = curl_init();
+
+		//set the url, number of POST vars, POST data
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+		//curl_setopt($ch, CURLOPT_USERPWD, 'username' . ":" . 'password');
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $access_token));
+
+		//execute post
+		$result = curl_exec($ch);
+
+		//close connection
+		curl_close($ch);
+
+		return $result;
+	}
 }
 
 // EOF

@@ -54,7 +54,6 @@ class Auth extends CI_Controller {
             {
                 show_error('Something unexpected happened when you were signing in, and we couldn\'t complete the process. Sorry about that.');
             }
-
         }
 	}
 	
