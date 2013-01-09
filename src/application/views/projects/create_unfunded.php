@@ -25,10 +25,24 @@
 		);
 	
 		echo '<div class="control-group">';
-		echo form_label('Project Title', 'project_title', array('class' => 'control-label'));
+		echo form_label('Title', 'project_title', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_title);
-		echo '<span class="help-block">This is the project title, as appears in the navigation bar.</span>';
+		echo '</div></div>';
+	
+	
+		$form_lead = array(
+			'name'			=> 'project_lead',
+			'required'   	=> 'required',
+			'id'			=> 'project_lead',
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Lead', 'project_lead', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_lead);
 		echo '</div></div>';
 	
 		$form_description = array(
@@ -41,7 +55,7 @@
 		);
 	
 		echo '<div class="control-group">';
-		echo form_label('Project Description', 'project_description', array('class' => 'control-label'));
+		echo form_label('Description', 'project_description', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_textarea($form_description);
 		echo '<span class="help-block">You can use Markdown to add formatting to this project.</span>';
@@ -57,7 +71,7 @@
 		);
 	
 		echo '<div class="control-group">';
-		echo form_label('Project Start Date', 'project_start_date', array('class' => 'control-label'));
+		echo form_label('Start Date', 'project_start_date', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_start_date);
 		echo '</div></div>';
@@ -70,7 +84,7 @@
 		);
 	
 		echo '<div class="control-group">';
-		echo form_label('Project End Date', 'project_end_date', array('class' => 'control-label'));
+		echo form_label('End Date', 'project_end_date', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_end_date);
 		echo '</div></div>';
