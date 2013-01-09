@@ -153,7 +153,7 @@ class Projects extends CI_Controller {
 			//POST to N2
 			$this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects', $fields, 'Bearer 123456'); //$access_token));
 			
-			$this->session->set_flashdata('message', 'Project created successfully! (Project not really created, this is just a test!)');
+			$this->session->set_flashdata('message', 'Project created successfully! (Still in testing phase - you will not be able to see your project!)');
 			$this->session->set_flashdata('message_type', 'success');
 
 			redirect('projects');
