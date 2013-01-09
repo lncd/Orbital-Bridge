@@ -121,8 +121,9 @@ class Projects extends CI_Controller {
 		);
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('project_title', 'project_title', 'trim|required|max_length[255]|min_length[3]');
-		$this->form_validation->set_rules('project_description', 'Project Description', 'required');
+		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
+		$this->form_validation->set_rules('project_lead', 'Project Lead', 'trim|required|max_length[255]|min_length[3]');
+		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required|max_length[255]|min_length[3]');
 
 		if ($this->form_validation->run())
 		{
