@@ -26,7 +26,7 @@
 	
 	<div class="span4">
 	
-		<h4>Total Funding (Sterling)</h4>
+		<h4>Total Funding (Sterling Only)</h4>
 	
 		<p><span class="bignumber">&pound;<?php echo number_format($total_funding); ?></span></p>
 	

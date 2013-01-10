@@ -76,7 +76,7 @@
 		echo form_dropdown('project_type', $project_type, set_value('project_type', 'unfunded'), 'id="project_type" class="span4"');
 		echo '</div></div>';
 		
-		echo '<div id="funding_div">';
+		echo '<div id="funding_div" style="display:none">';
 		
 		$form_project_funding_currency = array(
 			'name'		=> 'project_funding_currency',

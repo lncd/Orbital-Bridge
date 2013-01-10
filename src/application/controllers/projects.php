@@ -124,10 +124,15 @@ class Projects extends CI_Controller {
 		$footer['javascript'] = '$(document).ready(function() {
 			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 			
-			$(\'#funding_div\').hide();
-			
 			$("#project_type").change(function () {
-				$(\'#funding_div\').toggle(\'blind\');
+				if ($("#project_type").val() == "funded")
+				{
+					$(\'#funding_div\').show(200, "swing");
+				}
+				else if ($("#project_type").val() == "unfunded")
+				{
+					$(\'#funding_div\').hide(200, "swing");
+				}
 			})
 			
 		});';
@@ -135,7 +140,7 @@ class Projects extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
 		$this->form_validation->set_rules('project_lead', 'Project Lead', 'trim|required|max_length[255]|min_length[3]');
-		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required|max_length[255]|min_length[3]');
+		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
 
 		if ($this->form_validation->run())
 		{
