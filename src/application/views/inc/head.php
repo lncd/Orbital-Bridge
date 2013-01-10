@@ -137,6 +137,11 @@
 			<?php
 				if($this->session->flashdata('message'))
 				{
-					echo '<div class="alert alert-' . $this->session->flashdata('message_type') . '">' . $this->session->flashdata('message') . '</div>'; 
+					$flashmessagetype =  $this->session->flashdata('message_type');
+					$flashmessage = $this->session->flashdata('message'); 
+				}
+				if(isset($flashmessage))
+				{
+					echo '<div class="alert alert-' . $flashmessagetype . '">' . $flashmessage . '</div>'; 
 				}
 			?>

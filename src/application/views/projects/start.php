@@ -17,10 +17,10 @@
 		
 		<p class="lead">Step 1: The Basics</p>
 		
-		<p>You can start a new unfunded project from within Orbital, or import information about a funded project you've already created directly from the <a href="http://ams.lincoln.ac.uk">Awards Management System</a>.</p>
+		<p>You can start a new unfunded project from within Orbital, or import information about a funded project you've already created directly from the <a href="http://ams.lincoln.ac.uk">Awards Management System</a>. For now, you can only add a research project manually.</p>
 		
-			<a href="<?php echo site_url('projects/start'); ?>" class="btn btn-large btn-primary disabled"><i class="icon-arrow-right"></i> Import from AMS</a>
-			<a href="<?php echo site_url('projects/create_unfunded'); ?>" class="btn btn-large"><i class="icon-arrow-right"></i> Create a new Research Project</a>
+			<!-- <a href="<?php echo site_url('projects/start'); ?>" class="btn btn-large btn-primary disabled"><i class="icon-arrow-right"></i> Import from AMS</a> -->
+			<a href="<?php echo site_url('projects/create_unfunded'); ?>" class="btn btn-large"><i class="icon-arrow-right"></i> Add Research Project</a>
 		
 	</div>
 			
