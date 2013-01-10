@@ -76,6 +76,8 @@
 		echo form_dropdown('project_type', $project_type, set_value('project_type', 'unfunded'), 'id="project_type" class="span4"');
 		echo '</div></div>';
 		
+		echo '<div id="funding_div">';
+		
 		$form_project_funding_currency = array(
 			'name'		=> 'project_funding_currency',
 			'id'		=> 'project_funding_currency',
@@ -103,6 +105,7 @@
 		echo form_input($form_funding_amount);
 		echo '</div></div>';
 	
+		echo '</div>';
 	
 		$form_start_date = array(
 			'name'			=> 'project_start_date',
@@ -140,11 +143,4 @@
 	?>
 		
 	</div>
-			
-	<script>
-		$(document).ready(function() {
-			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-		});
-	</script>
-
 </div>

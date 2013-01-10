@@ -120,6 +120,18 @@ class Projects extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
+							
+		$footer['javascript'] = '$(document).ready(function() {
+			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+			
+			$(\'#funding_div\').hide();
+			
+			$("#project_type").change(function () {
+				$(\'#funding_div\').toggle(\'blind\');
+			})
+			
+		});';
+		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
 		$this->form_validation->set_rules('project_lead', 'Project Lead', 'trim|required|max_length[255]|min_length[3]');
@@ -136,7 +148,9 @@ class Projects extends CI_Controller {
 				
 				if ($this->input->post('project_type') === 'funded')
 				{
-					$fields .= '1",';
+					$fields .= '1",	
+					"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
+					'"funding_amount" : "' . $this->input->post('project_funding_amount') . '",';
 				}
 				else
 				{
@@ -144,8 +158,6 @@ class Projects extends CI_Controller {
 				}			
 					
 				$fields .=
-				'"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
-				'"funding_amount" : "' . $this->input->post('project_funding_amount') . '",' .
 				'"start_date" : "' . $this->input->post('project_start_date') . '",' .
 				'"end_date" : "' . $this->input->post('project_end_date') . '"' .
 				'}';
@@ -162,7 +174,7 @@ class Projects extends CI_Controller {
 		{
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/create_unfunded');
-			$this->load->view('inc/foot');
+			$this->load->view('inc/foot', $footer);
 		}
 		
 	}
