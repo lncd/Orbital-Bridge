@@ -54,7 +54,7 @@ class Projects extends CI_Controller {
 				$projects_inactive[] = $project;
 			}
 			
-			if ($project->funding !== NULL AND $project->funding->currency_name === 'Sterling')
+			if ($project->funding !== NULL AND $project->funding->currency->name === 'Sterling')
 			{
 				$total_funding += $project->funding->amount;
 			}
@@ -134,12 +134,10 @@ class Projects extends CI_Controller {
 					$(\'#funding_div\').hide(200, "swing");
 				}
 			})
-			
 		});';
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
-		$this->form_validation->set_rules('project_lead', 'Project Lead', 'trim|required|max_length[255]|min_length[3]');
 		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
 
 		if ($this->form_validation->run())
@@ -147,7 +145,7 @@ class Projects extends CI_Controller {
 
 			$fields = '{
 				"title" : "' . $this->input->post('project_title') . '",' .
-				'"lead" : "' . $this->input->post('project_lead') . '",' .
+				'"lead" : "' . $this->session->userdata('user_id') . '",' .
 				'"description" : "' . $this->input->post('project_description') . '",' .
 				'"funded" : "';
 				
@@ -159,14 +157,24 @@ class Projects extends CI_Controller {
 				}
 				else
 				{
-					$fields .= '0",';
+					$fields .= '0",	
+					"currency_id" : null,' .
+					'"funding_amount" : null,';
 				}			
 					
 				$fields .=
-				'"start_date" : "' . $this->input->post('project_start_date') . '",' .
-				'"end_date" : "' . $this->input->post('project_end_date') . '"' .
-				'}';
-			
+				'"start_date" : "' . $this->input->post('project_start_date') . '",';
+				
+				if ($this->input->post('project_end_date'))
+				{
+					$fields .= '"end_date" : "' . $this->input->post('project_end_date') . '"';
+				}
+				else
+				{
+					$fields .= '"end_date" : null';
+				}
+				$fields .= '}';
+				
 			//POST to N2
 			$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects', $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
 			
@@ -229,6 +237,126 @@ class Projects extends CI_Controller {
 		$this->load->view('inc/foot');
 	}
 	
+	public function edit($project_id)
+	{
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+		
+		
+		$this->load->helper('form');
+		$this->load->library('form_validation');
+		
+		$projects = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects/id/' . $project_id . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
+		
+		if ($http_response_header[0] === 'HTTP/1.0 404 Not Found')
+        {
+        	show_404();
+        }
+        else
+        {
+	        $projects = json_decode($projects);
+        }
+		
+		$data = array(
+			'project' => $projects->result,
+			'project_id' => $project_id
+			);
+			
+		$header = array(
+			'page' => 'projects',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+								
+		$footer['javascript'] = '$(document).ready(function() {
+			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+			
+			$("#project_type").change(function () {
+				if ($("#project_type").val() == "funded")
+				{
+					$(\'#funding_div\').show(200, "swing");
+				}
+				else if ($("#project_type").val() == "unfunded")
+				{
+					$(\'#funding_div\').hide(200, "swing");
+				}
+			})
+		});';
+		
+		
+		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
+		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
+
+		if ($this->form_validation->run())
+		{
+
+			$fields = '{
+				"title" : "' . $this->input->post('project_title') . '",' .
+				'"lead" : "' . $this->session->userdata('user_id') . '",' .
+				'"description" : "' . $this->input->post('project_description') . '",' .
+				'"funded" : "';
+				
+				if ($this->input->post('project_type') === 'funded')
+				{
+					$fields .= '1",	
+					"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
+					'"funding_amount" : "' . $this->input->post('project_funding_amount') . '",';
+				}
+				else
+				{
+					$fields .= '0",
+					"currency_id" : null,' .
+					'"funding_amount" : null,';
+				}			
+					
+				$fields .=
+				'"start_date" : "' . $this->input->post('project_start_date') . '",';
+				
+				if($this->input->post('project_end_date'))
+				{
+					$fields .=
+					'"end_date" : "' . $this->input->post('project_end_date') . '"';
+				}
+				else
+				{
+					$fields .=
+					'"end_date" : null';
+				}
+				$fields .= '}';
+			
+			//POST to N2
+			
+			$response = json_decode($this->put_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+			
+			if ($response->error)
+			{
+				$header['flashmessage'] = $response->error_message;
+				$header['flashmessagetype'] = 'error';
+								
+				$this->load->view('inc/head', $header);
+				$this->load->view('projects/edit', $data);
+				$this->load->view('inc/foot', $footer);
+			}
+			else
+			{
+				$this->session->set_flashdata('message', 'Project created successfully! (Still in testing phase - you will not be able to see your project!)');
+				$this->session->set_flashdata('message_type', 'success');
+				
+				redirect('projects');
+			}
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/edit', $data);
+			$this->load->view('inc/foot', $footer);
+		}	
+	}
+	
 
 	/**
 	 * Post CURL Request
@@ -262,6 +390,39 @@ class Projects extends CI_Controller {
 		curl_close($ch);
 
 		return $result;
+	}
+	
+
+	/**
+	 * Put CURL Request
+	 *
+	 * Sends the CURL request, performing the request sent by another function
+	 *
+	 * string $url     URL to PUT CURL request
+	 * array  $fields  Fields send over CURL
+	 *
+	 * @return null
+	 * @access public
+	 */
+
+	public function put_curl_request($url, $fields, $access_token)
+	{
+		$ch = curl_init();
+		
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: ' . $access_token));
+		curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+		
+		curl_setopt($ch, CURLOPT_PUT, 1);
+		curl_setopt($ch, CURLOPT_BINARYTRANSFER, 1);
+		
+		curl_setopt($ch, CURLOPT_POST, count($fields));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+		$output = curl_exec($ch);
+		
+		return $output;
 	}
 }
 

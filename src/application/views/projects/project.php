@@ -22,7 +22,7 @@
 					if ($project->funded)
 					{
 						echo '<tr>';
-						echo '<td>Funding</td><td>' . $project->funding->currency_symbol . $project->funding->amount . ' (' .  $project->funding->currency_name . ')</td>';
+						echo '<td>Funding</td><td>' . $project->funding->currency->symbol . $project->funding->amount . ' (' .  $project->funding->currency->name . ')</td>';
 						echo '</tr>';
 					}
 				?>
@@ -32,12 +32,26 @@
 	</div>
 	
 	<div class="span8">
-		<h3>Project Lead</h3>
-		<ul class="nav nav-pills nav-stacked">
-			<li><a href="#">Name</a></li>
-			<li><a href="#">Name</a></li>
-			<li><a href="#">Name</a></li>
-		</ul>
+	
+	<h3>Project Team</h3>
+		<table class="table table-bordered table-striped">
+			<tbody>
+			
+				<?php
+					echo '<tr>';
+					echo '<td>Name</td><td>' . 'Project Lead' . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+					echo '<td>Name</td><td>' . 'Project Member' . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+					echo '<td>Name</td><td>' . 'Project Member' . '</td>';
+					echo '</tr>';
+				?>
+			
+			</tbody>
+		</table>
+	
 	</div>
 
 	<div class="span4">
@@ -48,4 +62,7 @@
 			<li><a href="#">Other Links</a></li>
 		</ul>
 	</div>
+	
 </div>
+
+<a href="<?php echo site_url('project/' . $project->id . '/edit'); ?>" class="btn btn"><i class="icon-pencil"></i> Edit</a>
