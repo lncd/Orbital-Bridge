@@ -204,10 +204,10 @@ class Admin extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 
-		$this->form_validation->set_rules('page_title', 'page_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|callback_page_title_edit_check[' . $pages->id . ']');
+		$this->form_validation->set_rules('page_title', 'page_title', 'trim|required|max_length[128]|min_length[1]|callback_page_title_edit_check[' . $pages->id . ']');
 		if ($pages->protected == 0)
 		{
-			$this->form_validation->set_rules('page_slug', 'page_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[pages.slug]');
+			$this->form_validation->set_rules('page_slug', 'page_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|callback_page_slug_edit_check[' . $pages->id . ']');
 		}
 		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
 
@@ -237,6 +237,22 @@ class Admin extends CI_Controller {
 		$p = new Page();
 		$p->where('id !=', $id);
 		$count_test = $p->where('title', $str)->count();
+		
+		if ($count_test === 0)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	public function page_slug_edit_check($str, $id)
+	{
+		$p = new Page();
+		$p->where('id !=', $id);
+		$count_test = $p->where('slug', $str)->count();
 		
 		if ($count_test === 0)
 		{
