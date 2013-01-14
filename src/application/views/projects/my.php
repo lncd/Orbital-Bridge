@@ -91,7 +91,7 @@ if (count($inactive) > 0):
 			foreach($inactive as $project)
 			{
 				echo '<tr>';
-				echo '<td><a href = ' . site_url('projects/' . $project->id) . '>' . $project->title . '</a></td>';
+				echo '<td><a href = ' . site_url('project/' . $project->id) . '>' . $project->title . '</a></td>';
 				echo '</tr>';
 			}
 		?>
