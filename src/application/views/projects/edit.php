@@ -103,7 +103,7 @@
 	
 		if (isset($project->funding->amount))
 		{
-			$funding_amount = $$project->funding->amount;
+			$funding_amount = $project->funding->amount;
 		}
 		else
 		{

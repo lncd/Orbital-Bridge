@@ -139,6 +139,7 @@ class Projects extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
 		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
+		$this->form_validation->set_rules('project_type', 'Project Type', 'valid_match[funded, unfunded)');
 
 		if ($this->form_validation->run())
 		{
@@ -189,7 +190,7 @@ class Projects extends CI_Controller {
 			}
 			else
 			{
-				$this->session->set_flashdata('message', 'Project created successfully! (Still in testing phase - you will not be able to see your project!)');
+				$this->session->set_flashdata('message', 'Project created! (Still in testing phase - you will not be able to see your project!)');
 				$this->session->set_flashdata('message_type', 'success');
 				
 				redirect('projects');
@@ -304,7 +305,7 @@ class Projects extends CI_Controller {
 				{
 					$fields .= '1",	
 					"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
-					'"funding_amount" : "' . $this->input->post('project_funding_amount') . '",';
+					'"funding_amount" : ' . $this->input->post('project_funding_amount') . ',';
 				}
 				else
 				{
@@ -328,9 +329,9 @@ class Projects extends CI_Controller {
 				}
 				$fields .= '}';
 			
-			//PUT to N2
+			//POST to N2
 			
-			$response = json_decode($this->put_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+			$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
 			
 			if ($response->error)
 			{
@@ -343,7 +344,7 @@ class Projects extends CI_Controller {
 			}
 			else
 			{
-				$this->session->set_flashdata('message', 'Project created successfully! (Still in testing phase - you will not be able to see your project!)');
+				$this->session->set_flashdata('message', 'Project updated!');
 				$this->session->set_flashdata('message_type', 'success');
 				
 				redirect('projects');
