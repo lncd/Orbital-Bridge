@@ -8,7 +8,16 @@ class Admin extends CI_Controller {
 
 		if (! $this->session->userdata('user_admin') === TRUE)
 		{
-			show_404();
+			$header = array(
+				'page' => 'admin',
+				'categories' => $this->bridge->categories(),
+				'category_pages' => $this->bridge->category_pages()
+			);
+
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/error');
+			$this->load->view('inc/foot');
+
 		}
 	}
 
