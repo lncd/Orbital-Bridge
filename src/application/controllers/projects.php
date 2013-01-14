@@ -105,7 +105,7 @@ class Projects extends CI_Controller {
 	}
 	
 	public function create_unfunded()
-	{	
+	{
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 		
@@ -328,7 +328,7 @@ class Projects extends CI_Controller {
 				}
 				$fields .= '}';
 			
-			//POST to N2
+			//PUT to N2
 			
 			$response = json_decode($this->put_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
 			
