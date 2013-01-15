@@ -391,7 +391,8 @@ class Projects extends CI_Controller {
 		);
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
+		$this->form_validation->set_rules('project_title', 'Project Title', 'callback_project_title_check[' . $projects->result->title . ']');
+		$this->form_validation->set_message('project_title_check', 'You did not type the correct project title');
 
 		if ($this->form_validation->run())
 		{			
@@ -425,6 +426,18 @@ class Projects extends CI_Controller {
 		}	
 	}
 	
+
+	public function project_title_check($str, $project_title)
+	{
+		if ($str == $project_title)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 
 	/**
 	 * Post CURL Request
