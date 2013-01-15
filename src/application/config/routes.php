@@ -62,6 +62,7 @@ $route['profile'] = 'profile';
 
 $route['projects'] = 'projects/my';
 $route['project/(:any)/edit'] = "projects/edit/$1";
+$route['project/(:any)/delete'] = "projects/delete/$1";
 $route['project/(:any)'] = "projects/project/$1";
 $route['projects/start'] = "projects/start";
 $route['projects/create_unfunded'] = "projects/create_unfunded";

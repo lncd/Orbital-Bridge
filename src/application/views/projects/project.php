@@ -37,8 +37,7 @@
 		<table class="table table-bordered table-striped">
 			<tbody>
 			
-				<?php
-					echo '<tr>';
+				<?php					echo '<tr>';
 					echo '<td>Name</td><td>' . 'Project Lead' . '</td>';
 					echo '</tr>';
 					echo '<tr>';
@@ -66,3 +65,4 @@
 </div>
 
 <a href="<?php echo site_url('project/' . $project->id . '/edit'); ?>" class="btn btn"><i class="icon-pencil"></i> Edit</a>
+<a href="<?php echo site_url('project/' . $project->id . '/delete'); ?>" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>
