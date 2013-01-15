@@ -75,7 +75,7 @@ class Projects extends CI_Controller {
 			$("#projectsTimeline").gantt({
 				source: [' .implode(',', $gantt_array) . '],
 				scale: "weeks",
-				minScale: "weeks",
+				minScale: "days",
 				maxScale: "months"
 			});
 			';
