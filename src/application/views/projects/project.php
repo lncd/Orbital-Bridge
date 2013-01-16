@@ -37,8 +37,9 @@
 		<table class="table table-bordered table-striped">
 			<tbody>
 			
-				<?php					echo '<tr>';
-					echo '<td>Name</td><td>' . 'Project Lead' . '</td>';
+				<?php
+					echo '<tr>';
+					echo '<td>Name</td><td>' . $project->project_lead->title . ' ' . $project->project_lead->name . '</td>';
 					echo '</tr>';
 					echo '<tr>';
 					echo '<td>Name</td><td>' . 'Project Member' . '</td>';
