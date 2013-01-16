@@ -222,20 +222,30 @@ class Projects extends CI_Controller {
         {
 	        $projects = json_decode($projects);
         }
-		
-		$data = array(
-			'project' => $projects->result
-			);
-			
+        
 		$header = array(
 			'page' => 'projects',
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
-		$this->load->view('inc/head', $header);
-		$this->load->view('projects/project', $data);
-		$this->load->view('inc/foot');
+        if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_id'))
+        {
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/unauthorised');
+			$this->load->view('inc/foot');
+        }
+		else
+		{
+			$data = array(
+				'project' => $projects->result
+				);
+				
+			
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/project', $data);
+			$this->load->view('inc/foot');
+		}
 	}
 	
 	public function edit($project_id)
