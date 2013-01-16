@@ -269,103 +269,113 @@ class Projects extends CI_Controller {
         {
 	        $projects = json_decode($projects);
         }
-		
-		$data = array(
-			'project' => $projects->result,
-			'project_id' => $project_id
-			);
-			
+        
 		$header = array(
 			'page' => 'projects',
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
-								
-		$footer['javascript'] = '$(document).ready(function() {
-			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-			
-			$("#project_type").change(function () {
-				if ($("#project_type").val() == "funded")
-				{
-					$(\'#funding_div\').show(200, "swing");
-				}
-				else if ($("#project_type").val() == "unfunded")
-				{
-					$(\'#funding_div\').hide(200, "swing");
-				}
-			})
-		});';
-		
-		
-		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
-		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
-
-		if ($this->form_validation->run())
-		{
-
-			$fields = '{
-				"title" : "' . $this->input->post('project_title') . '",' .
-				'"lead" : "' . $this->session->userdata('user_id') . '",' .
-				'"description" : "' . $this->input->post('project_description') . '",' .
-				'"funded" : "';
+		if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_id'))
+        {
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/unauthorised');
+			$this->load->view('inc/foot');
+        }
+        else
+        {
+			$data = array(
+				'project' => $projects->result,
+				'project_id' => $project_id
+				);
 				
-				if ($this->input->post('project_type') === 'funded')
-				{
-					$fields .= '1",	
-					"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
-					'"funding_amount" : ' . $this->input->post('project_funding_amount') . ',';
-				}
-				else
-				{
-					$fields .= '0",
-					"currency_id" : null,' .
-					'"funding_amount" : null,';
-				}			
-					
-				$fields .=
-				'"start_date" : "' . $this->input->post('project_start_date') . '",';
+			
+									
+			$footer['javascript'] = '$(document).ready(function() {
+				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
-				if($this->input->post('project_end_date'))
-				{
-					$fields .=
-					'"end_date" : "' . $this->input->post('project_end_date') . '"';
-				}
-				else
-				{
-					$fields .=
-					'"end_date" : null';
-				}
-				$fields .= '}';
+				$("#project_type").change(function () {
+					if ($("#project_type").val() == "funded")
+					{
+						$(\'#funding_div\').show(200, "swing");
+					}
+					else if ($("#project_type").val() == "unfunded")
+					{
+						$(\'#funding_div\').hide(200, "swing");
+					}
+				})
+			});';
 			
-			//POST to N2
 			
-			$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
-			
-			if ($response->error)
+			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+			$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
+			$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
+	
+			if ($this->form_validation->run())
 			{
-				$header['flashmessage'] = $response->error_message;
-				$header['flashmessagetype'] = 'error';
-								
+	
+				$fields = '{
+					"title" : "' . $this->input->post('project_title') . '",' .
+					'"lead" : "' . $this->session->userdata('user_id') . '",' .
+					'"description" : "' . $this->input->post('project_description') . '",' .
+					'"funded" : "';
+					
+					if ($this->input->post('project_type') === 'funded')
+					{
+						$fields .= '1",	
+						"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
+						'"funding_amount" : ' . $this->input->post('project_funding_amount') . ',';
+					}
+					else
+					{
+						$fields .= '0",
+						"currency_id" : null,' .
+						'"funding_amount" : null,';
+					}			
+						
+					$fields .=
+					'"start_date" : "' . $this->input->post('project_start_date') . '",';
+					
+					if($this->input->post('project_end_date'))
+					{
+						$fields .=
+						'"end_date" : "' . $this->input->post('project_end_date') . '"';
+					}
+					else
+					{
+						$fields .=
+						'"end_date" : null';
+					}
+					$fields .= '}';
+				
+				//POST to N2
+				
+				$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+				
+				if ($response->error)
+				{
+					$header['flashmessage'] = $response->error_message;
+					$header['flashmessagetype'] = 'error';
+									
+					$this->load->view('inc/head', $header);
+					$this->load->view('projects/edit', $data);
+					$this->load->view('inc/foot', $footer);
+				}
+				else
+				{
+					$this->session->set_flashdata('message', 'Project updated!');
+					$this->session->set_flashdata('message_type', 'success');
+					
+					redirect('projects');
+				}
+			}
+			else
+			{
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/edit', $data);
 				$this->load->view('inc/foot', $footer);
 			}
-			else
-			{
-				$this->session->set_flashdata('message', 'Project updated!');
-				$this->session->set_flashdata('message_type', 'success');
-				
-				redirect('projects');
-			}
 		}
-		else
-		{
-			$this->load->view('inc/head', $header);
-			$this->load->view('projects/edit', $data);
-			$this->load->view('inc/foot', $footer);
-		}	
 	}
 	
 	public function delete($project_id)
@@ -388,52 +398,62 @@ class Projects extends CI_Controller {
         {
 	        $projects = json_decode($projects);
         }
-		
-		$data = array(
-			'project' => $projects->result,
-			'project_id' => $project_id
-			);
-			
+        
 		$header = array(
 			'page' => 'projects',
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
 
-		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('project_title', 'Project Title', 'callback_project_title_check[' . $projects->result->title . ']');
-		$this->form_validation->set_message('project_title_check', 'You did not type the correct project title');
-
-		if ($this->form_validation->run())
-		{			
-			//DELETE to N2
-			
-			$fields = array(1, 2, 3);
-			$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
-			
-			if ($response->error)
+		if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_id'))
+        {
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/unauthorised');
+			$this->load->view('inc/foot');
+        }
+        else
+        {
+			$data = array(
+				'project' => $projects->result,
+				'project_id' => $project_id
+				);
+				
+	
+			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+			$this->form_validation->set_rules('project_title', 'Project Title', 'callback_project_title_check[' . $projects->result->title . ']');
+			$this->form_validation->set_message('project_title_check', 'You did not type the correct project title');
+	
+			if ($this->form_validation->run())
+			{			
+				//DELETE to N2
+				
+				$fields = array(1, 2, 3);
+				$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+				
+				if ($response->error)
+				{
+					$header['flashmessage'] = $response->error_message;
+					$header['flashmessagetype'] = 'error';
+									
+					$this->load->view('inc/head', $header);
+					$this->load->view('projects/delete', $data);
+					$this->load->view('inc/foot');
+				}
+				else
+				{
+					$this->session->set_flashdata('message', 'Project deleted');
+					$this->session->set_flashdata('message_type', 'success');
+					
+					redirect('projects');
+				}
+			}
+			else
 			{
-				$header['flashmessage'] = $response->error_message;
-				$header['flashmessagetype'] = 'error';
-								
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/delete', $data);
 				$this->load->view('inc/foot');
 			}
-			else
-			{
-				$this->session->set_flashdata('message', 'Project deleted');
-				$this->session->set_flashdata('message_type', 'success');
-				
-				redirect('projects');
-			}
 		}
-		else
-		{
-			$this->load->view('inc/head', $header);
-			$this->load->view('projects/delete', $data);
-			$this->load->view('inc/foot');
-		}	
 	}
 	
 
