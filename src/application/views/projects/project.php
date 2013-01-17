@@ -60,9 +60,16 @@
 	<div class="span4">
 		<h3>Other Links</h3>
 		<ul class="nav nav-pills nav-stacked">
-			<li><a href="#">Other Links</a></li>
-			<li><a href="#">Other Links</a></li>
-			<li><a href="#">Other Links</a></li>
+			<?php
+			if($project->ckan_uri !== 'https://ckan.lincoln.ac.uk/group/')
+			{
+				echo '<li><a href="' . $project->ckan_uri . '">' . $project->ckan_uri . '</a></li>';
+			}
+			else
+			{
+				echo '<li>None to display</li>';
+			}
+			?>
 		</ul>
 	</div>
 	
@@ -71,8 +78,8 @@
 <?php
 if ($project->project_lead->employee_id === $this->session->userdata('user_id'))
 {
-	echo '<a href="' . site_url('project/' . $project->id . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a>';
-	echo '<a href="' . site_url('project/' . $project->id) . '" class="btn btn"><i class="icon-pencil"></i> Edit Project Team</a>';
+	echo '<a href="' . site_url('project/' . $project->id . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
+	echo '<a href="' . site_url('project/' . $project->id) . '" class="btn btn"><i class="icon-pencil"></i> Edit Project Team</a> ';
 	echo '<a href="' . site_url('project/' . $project->id . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
 }
 ?>

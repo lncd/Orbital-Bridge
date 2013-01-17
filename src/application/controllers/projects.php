@@ -240,21 +240,19 @@ class Projects extends CI_Controller {
 			$data = array(
 				'project' => $projects->result
 				);
-				
-			
+
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/project', $data);
 			$this->load->view('inc/foot');
 		}
 	}
-	
+
 	public function edit($project_id)
 	{
 		if (!$this->session->userdata('access_token'))
 		{
 			redirect('signin');
 		}
-		
 		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -404,7 +402,6 @@ class Projects extends CI_Controller {
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
-
 		if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_id'))
         {
 			$this->load->view('inc/head', $header);
