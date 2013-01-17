@@ -39,14 +39,17 @@
 			
 				<?php
 					echo '<tr>';
-					echo '<td>Name</td><td>' . $project->project_lead->title . ' ' . $project->project_lead->name . '</td>';
+					echo '<td>Lead</td><td>' . $project->project_lead->title . ' ' . $project->project_lead->name . '</td>';
 					echo '</tr>';
-					echo '<tr>';
-					echo '<td>Name</td><td>' . 'Project Member' . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<td>Name</td><td>' . 'Project Member' . '</td>';
-					echo '</tr>';
+					if (isset($project->members))
+					{
+						foreach ($project->members as $member)
+						{
+							echo '<tr>';
+							echo '<td>Member</td><td>' . 'Project Member' . '</td>';
+							echo '</tr>';
+						}
+					}
 				?>
 			
 			</tbody>
@@ -65,5 +68,11 @@
 	
 </div>
 
-<a href="<?php echo site_url('project/' . $project->id . '/edit'); ?>" class="btn btn"><i class="icon-pencil"></i> Edit</a>
-<a href="<?php echo site_url('project/' . $project->id . '/delete'); ?>" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>
+<?php
+if ($project->project_lead->employee_id === $this->session->userdata('user_id'))
+{
+	echo '<a href="' . site_url('project/' . $project->id . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a>';
+	echo '<a href="' . site_url('project/' . $project->id) . '" class="btn btn"><i class="icon-pencil"></i> Edit Project Team</a>';
+	echo '<a href="' . site_url('project/' . $project->id . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
+}
+?>

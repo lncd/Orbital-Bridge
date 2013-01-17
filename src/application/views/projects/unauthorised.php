@@ -14,3 +14,5 @@
 	</div>
 	
 </div>
+<br>
+<a href="<?php echo site_url('projects'); ?>" class="btn btn"><i class="icon-double-angle-left"></i> Back to Projects</a>
