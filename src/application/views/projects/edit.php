@@ -45,21 +45,6 @@
 		echo '<span class="help-block">You can use Markdown to add formatting to this project.</span>';
 		echo '</div></div>';
 		
-		$form_project_lead = array(
-			'name'			=> 'project_lead',
-			'id'			=> 'project_lead',
-			'value'			=> $project->project_lead->sam_id,
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Project Lead', 'project_lead', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_project_lead);
-		echo '<span class="help-block">Enter the username of the person you want to add.</span>';
-		echo '</div></div>';
-		
 		if ($project->funded)
 		{
 			$funded = 'funded';
@@ -168,7 +153,7 @@
 		$form_end_date = array(
 			'name'			=> 'project_end_date',
 			'id'			=> 'project_end_date',
-			'value'			=> $end_date	,
+			'value'			=> $end_date,
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge datepicker'
 		);
@@ -178,10 +163,32 @@
 		echo '<div class="controls">';
 		echo form_input($form_end_date);
 		echo '</div></div>';
+		
+		echo '<h2>';
+		echo '<i class="icon-cogs"></i>' . ' Project Team';
+		echo '</h2>';
+		
+		$form_project_lead = array(
+			'name'			=> 'project_lead',
+			'id'			=> 'project_lead',
+			'value'			=> $project->project_lead->sam_id,
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
 	
+		echo '<div class="control-group">';
+		echo form_label('Project Lead', 'project_lead', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_project_lead);
+		echo '<span class="help-block">Enter the username of the person you want to add.</span>';
+		echo '</div></div>';
+	
+		echo '<div class="control-group"><label for="project_members" class="control-label">Project Members</label><div class="controls" id="one" class="tag-list"><div class="tags" input type="text" name="project_members" id="project_members" class="input-xlarge"  /><span class="help-block">Enter the usernames of the people you want to add.</span></div></div>';
+
 		echo '<div class="form-actions">';
 		echo '<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>';
 		echo '</div>';
+		
 	
 		echo form_close();
 

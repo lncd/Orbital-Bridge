@@ -302,6 +302,34 @@ class Projects extends CI_Controller {
 						$(\'#funding_div\').hide(200, "swing");
 					}
 				})
+				$(window).keydown(function(event){
+					if(event.keyCode == 13) {
+						event.preventDefault();
+						return false;
+					}
+				});
+				$(function() {	
+				pressedUp = function(e) { console.log("pressed up"); };
+				whenAddingTag = function (tag) {
+					console.log(tag);
+					// maybe fetch some content for the tag popover (can be HTML)
+				};
+				excludes = function (tag) {
+					// return false if this tagger does *not* exclude
+					// -> returns true if tagger should exclude this tag
+					// --> this will exclude anything with !
+					return (tag.indexOf("!") != -1);
+				}
+				var tags = $("#one").tags( {
+					suggestions : ["here", "are", "some", "suggestions"],
+					popoverData : ["Details for tag A", "Details for tag B", "More details", "More stuff here"],
+					tagData: ["tag a", "tag b", "tag c", "tag d"],
+					excludeList : ["excuse", "my", "vulgarity"],
+					excludes : excludes,
+					tagRemoved: function(tag) { console.log(tag) }
+				} );
+			});
+
 			});';
 			
 			

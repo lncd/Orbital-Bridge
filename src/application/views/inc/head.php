@@ -21,6 +21,11 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/style.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/markdown/style.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gantt.css">
+	
+	<!-- Added in for bootstrap tags (Adding members to project teams) -->
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>
+	<script src="<?php echo base_url(); ?>assets/js/bootstrap-tags.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-tags.css" />
 
 	<!--[if (lt IE 9) & (!IEMobile)]>
 		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/ie.min.css">
