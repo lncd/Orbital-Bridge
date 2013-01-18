@@ -45,6 +45,21 @@
 		echo '<span class="help-block">You can use Markdown to add formatting to this project.</span>';
 		echo '</div></div>';
 		
+		$form_project_lead = array(
+			'name'			=> 'project_lead',
+			'id'			=> 'project_lead',
+			'value'			=> $project->project_lead->sam_id,
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Project Lead', 'project_lead', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_project_lead);
+		echo '<span class="help-block">Enter the username of the person you want to add.</span>';
+		echo '</div></div>';
+		
 		if ($project->funded)
 		{
 			$funded = 'funded';

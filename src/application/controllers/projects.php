@@ -311,60 +311,73 @@ class Projects extends CI_Controller {
 	
 			if ($this->form_validation->run())
 			{
+				$project_lead = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'people/by_sam_id/' . $this->input->post('project_lead') . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
 	
-				$fields = '{
-					"title" : "' . $this->input->post('project_title') . '",' .
-					'"lead" : "' . $this->session->userdata('user_id') . '",' .
-					'"description" : "' . $this->input->post('project_description') . '",' .
-					'"funded" : "';
-					
-					if ($this->input->post('project_type') === 'funded')
-					{
-						$fields .= '1",	
-						"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
-						'"funding_amount" : ' . $this->input->post('project_funding_amount') . ',';
-					}
-					else
-					{
-						$fields .= '0",
-						"currency_id" : null,' .
-						'"funding_amount" : null,';
-					}			
-						
-					$fields .=
-					'"start_date" : "' . $this->input->post('project_start_date') . '",';
-					
-					if($this->input->post('project_end_date'))
-					{
-						$fields .=
-						'"end_date" : "' . $this->input->post('project_end_date') . '"';
-					}
-					else
-					{
-						$fields .=
-						'"end_date" : null';
-					}
-					$fields .= '}';
-				
-				//POST to N2
-				
-				$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
-				
-				if ($response->error)
+				if ($project_lead = json_decode($project_lead))
 				{
-					$header['flashmessage'] = $response->error_message;
+					$fields = '{
+						"title" : "' . $this->input->post('project_title') . '",' .
+						'"lead" : "' . $project_lead->result->employee_id . '",' .
+						'"description" : "' . $this->input->post('project_description') . '",' .
+						'"funded" : "';
+						
+						if ($this->input->post('project_type') === 'funded')
+						{
+							$fields .= '1",	
+							"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
+							'"funding_amount" : ' . $this->input->post('project_funding_amount') . ',';
+						}
+						else
+						{
+							$fields .= '0",
+							"currency_id" : null,' .
+							'"funding_amount" : null,';
+						}			
+							
+						$fields .=
+						'"start_date" : "' . $this->input->post('project_start_date') . '",';
+						
+						if($this->input->post('project_end_date'))
+						{
+							$fields .=
+							'"end_date" : "' . $this->input->post('project_end_date') . '"';
+						}
+						else
+						{
+							$fields .=
+							'"end_date" : null';
+						}
+						$fields .= '}';
+					
+					//POST to N2
+					
+					$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+					
+					if ($response->error)
+					{
+						$header['flashmessage'] = $response->error_message;
+						$header['flashmessagetype'] = 'error';
+										
+						$this->load->view('inc/head', $header);
+						$this->load->view('projects/edit', $data);
+						$this->load->view('inc/foot', $footer);
+					}
+					else
+					{
+						$this->session->set_flashdata('message', 'Project updated!');
+						$this->session->set_flashdata('message_type', 'success');
+						
+						redirect('projects');
+					}
+				}
+				else
+				{
+					$header['flashmessage'] = 'Project Lead was not given a valid username';
 					$header['flashmessagetype'] = 'error';
 									
 					$this->load->view('inc/head', $header);
 					$this->load->view('projects/edit', $data);
 					$this->load->view('inc/foot', $footer);
-				}
-				else
-				{
-					$this->session->set_flashdata('message', 'Project updated!');
-					$this->session->set_flashdata('message_type', 'success');
-					
-					redirect('projects');
 				}
 			}
 			else
