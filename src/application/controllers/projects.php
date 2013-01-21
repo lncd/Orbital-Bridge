@@ -282,54 +282,27 @@ class Projects extends CI_Controller {
         }
         else
         {
+        	$tags = null;
+        
 			$data = array(
 				'project' => $projects->result,
 				'project_id' => $project_id
-				);
-				
-			
+				);			
 									
 			$footer['javascript'] = '$(document).ready(function() {
 				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
-				$("#project_type").change(function () {
-					if ($("#project_type").val() == "funded")
-					{
-						$(\'#funding_div\').show(200, "swing");
-					}
-					else if ($("#project_type").val() == "unfunded")
-					{
-						$(\'#funding_div\').hide(200, "swing");
-					}
-				})
 				$(window).keydown(function(event){
 					if(event.keyCode == 13) {
 						event.preventDefault();
 						return false;
 					}
 				});
-				$(function() {	
-				pressedUp = function(e) { console.log("pressed up"); };
-				whenAddingTag = function (tag) {
-					console.log(tag);
-					// maybe fetch some content for the tag popover (can be HTML)
-				};
-				excludes = function (tag) {
-					// return false if this tagger does *not* exclude
-					// -> returns true if tagger should exclude this tag
-					// --> this will exclude anything with !
-					return (tag.indexOf("!") != -1);
-				}
-				var tags = $("#one").tags( {
-					suggestions : ["here", "are", "some", "suggestions"],
-					popoverData : ["Details for tag A", "Details for tag B", "More details", "More stuff here"],
-					tagData: ["tag a", "tag b", "tag c", "tag d"],
-					excludeList : ["excuse", "my", "vulgarity"],
-					excludes : excludes,
-					tagRemoved: function(tag) { console.log(tag) }
-				} );
-			});
-
+				 $("#research_interests").select2({
+                        tags:[],
+                        tokenSeparators: [","],
+                        minimumInputLength: 2
+                });
 			});';
 			
 			
@@ -343,6 +316,52 @@ class Projects extends CI_Controller {
 	
 				if ($project_lead = json_decode($project_lead))
 				{
+					$research_interests = $this->input->post('research_interests', TRUE);
+	
+					$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_interests_research_projects/id/' . $project_id, $research_interests, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+
+	                if ($research_interests !== false)
+	                {
+	                        $interests = explode(',', $research_interests);
+	
+	                        foreach ($interests as $interest)
+	                        {
+	                                $interest = trim($interest);
+	
+	                                if ($interest === '')
+	                                {
+	                                        continue;
+	                                }
+	
+	                                // Find interest
+	                                $iq = $this->db->where('title', $interest)->get('research_interests');
+	
+	                                if ($iq->num_rows() === 1)
+	                                {
+	                                        $i = $iq->row();
+	
+	                                        $this->db->insert('people_research_interests', array(
+	                                                'person_id'     =>      $this->nucleus_id,
+	                                                'research_interest_id'  =>      $i->id
+	                                        ));
+	                                }
+	
+	                                else
+	                                {
+	                                        $this->db->insert('research_interests', array(
+	                                                'title' =>      $this->prepare_data($interest, 128)
+	                                        ));
+	
+	                                        $this->db->insert('people_research_interests', array(
+	                                                'person_id'     =>      $this->nucleus_id,
+	                                                'research_interest_id'  =>      $this->db->insert_id()
+	                                        ));
+	                                }
+	
+	                        }
+	                }
+				
+				
 					$fields = '{
 						"title" : "' . $this->input->post('project_title') . '",' .
 						'"lead" : "' . $project_lead->result->employee_id . '",' .

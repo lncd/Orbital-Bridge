@@ -164,6 +164,28 @@
 		echo form_input($form_end_date);
 		echo '</div></div>';
 		
+        $research_interests = array();
+        if (isset($project->research_interests))
+        {
+                foreach ($project->research_interests as $key)
+                {
+                        $research_interests[] = $key->title;
+                }
+        }
+        
+		$form_research_interests = array(
+			'name'			=> 'research_interests',
+			'id'			=> 'research_interests',
+			'value'			=> implode(',', $research_interests),
+			'maxlength'		=> '200'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Research Interests', 'research_interests', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_research_interests);
+		echo '</div></div>';
+				
 		echo '<h2>';
 		echo '<i class="icon-cogs"></i>' . ' Project Team';
 		echo '</h2>';
@@ -182,8 +204,6 @@
 		echo form_input($form_project_lead);
 		echo '<span class="help-block">Enter the username of the person you want to add.</span>';
 		echo '</div></div>';
-	
-		echo '<div class="control-group"><label for="project_members" class="control-label">Project Members</label><div class="controls" id="one" class="tag-list"><div class="tags" input type="text" name="project_members" id="project_members" class="input-xlarge"  /><span class="help-block">Enter the usernames of the people you want to add.</span></div></div>';
 
 		echo '<div class="form-actions">';
 		echo '<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>';
