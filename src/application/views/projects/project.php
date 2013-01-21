@@ -79,7 +79,6 @@
 if ($project->project_lead->employee_id === $this->session->userdata('user_id'))
 {
 	echo '<a href="' . site_url('project/' . $project->id . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
-	echo '<a href="' . site_url('project/' . $project->id) . '" class="btn btn"><i class="icon-pencil"></i> Edit Project Team</a> ';
 	echo '<a href="' . site_url('project/' . $project->id . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
 }
 ?>

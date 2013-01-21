@@ -167,10 +167,10 @@
         $research_interests = array();
         if (isset($project->research_interests))
         {
-                foreach ($project->research_interests as $key)
-                {
-                        $research_interests[] = $key->title;
-                }
+			foreach ($project->research_interests as $key)
+			{
+			    $research_interests[] = $key->title;
+			}
         }
         
 		$form_research_interests = array(

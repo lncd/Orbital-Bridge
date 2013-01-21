@@ -305,7 +305,6 @@ class Projects extends CI_Controller {
                 });
 			});';
 			
-			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 			$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
 			$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
@@ -316,56 +315,11 @@ class Projects extends CI_Controller {
 	
 				if ($project_lead = json_decode($project_lead))
 				{
-					$research_interests = $this->input->post('research_interests', TRUE);
-	
-					$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_interests_research_projects/id/' . $project_id, $research_interests, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
-
-	                if ($research_interests !== false)
-	                {
-	                        $interests = explode(',', $research_interests);
-	
-	                        foreach ($interests as $interest)
-	                        {
-	                                $interest = trim($interest);
-	
-	                                if ($interest === '')
-	                                {
-	                                        continue;
-	                                }
-	
-	                                // Find interest
-	                                $iq = $this->db->where('title', $interest)->get('research_interests');
-	
-	                                if ($iq->num_rows() === 1)
-	                                {
-	                                        $i = $iq->row();
-	
-	                                        $this->db->insert('people_research_interests', array(
-	                                                'person_id'     =>      $this->nucleus_id,
-	                                                'research_interest_id'  =>      $i->id
-	                                        ));
-	                                }
-	
-	                                else
-	                                {
-	                                        $this->db->insert('research_interests', array(
-	                                                'title' =>      $this->prepare_data($interest, 128)
-	                                        ));
-	
-	                                        $this->db->insert('people_research_interests', array(
-	                                                'person_id'     =>      $this->nucleus_id,
-	                                                'research_interest_id'  =>      $this->db->insert_id()
-	                                        ));
-	                                }
-	
-	                        }
-	                }
-				
-				
 					$fields = '{
 						"title" : "' . $this->input->post('project_title') . '",' .
 						'"lead" : "' . $project_lead->result->employee_id . '",' .
 						'"description" : "' . $this->input->post('project_description') . '",' .
+						'"research_interests" : "' . $this->input->post('research_interests') . '",' .
 						'"funded" : "';
 						
 						if ($this->input->post('project_type') === 'funded')
