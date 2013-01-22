@@ -204,11 +204,29 @@
 		echo form_input($form_project_lead);
 		echo '<span class="help-block">Enter the username of the person you want to add.</span>';
 		echo '</div></div>';
-
-		echo '<div class="form-actions">';
-		echo '<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>';
-		echo '</div>';
 		
+		echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
+		echo '<thead><tr><th>Members</th><th>Role</th><th>Keep member?</th></tr></thead>';
+		echo '<tbody>';
+		
+		foreach($project->research_project_members as $project_member)
+		{
+				echo '<tr><td>' . $project_member->sam_id . ' (' . $project_member->title . ' ' . $project_member->first_name . ' ' . $project_member->last_name . ')</td><td><input type="text" name="members[' . $project_member->first_name . '][role]" value = "Member' . /*$project_member->role . */'"></td><td><input type="checkbox" name="members[' . $project_member->first_name . '][keep]" value="TRUE" checked></td></tr>';
+			
+		}
+		?>
+		</tbody>
+		</table>
+		
+		<input type="text" name="new_member_name" id="new_member_name"><a class="btn" id="addMember" ><i class = "icon-plus"></i> Add new member</a> 
+
+
+		<div class="form-actions">
+		<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>
+		</div>
+			
+		</form>
+			<?php
 	
 		echo form_close();
 

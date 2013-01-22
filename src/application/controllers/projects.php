@@ -303,6 +303,18 @@ class Projects extends CI_Controller {
                         tokenSeparators: [","],
                         minimumInputLength: 2
                 });
+            	$("#addMember").click(function()
+				{
+					if ($("#new_member_name").val().length > 2)
+					{
+					member_name = $("#new_member_name").val();
+					$("#members_table").append(\'<tr><td>\' + member_name + \' <span class="label label-success">New</span></td><td>Member<td><input type="checkbox" name="members[\' + member_name + \'][keep]" value="TRUE" checked></td></tr>\');
+					}
+					else
+					{
+						alert("Please enter a valid username");
+					}
+				});
 			});';
 			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
