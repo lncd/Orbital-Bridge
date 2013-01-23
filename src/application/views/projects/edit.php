@@ -205,20 +205,25 @@
 		echo '<span class="help-block">Enter the username of the person you want to add.</span>';
 		echo '</div></div>';
 		
+		echo form_label('Project Members', 'project_members', array('class' => 'control-label'));
+		echo '<div class="controls">';
+
 		echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
 		echo '<thead><tr><th>Members</th><th>Role</th><th>Keep member?</th></tr></thead>';
 		echo '<tbody>';
 		
 		foreach($project->research_project_members as $project_member)
 		{
-				echo '<tr><td>' . $project_member->sam_id . ' (' . $project_member->title . ' ' . $project_member->first_name . ' ' . $project_member->last_name . ')</td><td><input type="text" name="members[' . $project_member->first_name . '][role]" value = "Member' . /*$project_member->role . */'"></td><td><input type="checkbox" name="members[' . $project_member->first_name . '][keep]" value="TRUE" checked></td></tr>';
+				echo '<tr><td>' . $project_member->person->id . ' (' . $project_member->person->title . ' ' . $project_member->person->first_name . ' ' . $project_member->person->last_name . ')</td><td><input type="text" name="members[' . $project_member->person->id . '][role]" value = "' . $project_member->role->name . '"></td><td><input type="checkbox" name="members[' . $project_member->person->id . '][keep]" value="TRUE" checked></td></tr>';
 			
 		}
 		?>
 		</tbody>
 		</table>
 		
-		<input type="text" name="new_member_name" id="new_member_name"><a class="btn" id="addMember" ><i class = "icon-plus"></i> Add new member</a> 
+		<p><input type="text" name="new_member_name" id="new_member_name"><a class="btn" id="addMember" ><i class = "icon-plus"></i> Add new member</a></p> 
+		
+		Please note that project members are not saved. This feature is still in development </div>
 
 
 		<div class="form-actions">

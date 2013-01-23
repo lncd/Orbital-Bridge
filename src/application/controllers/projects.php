@@ -327,40 +327,39 @@ class Projects extends CI_Controller {
 	
 				if ($project_lead = json_decode($project_lead))
 				{
-					$fields = '{
-						"title" : "' . $this->input->post('project_title') . '",' .
-						'"lead" : "' . $project_lead->result->employee_id . '",' .
-						'"description" : "' . $this->input->post('project_description') . '",' .
-						'"research_interests" : "' . $this->input->post('research_interests') . '",' .
-						'"funded" : "';
-						
-						if ($this->input->post('project_type') === 'funded')
-						{
-							$fields .= '1",	
-							"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
-							'"funding_amount" : ' . $this->input->post('project_funding_amount') . ',';
-						}
-						else
-						{
-							$fields .= '0",
-							"currency_id" : null,' .
-							'"funding_amount" : null,';
-						}			
-							
-						$fields .=
-						'"start_date" : "' . $this->input->post('project_start_date') . '",';
-						
-						if($this->input->post('project_end_date'))
-						{
-							$fields .=
-							'"end_date" : "' . $this->input->post('project_end_date') . '"';
-						}
-						else
-						{
-							$fields .=
-							'"end_date" : null';
-						}
-						$fields .= '}';
+					$fields['title'] = $this->input->post('project_title');
+					$fields['lead'] = $project_lead->result->employee_id;
+					$fields['description'] = $this->input->post('project_description');
+					$fields['research_interests'] = $this->input->post('research_interests');
+					
+					if ($this->input->post('project_type') === 'funded')
+					{
+						$fields['funded'] = '1';
+						$fields['currency_id'] = $this->input->post('project_funding_currency');
+						$fields['funding_amount'] = $this->input->post('project_funding_amount');
+					}
+
+					else
+					{
+						$fields['funded'] = '';
+						$fields['currency_id'] = NULL;
+						$fields['funding_amount'] = NULL;
+					}
+					
+					$fields['start_date'] = $this->input->post('project_start_date');
+					
+					if($this->input->post('end_date'))
+					{
+						$fields['end_date'] = $this->input->post('end_start_date');
+					}
+					else
+					{
+						$fields['end_date'] = NULL;
+					}
+					
+					$fields['members'] = $this->input->post('members');
+					
+					$fields = json_encode($fields);
 					
 					//POST to N2
 					
