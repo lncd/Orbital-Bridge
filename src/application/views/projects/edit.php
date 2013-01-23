@@ -212,9 +212,18 @@
 		echo '<thead><tr><th>Members</th><th>Role</th><th>Keep member?</th></tr></thead>';
 		echo '<tbody>';
 		
+		$roles = array(
+			'Member' => 1
+		);
+		
 		foreach($project->research_project_members as $project_member)
 		{
-				echo '<tr><td>' . $project_member->person->id . ' (' . $project_member->person->title . ' ' . $project_member->person->first_name . ' ' . $project_member->person->last_name . ')</td><td><input type="text" name="members[' . $project_member->person->id . '][role]" value = "' . $project_member->role->name . '"></td><td><input type="checkbox" name="members[' . $project_member->person->id . '][keep]" value="TRUE" checked></td></tr>';
+				echo '<tr><td>' . $project_member->person->id . ' (' . $project_member->person->title . ' ' . $project_member->person->first_name . ' ' . $project_member->person->last_name . ')</td><td><select name="members[' . $project_member->person->id . '][role]">';
+				foreach ($roles as $role => $value)
+				{
+			       echo '<option value="'. $value .'">'. $role .'</option>';
+				}
+				echo '</td><td><input type="checkbox" name="members[' . $project_member->person->id . '][keep]" value="TRUE" checked></td></tr>';
 			
 		}
 		?>

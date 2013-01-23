@@ -287,8 +287,8 @@ class Projects extends CI_Controller {
 			$data = array(
 				'project' => $projects->result,
 				'project_id' => $project_id
-				);			
-									
+				);
+							
 			$footer['javascript'] = '$(document).ready(function() {
 				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
@@ -299,16 +299,40 @@ class Projects extends CI_Controller {
 					}
 				});
 				 $("#research_interests").select2({
-                        tags:[],
-                        tokenSeparators: [","],
-                        minimumInputLength: 2
+                    tags:[],
+                    tokenSeparators: [","],
+                    minimumInputLength: 2
                 });
+                
+                 $("#new_member_name").select2({
+					placeholder: "Search for a staff member",
+					minimumInputLength: 3,
+					ajax: {
+					    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
+					    dataType: \'jsonp\',
+					    quietMillis: 100,
+					    
+		                data: function (term, page) { // page is the one-based page number tracked by Select2
+		                    return {
+		                        q: term //search term
+		                    };
+		                },
+		                results: function (data, page) {
+		                    var more = (page * 10) < data.total; // whether or not there are more results available
+		 
+		                    // notice we return the value of more so Select2 knows if more results can be loaded
+		                    return {results: data};
+		                }					
+		            }
+		        });
+                
             	$("#addMember").click(function()
 				{
 					if ($("#new_member_name").val().length > 2)
 					{
+					member_id = $("#new_member_name").val();
 					member_name = $("#new_member_name").val();
-					$("#members_table").append(\'<tr><td>\' + member_name + \' <span class="label label-success">New</span></td><td>Member<td><input type="checkbox" name="members[\' + member_name + \'][keep]" value="TRUE" checked></td></tr>\');
+					$("#members_table").append(\'<tr><td>\' + member_name + \' <span class="label label-success">New</span></td><td><select name="members[\' + member_id + \'][role]"><option value="1">Member</option></td><td><input type="checkbox" name="members[\' + member_id + \'][keep]" value="TRUE" checked></td></tr>\');
 					}
 					else
 					{
@@ -357,7 +381,17 @@ class Projects extends CI_Controller {
 						$fields['end_date'] = NULL;
 					}
 					
-					$fields['members'] = $this->input->post('members');
+					//Members
+					$members = array();
+					foreach($this->input->post('members') as $id => $member)
+					{
+						if (isset($member['keep']))
+						{
+							$members[] = array('person_id' => $id, 'role_id' => $member['role']);
+						}
+					}
+					
+					$fields['project_members'] = $members;
 					
 					$fields = json_encode($fields);
 					
