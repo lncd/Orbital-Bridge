@@ -8,7 +8,16 @@ class Admin extends CI_Controller {
 
 		if (! $this->session->userdata('user_admin') === TRUE)
 		{
-			show_404();
+			$header = array(
+				'page' => 'admin',
+				'categories' => $this->bridge->categories(),
+				'category_pages' => $this->bridge->category_pages()
+			);
+
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/error');
+			$this->load->view('inc/foot');
+
 		}
 	}
 
@@ -648,7 +657,7 @@ class Admin extends CI_Controller {
 					update: function( event, ui ) {
 						$("#pages_list").val($("#sortable1").sortable("toArray"));
 					}
-				}).disableSelection();	
+				}).disableSelection();
 			});'
 		);
 
@@ -657,7 +666,7 @@ class Admin extends CI_Controller {
 		$data['categories'] = $this->bridge->categories();
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('pages_list', 'Pages List', 'required');
+		$this->form_validation->set_rules('pages_list', 'Categories have not been changed. The Pages List', 'required');
 		if ($this->form_validation->run())
 		{
 			$categories_array = explode(',', $this->input->post('pages_list'));

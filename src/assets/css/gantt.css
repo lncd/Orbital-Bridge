@@ -194,8 +194,8 @@
 }
 
 .fn-gantt .barFade {
-    background: -moz-linear-gradient(left, rgba(208,228,253,1) 90%, rgba(208,228,253,0) 100%);
-	background: -webkit-linear-gradient(left, rgba(208,228,253,1) 90%, rgba(208,228,253,0) 100%);
+    background: -moz-linear-gradient(left, rgba(208,228,253,1) 40%, rgba(208,228,253,0) 100%);
+	background: -webkit-linear-gradient(left, rgba(208,228,253,1) 40%, rgba(208,228,253,0) 100%);
 }
 
 .fn-gantt .bar .fn-label {
