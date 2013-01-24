@@ -210,7 +210,7 @@
 		echo '<div class="controls">';
 
 		echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
-		echo '<thead><tr><th>Members</th><th>Role</th><th>Delete</th></tr></thead>';
+		echo '<thead><tr><th>Members</th><th>Role</th><th>Options</th></tr></thead>';
 		echo '<tbody>';
 		
 		$roles = array(
@@ -226,7 +226,7 @@
 			{
 		       echo '<option value="'. $value .'">'. $role .'</option>';
 			}
-			echo '</td><td><a class="btn btn-danger removeMemberButton"><i class = "icon-remove icon-white"></td></tr>';
+			echo '</td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>';
 			$member_id++;
 		}
 		?>
