@@ -177,7 +177,7 @@ class Projects extends CI_Controller {
 				$fields .= '}';
 				
 			//POST to N2
-			$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects', $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+			$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects', $fields, 'Bearer ' . base64_encode($_SERVER['NUCLEUS_TOKEN'])));
 			
 			if ($response->error)
 			{
@@ -431,7 +431,7 @@ class Projects extends CI_Controller {
 				
 				//POST to N2
 
-				$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+				$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . base64_encode($_SERVER['NUCLEUS_TOKEN'])));
 
 				if ($response->error)
 				{
@@ -508,7 +508,7 @@ class Projects extends CI_Controller {
 				//DELETE to N2
 				
 				$fields = array(1, 2, 3);
-				$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+				$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . base64_encode($_SERVER['NUCLEUS_TOKEN'])));
 				
 				if ($response->error)
 				{
