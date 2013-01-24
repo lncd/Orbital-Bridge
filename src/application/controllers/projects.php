@@ -341,6 +341,28 @@ class Projects extends CI_Controller {
 			            }
 			        });					
 				});
+				
+                 $("#project_lead").select2({
+					placeholder: "Enter project lead",
+					minimumInputLength: 3,
+					ajax: {
+					    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
+					    dataType: \'jsonp\',
+					    quietMillis: 100,
+					    
+		                data: function (term, page) { // page is the one-based page number tracked by Select2
+		                    return {
+		                        q: term //search term
+		                    };
+		                },
+		                results: function (data, page) {
+		                    var more = (page * 10) < data.total; // whether or not there are more results available
+		 
+		                    // notice we return the value of more so Select2 knows if more results can be loaded
+		                    return {results: data};
+		                }					
+		            }
+		        });		
 			});';
 			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
@@ -348,87 +370,73 @@ class Projects extends CI_Controller {
 			$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
 	
 			if ($this->form_validation->run())
-			{
-				$project_lead = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'people/by_sam_id/' . $this->input->post('project_lead') . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
-	
-				if ($project_lead = json_decode($project_lead))
+			{	
+				$fields['title'] = $this->input->post('project_title');
+				$fields['lead'] = $this->input->post('project_lead');
+				$fields['description'] = $this->input->post('project_description');
+				$fields['research_interests'] = $this->input->post('research_interests');
+				
+				if ($this->input->post('project_type') === 'funded')
 				{
-					$fields['title'] = $this->input->post('project_title');
-					$fields['lead'] = $project_lead->result->employee_id;
-					$fields['description'] = $this->input->post('project_description');
-					$fields['research_interests'] = $this->input->post('research_interests');
-					
-					if ($this->input->post('project_type') === 'funded')
-					{
-						$fields['funded'] = '1';
-						$fields['currency_id'] = $this->input->post('project_funding_currency');
-						$fields['funding_amount'] = $this->input->post('project_funding_amount');
-					}
+					$fields['funded'] = '1';
+					$fields['currency_id'] = $this->input->post('project_funding_currency');
+					$fields['funding_amount'] = $this->input->post('project_funding_amount');
+				}
 
-					else
-					{
-						$fields['funded'] = '';
-						$fields['currency_id'] = NULL;
-						$fields['funding_amount'] = NULL;
-					}
-					
-					$fields['start_date'] = $this->input->post('project_start_date');
-					
-					if($this->input->post('end_date'))
-					{
-						$fields['end_date'] = $this->input->post('end_start_date');
-					}
-					else
-					{
-						$fields['end_date'] = NULL;
-					}
-					
-					//Members
-					$members = array();
-					if($this->input->post('members'))
-					{
-						foreach($this->input->post('members') as $member)
-						{
-							if ($member['id'])
-							{
-								$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
-							}
-						}
-						
-						$fields['project_members'] = $members;
-					}
-					
-					$fields = json_encode($fields);
-					
-					//POST to N2
-					
-					$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
-
-					if ($response->error)
-					{
-						$header['flashmessage'] = $response->error_message;
-						$header['flashmessagetype'] = 'error';
-										
-						$this->load->view('inc/head', $header);
-						$this->load->view('projects/edit', $data);
-						$this->load->view('inc/foot', $footer);
-					}
-					else
-					{
-						$this->session->set_flashdata('message', 'Project updated!');
-						$this->session->set_flashdata('message_type', 'success');
-						
-						redirect('projects');
-					}
+				else
+				{
+					$fields['funded'] = '';
+					$fields['currency_id'] = NULL;
+					$fields['funding_amount'] = NULL;
+				}
+				
+				$fields['start_date'] = $this->input->post('project_start_date');
+				
+				if($this->input->post('end_date'))
+				{
+					$fields['end_date'] = $this->input->post('end_start_date');
 				}
 				else
 				{
-					$header['flashmessage'] = 'Project Lead was not given a valid username';
+					$fields['end_date'] = NULL;
+				}
+				
+				//Members
+				$members = array();
+				if($this->input->post('members'))
+				{
+					foreach($this->input->post('members') as $member)
+					{
+						if ($member['id'])
+						{
+							$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+						}
+					}
+					
+					$fields['project_members'] = $members;
+				}
+				
+				$fields = json_encode($fields);
+				
+				//POST to N2
+
+				$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+
+				if ($response->error)
+				{
+					$header['flashmessage'] = $response->error_message;
 					$header['flashmessagetype'] = 'error';
 									
 					$this->load->view('inc/head', $header);
 					$this->load->view('projects/edit', $data);
 					$this->load->view('inc/foot', $footer);
+				}
+				else
+				{
+					$this->session->set_flashdata('message', 'Project updated!');
+					$this->session->set_flashdata('message_type', 'success');
+					
+					redirect('projects');
 				}
 			}
 			else

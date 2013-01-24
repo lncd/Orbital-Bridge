@@ -177,7 +177,8 @@
 			'name'			=> 'research_interests',
 			'id'			=> 'research_interests',
 			'value'			=> implode(',', $research_interests),
-			'maxlength'		=> '200'
+			'maxlength'		=> '200',
+			'class'		=> 'form_width'
 		);
 	
 		echo '<div class="control-group">';
@@ -193,7 +194,7 @@
 		$form_project_lead = array(
 			'name'			=> 'project_lead',
 			'id'			=> 'project_lead',
-			'value'			=> $project->project_lead->sam_id,
+			'value'			=> $project->project_lead->id,
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
