@@ -33,7 +33,7 @@
 		$form_description = array(
 			'name'			=> 'project_description',
 			'id'			=> 'project_description',
-			'rows'			=> '10',
+			'rows'			=> '5',
 			'class'			=> 'input-block-level',
 			'style'			=> 'width:100%;'
 		);
@@ -42,7 +42,7 @@
 		echo form_label('Description', 'project_description', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_textarea($form_description);
-		echo '<span class="help-block">You can use Markdown to add formatting to this project.</span>';
+		echo '<span class="help-block">A short description of this research project. If you want, you can use <a href="http://daringfireball.net/projects/markdown/syntax>Markdown</a> to add formatting to this.</span>';
 		echo '</div></div>';
 		
 		if ($project->funded)
@@ -203,7 +203,7 @@
 		echo form_label('Project Lead', 'project_lead', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_project_lead);
-		echo '<span class="help-block">Enter the username of the person you want to add.</span>';
+		echo '<span class="help-block">The member of staff principally responsible for this research project.</span>';
 		echo '</div></div>';
 		
 		echo form_label('Project Members', 'project_members', array('class' => 'control-label'));
@@ -233,13 +233,11 @@
 		</tbody>
 		</table>
 		
-		<p><a class="btn" id="addMember" ><i class = "icon-plus"></i> Add new member</a></p> 
-		
-		Please note that project members are not saved. This feature is still in development </div>
+		<p><a class="btn" id="addMember" ><i class = "icon-plus"></i> Add Project Member</a></p>
 
 
 		<div class="form-actions">
-		<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Details</button>
+		<button type="submit" class="btn btn-success"><i class = "icon-ok icon-white"></i> Save Project Details</button>
 		</div>
 			
 		</form>
