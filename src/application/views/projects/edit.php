@@ -209,28 +209,30 @@
 		echo '<div class="controls">';
 
 		echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
-		echo '<thead><tr><th>Members</th><th>Role</th><th>Keep member?</th></tr></thead>';
+		echo '<thead><tr><th>Members</th><th>Role</th><th>Delete</th></tr></thead>';
 		echo '<tbody>';
 		
 		$roles = array(
 			'Member' => 1
 		);
 		
+		$member_id = 0;
+		
 		foreach($project->research_project_members as $project_member)
 		{
-				echo '<tr><td>' . $project_member->person->id . ' (' . $project_member->person->title . ' ' . $project_member->person->first_name . ' ' . $project_member->person->last_name . ')</td><td><select name="members[' . $project_member->person->id . '][role]">';
-				foreach ($roles as $role => $value)
-				{
-			       echo '<option value="'. $value .'">'. $role .'</option>';
-				}
-				echo '</td><td><input type="checkbox" name="members[' . $project_member->person->id . '][keep]" value="TRUE" checked></td></tr>';
-			
+			echo '<tr id="member_row_' . $member_id . '"><td>' . $project_member->person->title . ' ' . $project_member->person->first_name . ' ' . $project_member->person->last_name . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member->person->id . '"</td><td><select name="members[' . $member_id . '][role]">';
+			foreach ($roles as $role => $value)
+			{
+		       echo '<option value="'. $value .'">'. $role .'</option>';
+			}
+			echo '</td><td><a class="btn btn-danger removeMemberButton"><i class = "icon-remove icon-white"></td></tr>';
+			$member_id++;
 		}
 		?>
 		</tbody>
 		</table>
 		
-		<p><input type="text" name="new_member_name" id="new_member_name"><a class="btn" id="addMember" ><i class = "icon-plus"></i> Add new member</a></p> 
+		<p><a class="btn" id="addMember" ><i class = "icon-plus"></i> Add new member</a></p> 
 		
 		Please note that project members are not saved. This feature is still in development </div>
 

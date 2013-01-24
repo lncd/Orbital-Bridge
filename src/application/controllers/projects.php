@@ -282,6 +282,8 @@ class Projects extends CI_Controller {
         }
         else
         {
+        	$num_project_members = count($projects->result->research_project_members);
+        
         	$tags = null;
         
 			$data = array(
@@ -304,40 +306,40 @@ class Projects extends CI_Controller {
                     minimumInputLength: 2
                 });
                 
-                 $("#new_member_name").select2({
-					placeholder: "Search for a staff member",
-					minimumInputLength: 3,
-					ajax: {
-					    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
-					    dataType: \'jsonp\',
-					    quietMillis: 100,
-					    
-		                data: function (term, page) { // page is the one-based page number tracked by Select2
-		                    return {
-		                        q: term //search term
-		                    };
-		                },
-		                results: function (data, page) {
-		                    var more = (page * 10) < data.total; // whether or not there are more results available
-		 
-		                    // notice we return the value of more so Select2 knows if more results can be loaded
-		                    return {results: data};
-		                }					
-		            }
-		        });
+            	$(".removeMemberButton").click(function()
+				{
+				    $(this).parent().parent().remove();
+				});
+                
+                var new_member_id = ' . $num_project_members . ';
                 
             	$("#addMember").click(function()
 				{
-					if ($("#new_member_name").val().length > 2)
-					{
-					member_id = $("#new_member_name").val();
-					member_name = $("#new_member_name").val();
-					$("#members_table").append(\'<tr><td>\' + member_name + \' <span class="label label-success">New</span></td><td><select name="members[\' + member_id + \'][role]"><option value="1">Member</option></td><td><input type="checkbox" name="members[\' + member_id + \'][keep]" value="TRUE" checked></td></tr>\');
-					}
-					else
-					{
-						alert("Please enter a valid username");
-					}
+					new_member_id ++;
+					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option></td><td></td></tr>\');
+				
+				
+	                 $("#new_member_select_" + new_member_id).select2({
+						placeholder: "Search for a staff member",
+						minimumInputLength: 3,
+						ajax: {
+						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
+						    dataType: \'jsonp\',
+						    quietMillis: 100,
+						    
+			                data: function (term, page) { // page is the one-based page number tracked by Select2
+			                    return {
+			                        q: term //search term
+			                    };
+			                },
+			                results: function (data, page) {
+			                    var more = (page * 10) < data.total; // whether or not there are more results available
+			 
+			                    // notice we return the value of more so Select2 knows if more results can be loaded
+			                    return {results: data};
+			                }					
+			            }
+			        });					
 				});
 			});';
 			
@@ -383,22 +385,25 @@ class Projects extends CI_Controller {
 					
 					//Members
 					$members = array();
-					foreach($this->input->post('members') as $id => $member)
+					if($this->input->post('members'))
 					{
-						if (isset($member['keep']))
+						foreach($this->input->post('members') as $member)
 						{
-							$members[] = array('person_id' => $id, 'role_id' => $member['role']);
+							if ($member['id'])
+							{
+								$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+							}
 						}
+						
+						$fields['project_members'] = $members;
 					}
-					
-					$fields['project_members'] = $members;
 					
 					$fields = json_encode($fields);
 					
 					//POST to N2
 					
 					$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
-					
+
 					if ($response->error)
 					{
 						$header['flashmessage'] = $response->error_message;
