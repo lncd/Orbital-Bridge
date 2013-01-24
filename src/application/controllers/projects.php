@@ -290,7 +290,7 @@ class Projects extends CI_Controller {
 				'project' => $projects->result,
 				'project_id' => $project_id
 				);
-							
+
 			$footer['javascript'] = '$(document).ready(function() {
 				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
@@ -316,8 +316,12 @@ class Projects extends CI_Controller {
             	$("#addMember").click(function()
 				{
 					new_member_id ++;
-					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option></td><td></td></tr>\');
+					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
 				
+            	$(".removeMemberButton").click(function()
+				{
+				    $(this).parent().parent().remove();
+				});
 				
 	                 $("#new_member_select_" + new_member_id).select2({
 						placeholder: "Search for a staff member",
@@ -361,8 +365,15 @@ class Projects extends CI_Controller {
 		                    // notice we return the value of more so Select2 knows if more results can be loaded
 		                    return {results: data};
 		                }					
-		            }
-		        });		
+		            },
+	                initSelection : function (element, callback) {
+			        	callback({
+				        	id:' . $projects->result->project_lead->id . ',
+				        	text:"' . $projects->result->project_lead->first_name . ' ' . $projects->result->project_lead->last_name . '"
+				        });
+			        }
+
+		        });
 			});';
 			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
