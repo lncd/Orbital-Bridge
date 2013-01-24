@@ -20,6 +20,7 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/orbital.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/style.css">
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/markitup/markdown/style.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gantt.css">
 
 	<!--[if (lt IE 9) & (!IEMobile)]>
 		<link rel="stylesheet" href="<?php echo $_SERVER['CWD_BASE_URI']; ?>/ie.min.css">
@@ -110,7 +111,7 @@
 									<li class="dropdown<?php if($page === 'me') echo ' active'; ?>">
 										<a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i> <?php echo $this->session->userdata('user_name'); ?> <b class="caret"></b></a>
 										<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-											<li><a href="<?php echo site_url('projects/my'); ?>"><i class="icon-beaker"></i> My Projects</a></li>
+											<li><a href="<?php echo site_url('projects'); ?>"><i class="icon-beaker"></i> My Projects</a></li>
 											<li><a href="<?php echo site_url('profile'); ?>"><i class="icon-user"></i> My Profile</a></li>
 											<li><a href="<?php echo site_url('signout'); ?>"><i class="icon-signout"></i> Sign Out</a></li>
 										</ul>
@@ -134,8 +135,13 @@
 			<div class="container">
 			
 			<?php
-			if($this->session->flashdata('message'))
-			{
-				echo '<div class="alert alert-' . $this->session->flashdata('message_type') . '">' . $this->session->flashdata('message') . '</div>'; 
-			}
+				if($this->session->flashdata('message'))
+				{
+					$flashmessagetype =  $this->session->flashdata('message_type');
+					$flashmessage = $this->session->flashdata('message'); 
+				}
+				if(isset($flashmessage))
+				{
+					echo '<div class="alert alert-' . $flashmessagetype . '">' . $flashmessage . '</div>'; 
+				}
 			?>

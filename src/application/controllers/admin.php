@@ -8,7 +8,16 @@ class Admin extends CI_Controller {
 
 		if (! $this->session->userdata('user_admin') === TRUE)
 		{
-			show_404();
+			$header = array(
+				'page' => 'admin',
+				'categories' => $this->bridge->categories(),
+				'category_pages' => $this->bridge->category_pages()
+			);
+
+			$this->load->view('inc/head', $header);
+			$this->load->view('admin/error');
+			$this->load->view('inc/foot');
+
 		}
 	}
 
@@ -203,8 +212,12 @@ class Admin extends CI_Controller {
 
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('page_title', 'page_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page.title]');
-		$this->form_validation->set_rules('page_slug', 'page_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page.slug]');
+
+		$this->form_validation->set_rules('page_title', 'page_title', 'trim|required|max_length[128]|min_length[1]|callback_page_title_edit_check[' . $pages->id . ']');
+		if ($pages->protected == 0)
+		{
+			$this->form_validation->set_rules('page_slug', 'page_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|callback_page_slug_edit_check[' . $pages->id . ']');
+		}
 		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
 
 		if ($this->form_validation->run())
@@ -225,6 +238,38 @@ class Admin extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/page_edit', $data);
 			$this->load->view('inc/foot', $footer);
+		}
+	}
+
+	public function page_title_edit_check($str, $id)
+	{
+		$p = new Page();
+		$p->where('id !=', $id);
+		$count_test = $p->where('title', $str)->count();
+		
+		if ($count_test === 0)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	public function page_slug_edit_check($str, $id)
+	{
+		$p = new Page();
+		$p->where('id !=', $id);
+		$count_test = $p->where('slug', $str)->count();
+		
+		if ($count_test === 0)
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
 		}
 	}
 
@@ -439,8 +484,8 @@ class Admin extends CI_Controller {
 		$data['pages'] = $this->bridge->pages();
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('category_title', 'category_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.title]');
-		$this->form_validation->set_rules('category_slug', 'category_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|is_unique[page_categories.slug]');
+		$this->form_validation->set_rules('category_title', 'category_title', 'trim|required|alpha_dash|max_length[128]|min_length[1]|callback_category_title_check[' . $categories->id . ']');
+		$this->form_validation->set_rules('category_slug', 'category_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|callback_category_slug_check[' . $categories->id . ']');
 
 		$c = new Page_category();
 		$c->where('id', $id)->get();
@@ -493,6 +538,40 @@ class Admin extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/page_category_edit', $data);
 			$this->load->view('inc/foot', $footer);
+		}
+	}
+	
+
+	public function category_title_check($str, $id)
+	{
+		$c = new Page_category();
+		$c->where('id !=', $id);
+		$count_test = $c->where('title', $str)->count();
+		
+		if ($count_test === 0)
+		{
+			return TRUE;
+		}
+		else
+		{
+			$this->form_validation->set_message('category_title_check', 'This category title is already in use.');
+			return FALSE;
+		}
+	}
+	public function category_slug_check($str, $id)
+	{
+		$c = new Page_category();
+		$c->where('id !=', $id);
+		$count_test = $c->where('title', $str)->count();
+		
+		if ($count_test === 0)
+		{
+			return TRUE;
+		}
+		else
+		{
+			$this->form_validation->set_message('category_slug_check', 'This category URL is already in use');
+			return FALSE;
 		}
 	}
 
@@ -578,7 +657,7 @@ class Admin extends CI_Controller {
 					update: function( event, ui ) {
 						$("#pages_list").val($("#sortable1").sortable("toArray"));
 					}
-				}).disableSelection();	
+				}).disableSelection();
 			});'
 		);
 
@@ -587,7 +666,7 @@ class Admin extends CI_Controller {
 		$data['categories'] = $this->bridge->categories();
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-		$this->form_validation->set_rules('pages_list', 'Pages List', 'required');
+		$this->form_validation->set_rules('pages_list', 'Categories have not been changed. The Pages List', 'required');
 		if ($this->form_validation->run())
 		{
 			$categories_array = explode(',', $this->input->post('pages_list'));

@@ -11,7 +11,7 @@
 
 			<div class="span8">
 				&copy; University of Lincoln<br>
-				Orbital Bridge v0.2.4.4 "Beam" &middot; Developed by <a href="http://lncd.org">LNCD</a>
+				Orbital Bridge v0.3 "Cantilever" &middot; Developed by <a href="http://lncd.org">LNCD</a>
 			</div>
 
 			<div class="span2">
@@ -45,6 +45,7 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/morris.min.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/markitup.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/markitup/markdown.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery-gantt.min.js"></script>
 	
 	<script type="text/javascript">
 		var uvOptions = {};

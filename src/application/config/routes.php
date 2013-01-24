@@ -48,6 +48,10 @@ $route['wizard'] = "wizard/view/start";
 $route['wizard/(:any)'] = "wizard/view/$1";
 
 $route['dmp'] = "dmp";
+
+$route['overview'] = "overview";
+$route['overview/(:any)'] = "overview/$1";
+
 $route['admin'] = "admin";
 $route['admin/(:any)'] = "admin/$1";
 $route['admin/page/add'] = "admin/add_page";
@@ -56,8 +60,12 @@ $route['admin/category/add'] = "admin/add_category";
 
 $route['profile'] = 'profile';
 
-$route['projects'] = 'projects';
-$route['projects/(:any)'] = "projects/$1";
+$route['projects'] = 'projects/my';
+$route['project/(:any)/edit'] = "projects/edit/$1";
+$route['project/(:any)/delete'] = "projects/delete/$1";
+$route['project/(:any)'] = "projects/project/$1";
+$route['projects/start'] = "projects/start";
+$route['projects/create_unfunded'] = "projects/create_unfunded";
 
 // Magic redirections!
 
