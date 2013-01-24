@@ -22,7 +22,7 @@
 					if ($project->funded)
 					{
 						echo '<tr>';
-						echo '<td>Funding</td><td>' . $project->funding->currency_symbol . $project->funding->amount . ' (' .  $project->funding->currency_name . ')</td>';
+						echo '<td>Funding</td><td>' . $project->funding->currency->symbol . $project->funding->amount . ' (' .  $project->funding->currency->name . ')</td>';
 						echo '</tr>';
 					}
 				?>
@@ -32,20 +32,53 @@
 	</div>
 	
 	<div class="span8">
-		<h3>Project Lead</h3>
-		<ul class="nav nav-pills nav-stacked">
-			<li><a href="#">Name</a></li>
-			<li><a href="#">Name</a></li>
-			<li><a href="#">Name</a></li>
-		</ul>
+	
+	<h3>Project Team</h3>
+		<table class="table table-bordered table-striped">
+			<tbody>
+			
+				<?php
+					echo '<tr>';
+					echo '<td>Lead</td><td>' . $project->project_lead->title . ' ' . $project->project_lead->name . '</td>';
+					echo '</tr>';
+					if (isset($project->members))
+					{
+						foreach ($project->members as $member)
+						{
+							echo '<tr>';
+							echo '<td>Member</td><td>' . 'Project Member' . '</td>';
+							echo '</tr>';
+						}
+					}
+				?>
+			
+			</tbody>
+		</table>
+	
 	</div>
 
 	<div class="span4">
 		<h3>Other Links</h3>
 		<ul class="nav nav-pills nav-stacked">
-			<li><a href="#">Other Links</a></li>
-			<li><a href="#">Other Links</a></li>
-			<li><a href="#">Other Links</a></li>
+			<?php
+			if($project->ckan_uri !== 'https://ckan.lincoln.ac.uk/group/')
+			{
+				echo '<li><a href="' . $project->ckan_uri . '">' . $project->ckan_uri . '</a></li>';
+			}
+			else
+			{
+				echo '<li>None to display</li>';
+			}
+			?>
 		</ul>
 	</div>
+	
 </div>
+
+<?php
+if ($project->project_lead->employee_id === $this->session->userdata('user_id'))
+{
+	echo '<a href="' . site_url('project/' . $project->id . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
+	echo '<a href="' . site_url('project/' . $project->id . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
+}
+?>

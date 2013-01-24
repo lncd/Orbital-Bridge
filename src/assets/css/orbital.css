@@ -19,3 +19,7 @@
 	font-size: 18px;
 	line-height: 20px;
 }
+
+.form_width {
+	min-width: 284px;
+}

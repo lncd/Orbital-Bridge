@@ -26,7 +26,7 @@
 	
 	<div class="span4">
 	
-		<h4>Total Funding (Sterling)</h4>
+		<h4>Total Funding (Sterling Only)</h4>
 	
 		<p><span class="bignumber">&pound;<?php echo number_format($total_funding); ?></span></p>
 	
@@ -40,7 +40,7 @@
 
 <?php endif; ?>
 		
-<p><a class="btn btn-success" href="#"><i class="icon-plus"></i> Add New Project</a></p>
+<p><a class="btn btn-success" href="projects/start"><i class="icon-plus"></i> Add New Project</a></p>
 
 <?php if (count($active) > 0): ?>
 
@@ -58,7 +58,7 @@
 		foreach($active as $project)
 		{
 			echo '<tr>';
-			echo '<td><a href = ' . site_url('projects/' . $project->id) . '>' . $project->title . '</a></td>';
+			echo '<td><a href = ' . site_url('project/' . $project->id) . '>' . $project->title . '</a></td>';
 			echo '</tr>';
 		}
 	?>
@@ -91,7 +91,7 @@ if (count($inactive) > 0):
 			foreach($inactive as $project)
 			{
 				echo '<tr>';
-				echo '<td><a href = ' . site_url('projects/' . $project->id) . '>' . $project->title . '</a></td>';
+				echo '<td><a href = ' . site_url('project/' . $project->id) . '>' . $project->title . '</a></td>';
 				echo '</tr>';
 			}
 		?>
