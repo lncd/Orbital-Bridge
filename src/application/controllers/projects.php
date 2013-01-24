@@ -425,13 +425,19 @@ class Projects extends CI_Controller {
 				
 				//Members
 				$members = array();
+				$members_test = array();
+				
 				if($this->input->post('members'))
 				{
 					foreach($this->input->post('members') as $member)
 					{
-						if ($member['id'])
+						if ($member['id'] !== '')
 						{
-							$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+							if ( ! in_array($member['id'], $members_test))
+							{
+								$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+							}
+							$members_test[] = $member['id'];
 						}
 					}
 					
