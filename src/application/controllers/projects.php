@@ -294,6 +294,17 @@ class Projects extends CI_Controller {
 			$footer['javascript'] = '$(document).ready(function() {
 				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
+				$("#project_type").change(function () {
+					if ($("#project_type").val() == "funded")
+					{
+						$(\'#funding_div\').show(200, "swing");
+					}
+					else if ($("#project_type").val() == "unfunded")
+					{
+						$(\'#funding_div\').hide(200, "swing");
+					}
+				});
+				
 				$(window).keydown(function(event){
 					if(event.keyCode == 13) {
 						event.preventDefault();
@@ -389,14 +400,14 @@ class Projects extends CI_Controller {
 				
 				if ($this->input->post('project_type') === 'funded')
 				{
-					$fields['funded'] = '1';
+					$fields['funded'] = TRUE;
 					$fields['currency_id'] = $this->input->post('project_funding_currency');
 					$fields['funding_amount'] = $this->input->post('project_funding_amount');
 				}
 
 				else
 				{
-					$fields['funded'] = '';
+					$fields['funded'] = FALSE;
 					$fields['currency_id'] = NULL;
 					$fields['funding_amount'] = NULL;
 				}
