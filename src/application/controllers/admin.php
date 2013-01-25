@@ -226,7 +226,7 @@ class Admin extends CI_Controller {
 			$p->where('id', $id)->get();
 			$p->title = $this->input->post('page_title');
 			$p->content = $this->input->post('page_content');
-			$p->slug = $this->input->post('page_slug');
+			if ($this->input->post('slug')) { $p->slug = $this->input->post('page_slug'); }
 			$p->save();
 			$this->session->set_flashdata('message', 'Page updated');
 			$this->session->set_flashdata('message_type', 'success');
