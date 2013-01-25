@@ -6,7 +6,7 @@ class Auth extends CI_Controller {
 	{
 		$this->load->library('oauth/libraries/oauth2');
 		
-		$provider = $this->oauth2->provider('unilincoln', array(
+		$provider = $this->oauth2->provider('unilincoln2', array(
             'id' => $_SERVER['OAUTH_ID'],
             'secret' => $_SERVER['OAUTH_SECRET']
         ));
@@ -27,7 +27,8 @@ class Auth extends CI_Controller {
                 $this->session->set_userdata('access_token', $token->access_token);
                 $this->session->set_userdata('user_id', $user->id);
                 $this->session->set_userdata('user_name', $user->name);
-                $this->session->set_userdata('user_sam', $user->sam);
+                $this->session->set_userdata('user_sam_id', $user->sam_id);
+                $this->session->set_userdata('user_employee_id', $user->employee_id);
 
                 // Do some funky database testing to see if the user already exists
 				$u = new User();
