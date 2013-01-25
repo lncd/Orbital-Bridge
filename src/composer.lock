@@ -1,0 +1,62 @@
+{
+    "hash": "a0db2e6891945c682c77b2a8a08a4e91",
+    "packages": [
+        {
+            "name": "unilincoln-ost/nucleus-php",
+            "version": "dev-develop",
+            "source": {
+                "type": "git",
+                "url": "/Users/nick/Documents/Repositories/Nucleus PHP Library",
+                "reference": "dae7c286f5c632bb9c770ba3c82017c702a1e0f1"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "time": "2013-01-25 17:05:06",
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Nucleus": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alex Bilbie",
+                    "email": "abilbie@lincoln.ac.uk",
+                    "homepage": "http://staff.lincoln.ac.uk/abilbie",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Nick Jackson",
+                    "email": "nijackson@lincoln.ac.uk",
+                    "homepage": "http://staff.lincoln.ac.uk/nijackson",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Jamie Mahoney",
+                    "email": "jmahoney@lincoln.ac.uk",
+                    "homepage": "http://staff.lincoln.ac.uk/jmahoney",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Harry Newton",
+                    "email": "hnewton@lincoln.ac.uk",
+                    "homepage": "http://staff.lincoln.ac.uk/hnewton",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Function library for integrating with the University of Lincoln's Nucleus data platform."
+        }
+    ],
+    "packages-dev": null,
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "unilincoln-ost/nucleus-php": 20
+    }
+}

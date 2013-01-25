@@ -67,6 +67,8 @@ $route['project/(:any)'] = "projects/project/$1";
 $route['projects/start'] = "projects/start";
 $route['projects/create_unfunded'] = "projects/create_unfunded";
 
+$route['test'] = 'test';
+
 // Magic redirections!
 
 $route['project/c014fb3845e7b054/public'] = 'redirect/dataset/library-activity-data';
