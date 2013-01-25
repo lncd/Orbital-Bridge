@@ -17,7 +17,12 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 		
-		$curl_response = $this->n2->get_curl_request('research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_id'));
+		$curl_response = $this->n2->get_curl_request('research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_employee_id'));
+
+		$projects_active = array();
+		$projects_inactive = array();
+		
+		$total_funding = 0;
 		
 		if($curl_response !== FALSE)
 		{		
@@ -248,7 +253,7 @@ class Projects extends CI_Controller {
 				'category_pages' => $this->bridge->category_pages()
 			);
 			
-	        if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_id'))
+	        if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
 	        {
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/unauthorised');
@@ -297,7 +302,7 @@ class Projects extends CI_Controller {
 				'category_pages' => $this->bridge->category_pages()
 			);
 			
-			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_id'))
+			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
 	        {
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/unauthorised');
@@ -540,7 +545,7 @@ class Projects extends CI_Controller {
 				'categories' => $this->bridge->categories(),
 				'category_pages' => $this->bridge->category_pages()
 			);
-			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_id'))
+			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
 	        {
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/unauthorised');
