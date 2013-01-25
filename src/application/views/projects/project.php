@@ -39,14 +39,14 @@
 			
 				<?php
 					echo '<tr>';
-					echo '<td>Lead</td><td>' . $project->project_lead->title . ' ' . $project->project_lead->name . '</td>';
+					echo '<td>Lead</td><td>' . $project->project_lead->name . '</td>';
 					echo '</tr>';
-					if (isset($project->members))
+					if (isset($project->research_project_members))
 					{
-						foreach ($project->members as $member)
+						foreach ($project->research_project_members as $member)
 						{
 							echo '<tr>';
-							echo '<td>Member</td><td>' . 'Project Member' . '</td>';
+							echo '<td>Member</td><td>' . $member->person->first_name . ' ' . $member->person->last_name . '</td>';
 							echo '</tr>';
 						}
 					}

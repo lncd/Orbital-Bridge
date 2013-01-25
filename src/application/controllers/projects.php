@@ -17,7 +17,7 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 		
-		$curl_response = $this->n2->get_curl_request('research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_employee_id'));
+		$curl_response = $this->n2->get_curl_request('research_projects?account=' . $this->session->userdata('user_employee_id'), $this->session->userdata('access_token'));
 
 		$projects_active = array();
 		$projects_inactive = array();
@@ -25,9 +25,8 @@ class Projects extends CI_Controller {
 		$total_funding = 0;
 		
 		if($curl_response !== FALSE)
-		{		
+		{
 			$projects = json_decode($curl_response);
-	
 			$projects_active = array();
 			$projects_inactive = array();
 			
@@ -194,7 +193,7 @@ class Projects extends CI_Controller {
 				
 			//POST to N2
 			
-			$curl_response = $this->n2->post_curl_request('research_projects', $fields, $_SERVER['NUCLEUS_TOKEN']);
+			$curl_response = $this->n2->post_curl_request('research_projects', $fields, $this->session->userdata('access_token'));
 			
 			if($curl_response !== FALSE)
 			{			
@@ -241,8 +240,8 @@ class Projects extends CI_Controller {
 			redirect('signin');
 		}
 		
-		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
-		
+		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $this->session->userdata('access_token'));
+
 		if($curl_response !== FALSE)
 		{		
 			$projects = json_decode($curl_response);		
@@ -253,22 +252,14 @@ class Projects extends CI_Controller {
 				'category_pages' => $this->bridge->category_pages()
 			);
 			
-	        if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
-	        {
-				$this->load->view('inc/head', $header);
-				$this->load->view('projects/unauthorised');
-				$this->load->view('inc/foot');
-	        }
-			else
-			{
-				$data = array(
-					'project' => $projects->result
-					);
-	
-				$this->load->view('inc/head', $header);
-				$this->load->view('projects/project', $data);
-				$this->load->view('inc/foot');
-			}
+			$data = array(
+				'project' => $projects->result
+				);
+
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/project', $data);
+			$this->load->view('inc/foot');
+			
 		}
 		else
 		{
@@ -290,7 +281,7 @@ class Projects extends CI_Controller {
 		$this->load->library('form_validation');
 		
 		
-		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
+		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $this->session->userdata('access_token'));
 		
 		if($curl_response !== FALSE)
 		{		
@@ -476,7 +467,7 @@ class Projects extends CI_Controller {
 					
 					//POST to N2
 	
-					$curl_response = $this->n2->post_curl_request('research_projects/id/' . $project_id, $fields, $_SERVER['NUCLEUS_TOKEN']);
+					$curl_response = $this->n2->post_curl_request('research_projects/id/' . $project_id, $fields, $this->session->userdata('access_token'));
 	
 					if ($curl_response !== FALSE)
 					{
@@ -534,7 +525,7 @@ class Projects extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 				
-		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $_SERVER['NUCLEUS_TOKEN']);
+		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $this->session->userdata('access_token'));
 		
 		if($curl_response !== FALSE)
 		{		
@@ -567,7 +558,7 @@ class Projects extends CI_Controller {
 				{			
 					//DELETE to N2
 					
-					$curl_response = $this->n2->delete_curl_request('research_projects/id/' . $project_id, $_SERVER['NUCLEUS_TOKEN']);
+					$curl_response = $this->n2->delete_curl_request('research_projects/id/' . $project_id, $this->session->userdata('access_token'));
 					
 					if ($curl_response !== FALSE)
 					{				
