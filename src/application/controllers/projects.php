@@ -17,7 +17,7 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 		
-		$projects = json_decode(file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_id')));
+		$projects = json_decode(file_get_contents($_SERVER['NUCLEUS_BASE_URI'].'research_projects?access_token=' . $_SERVER['NUCLEUS_TOKEN'] . '&account=' . $this->session->userdata('user_employee_id')));
 
 		$projects_active = array();
 		$projects_inactive = array();
