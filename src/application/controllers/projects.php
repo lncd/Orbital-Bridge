@@ -177,7 +177,7 @@ class Projects extends CI_Controller {
 				$fields .= '}';
 				
 			//POST to N2
-			$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects', $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+			$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects', $fields, 'Bearer ' . base64_encode($_SERVER['NUCLEUS_TOKEN'])));
 			
 			if ($response->error)
 			{
@@ -294,6 +294,17 @@ class Projects extends CI_Controller {
 			$footer['javascript'] = '$(document).ready(function() {
 				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
+				$("#project_type").change(function () {
+					if ($("#project_type").val() == "funded")
+					{
+						$(\'#funding_div\').show(200, "swing");
+					}
+					else if ($("#project_type").val() == "unfunded")
+					{
+						$(\'#funding_div\').hide(200, "swing");
+					}
+				});
+				
 				$(window).keydown(function(event){
 					if(event.keyCode == 13) {
 						event.preventDefault();
@@ -389,14 +400,14 @@ class Projects extends CI_Controller {
 				
 				if ($this->input->post('project_type') === 'funded')
 				{
-					$fields['funded'] = '1';
+					$fields['funded'] = TRUE;
 					$fields['currency_id'] = $this->input->post('project_funding_currency');
 					$fields['funding_amount'] = $this->input->post('project_funding_amount');
 				}
 
 				else
 				{
-					$fields['funded'] = '';
+					$fields['funded'] = FALSE;
 					$fields['currency_id'] = NULL;
 					$fields['funding_amount'] = NULL;
 				}
@@ -414,13 +425,19 @@ class Projects extends CI_Controller {
 				
 				//Members
 				$members = array();
+				$members_test = array();
+				
 				if($this->input->post('members'))
 				{
 					foreach($this->input->post('members') as $member)
 					{
-						if ($member['id'])
+						if ($member['id'] !== '')
 						{
-							$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+							if ( ! in_array($member['id'], $members_test))
+							{
+								$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+							}
+							$members_test[] = $member['id'];
 						}
 					}
 					
@@ -431,7 +448,7 @@ class Projects extends CI_Controller {
 				
 				//POST to N2
 
-				$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+				$response = json_decode($this->post_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . base64_encode($_SERVER['NUCLEUS_TOKEN'])));
 
 				if ($response->error)
 				{
@@ -508,7 +525,7 @@ class Projects extends CI_Controller {
 				//DELETE to N2
 				
 				$fields = array(1, 2, 3);
-				$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . $_SERVER['NUCLEUS_TOKEN']));
+				$response = json_decode($this->delete_curl_request($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/id/' . $project_id, $fields, 'Bearer ' . base64_encode($_SERVER['NUCLEUS_TOKEN'])));
 				
 				if ($response->error)
 				{

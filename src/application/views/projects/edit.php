@@ -53,14 +53,9 @@
 		{
 			$funded = 'unfunded';
 		}
-		$form_project_type = array(
-			'name'		=> 'project_type',
-			'id'		=> 'project_type',
-			'value'		=> $funded
-		);
 	
 		$project_type['funded'] = 'Funded';
-		$project_type['unfunded'] = 'No funding';
+		$project_type['unfunded'] = 'Unfunded';
 	
 		echo '<div class="control-group">';
 		echo form_label('Project type', 'project_type', array('class' => 'control-label'));
