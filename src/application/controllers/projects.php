@@ -241,25 +241,30 @@ class Projects extends CI_Controller {
 		}
 		
 		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $this->session->userdata('access_token'));
-
 		if($curl_response !== FALSE)
-		{		
+		{
 			$projects = json_decode($curl_response);		
         
-			$header = array(
-				'page' => 'projects',
-				'categories' => $this->bridge->categories(),
-				'category_pages' => $this->bridge->category_pages()
-			);
-			
-			$data = array(
-				'project' => $projects->result
+			if ($projects->http_status_code === 404)
+			{
+				show_404();
+			}
+			else
+			{
+				$header = array(
+					'page' => 'projects',
+					'categories' => $this->bridge->categories(),
+					'category_pages' => $this->bridge->category_pages()
 				);
-
-			$this->load->view('inc/head', $header);
-			$this->load->view('projects/project', $data);
-			$this->load->view('inc/foot');
-			
+				
+				$data = array(
+					'project' => $projects->result
+					);
+	
+				$this->load->view('inc/head', $header);
+				$this->load->view('projects/project', $data);
+				$this->load->view('inc/foot');
+			}
 		}
 		else
 		{
@@ -287,74 +292,103 @@ class Projects extends CI_Controller {
 		{		
 			$projects = json_decode($curl_response);	
         
-			$header = array(
-				'page' => 'projects',
-				'categories' => $this->bridge->categories(),
-				'category_pages' => $this->bridge->category_pages()
-			);
-			
-			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
-	        {
-				$this->load->view('inc/head', $header);
-				$this->load->view('projects/unauthorised');
-				$this->load->view('inc/foot');
-	        }
-	        else
-	        {
-	        	$num_project_members = count($projects->result->research_project_members);
-	        
-	        	$tags = null;
-	        
-				$data = array(
-					'project' => $projects->result,
-					'project_id' => $project_id
-					);
-	
-				$footer['javascript'] = '$(document).ready(function() {
-					$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-					
-					$("#project_type").change(function () {
-						if ($("#project_type").val() == "funded")
+			if ($projects->http_status_code === 404)
+			{
+				show_404();
+			}
+			else
+			{
+				$header = array(
+					'page' => 'projects',
+					'categories' => $this->bridge->categories(),
+					'category_pages' => $this->bridge->category_pages()
+				);
+				
+				if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
+		        {
+					$this->load->view('inc/head', $header);
+					$this->load->view('projects/unauthorised');
+					$this->load->view('inc/foot');
+		        }
+		        else
+		        {
+		        	$num_project_members = count($projects->result->research_project_members);
+		        
+		        	$tags = null;
+		        
+					$data = array(
+						'project' => $projects->result,
+						'project_id' => $project_id
+						);
+		
+					$footer['javascript'] = '$(document).ready(function() {
+						$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+						
+						$("#project_type").change(function () {
+							if ($("#project_type").val() == "funded")
+							{
+								$(\'#funding_div\').show(200, "swing");
+							}
+							else if ($("#project_type").val() == "unfunded")
+							{
+								$(\'#funding_div\').hide(200, "swing");
+							}
+						});
+						
+						$(window).keydown(function(event){
+							if(event.keyCode == 13) {
+								event.preventDefault();
+								return false;
+							}
+						});
+						 $("#research_interests").select2({
+		                    tags:[],
+		                    tokenSeparators: [","],
+		                    minimumInputLength: 2
+		                });
+		                
+		            	$(".removeMemberButton").click(function()
 						{
-							$(\'#funding_div\').show(200, "swing");
-						}
-						else if ($("#project_type").val() == "unfunded")
+						    $(this).parent().parent().remove();
+						});
+		                
+		                var new_member_id = ' . $num_project_members . ';
+		                
+		            	$("#addMember").click(function()
 						{
-							$(\'#funding_div\').hide(200, "swing");
-						}
-					});
-					
-					$(window).keydown(function(event){
-						if(event.keyCode == 13) {
-							event.preventDefault();
-							return false;
-						}
-					});
-					 $("#research_interests").select2({
-	                    tags:[],
-	                    tokenSeparators: [","],
-	                    minimumInputLength: 2
-	                });
-	                
-	            	$(".removeMemberButton").click(function()
-					{
-					    $(this).parent().parent().remove();
-					});
-	                
-	                var new_member_id = ' . $num_project_members . ';
-	                
-	            	$("#addMember").click(function()
-					{
-						new_member_id ++;
-						$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
-					
-	            	$(".removeMemberButton").click(function()
-					{
-					    $(this).parent().parent().remove();
-					});
-					
-		                 $("#new_member_select_" + new_member_id).select2({
-							placeholder: "Search for a staff member",
+							new_member_id ++;
+							$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
+						
+		            	$(".removeMemberButton").click(function()
+						{
+						    $(this).parent().parent().remove();
+						});
+						
+			                 $("#new_member_select_" + new_member_id).select2({
+								placeholder: "Search for a staff member",
+								minimumInputLength: 3,
+								ajax: {
+								    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
+								    dataType: \'jsonp\',
+								    quietMillis: 100,
+								    
+					                data: function (term, page) { // page is the one-based page number tracked by Select2
+					                    return {
+					                        q: term //search term
+					                    };
+					                },
+					                results: function (data, page) {
+					                    var more = (page * 10) < data.total; // whether or not there are more results available
+					 
+					                    // notice we return the value of more so Select2 knows if more results can be loaded
+					                    return {results: data};
+					                }					
+					            }
+					        });					
+						});
+						
+		                 $("#project_lead").select2({
+							placeholder: "Enter project lead",
 							minimumInputLength: 3,
 							ajax: {
 							    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
@@ -372,137 +406,115 @@ class Projects extends CI_Controller {
 				                    // notice we return the value of more so Select2 knows if more results can be loaded
 				                    return {results: data};
 				                }					
-				            }
-				        });					
-					});
-					
-	                 $("#project_lead").select2({
-						placeholder: "Enter project lead",
-						minimumInputLength: 3,
-						ajax: {
-						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
-						    dataType: \'jsonp\',
-						    quietMillis: 100,
-						    
-			                data: function (term, page) { // page is the one-based page number tracked by Select2
-			                    return {
-			                        q: term //search term
-			                    };
-			                },
-			                results: function (data, page) {
-			                    var more = (page * 10) < data.total; // whether or not there are more results available
-			 
-			                    // notice we return the value of more so Select2 knows if more results can be loaded
-			                    return {results: data};
-			                }					
-			            },
-		                initSelection : function (element, callback) {
-				        	callback({
-					        	id:' . $projects->result->project_lead->id . ',
-					        	text:"' . $projects->result->project_lead->first_name . ' ' . $projects->result->project_lead->last_name . '"
-					        });
-				        }
-	
-			        });
-				});';
-				
-				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-				$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
-				$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
+				            },
+			                initSelection : function (element, callback) {
+					        	callback({
+						        	id:' . $projects->result->project_lead->id . ',
+						        	text:"' . $projects->result->project_lead->first_name . ' ' . $projects->result->project_lead->last_name . '"
+						        });
+					        }
 		
-				if ($this->form_validation->run())
-				{	
-					$fields['title'] = $this->input->post('project_title');
-					$fields['lead'] = $this->input->post('project_lead');
-					$fields['description'] = $this->input->post('project_description');
-					$fields['research_interests'] = $this->input->post('research_interests');
+				        });
+					});';
 					
-					if ($this->input->post('project_type') === 'funded')
-					{
-						$fields['funded'] = TRUE;
-						$fields['currency_id'] = $this->input->post('project_funding_currency');
-						$fields['funding_amount'] = $this->input->post('project_funding_amount');
-					}
-	
-					else
-					{
-						$fields['funded'] = FALSE;
-						$fields['currency_id'] = NULL;
-						$fields['funding_amount'] = NULL;
-					}
-					
-					$fields['start_date'] = $this->input->post('project_start_date');
-					
-					if($this->input->post('end_date'))
-					{
-						$fields['end_date'] = $this->input->post('end_start_date');
-					}
-					else
-					{
-						$fields['end_date'] = NULL;
-					}
-					
-					//Members
-					$members = array();
-					$members_test = array();
-					
-					if($this->input->post('members'))
-					{
-						foreach($this->input->post('members') as $member)
+					$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+					$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
+					$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
+			
+					if ($this->form_validation->run())
+					{	
+						$fields['title'] = $this->input->post('project_title');
+						$fields['lead'] = $this->input->post('project_lead');
+						$fields['description'] = $this->input->post('project_description');
+						$fields['research_interests'] = $this->input->post('research_interests');
+						
+						if ($this->input->post('project_type') === 'funded')
 						{
-							if ($member['id'] !== '')
-							{
-								if ( ! in_array($member['id'], $members_test))
-								{
-									$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
-								}
-								$members_test[] = $member['id'];
-							}
+							$fields['funded'] = TRUE;
+							$fields['currency_id'] = $this->input->post('project_funding_currency');
+							$fields['funding_amount'] = $this->input->post('project_funding_amount');
+						}
+		
+						else
+						{
+							$fields['funded'] = FALSE;
+							$fields['currency_id'] = NULL;
+							$fields['funding_amount'] = NULL;
 						}
 						
-						$fields['project_members'] = $members;
-					}
-					
-					$fields = json_encode($fields);
-					
-					//POST to N2
-	
-					$curl_response = $this->n2->post_curl_request('research_projects/id/' . $project_id, $fields, $this->session->userdata('access_token'));
-	
-					if ($curl_response !== FALSE)
-					{
-						$response = json_decode($curl_response);
-					
-						if ($response->error)
+						$fields['start_date'] = $this->input->post('project_start_date');
+						
+						if($this->input->post('end_date'))
 						{
-							$header['flashmessage'] = $response->error_message;
-							$header['flashmessagetype'] = 'error';
-											
-							$this->load->view('inc/head', $header);
-							$this->load->view('projects/edit', $data);
-							$this->load->view('inc/foot', $footer);
+							$fields['end_date'] = $this->input->post('end_start_date');
 						}
 						else
 						{
-							$this->session->set_flashdata('message', 'Project updated!');
-							$this->session->set_flashdata('message_type', 'success');
+							$fields['end_date'] = NULL;
+						}
+						
+						//Members
+						$members = array();
+						$members_test = array();
+						
+						if($this->input->post('members'))
+						{
+							foreach($this->input->post('members') as $member)
+							{
+								if ($member['id'] !== '')
+								{
+									if ( ! in_array($member['id'], $members_test))
+									{
+										$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+									}
+									$members_test[] = $member['id'];
+								}
+							}
+							
+							$fields['project_members'] = $members;
+						}
+						
+						$fields = json_encode($fields);
+						
+						//POST to N2
+		
+						$curl_response = $this->n2->post_curl_request('research_projects/id/' . $project_id, $fields, $this->session->userdata('access_token'));
+		
+						if ($curl_response !== FALSE)
+						{
+							$response = json_decode($curl_response);
+						
+							if ($response->error)
+							{
+								$header['flashmessage'] = $response->error_message;
+								$header['flashmessagetype'] = 'error';
+												
+								$this->load->view('inc/head', $header);
+								$this->load->view('projects/edit', $data);
+								$this->load->view('inc/foot', $footer);
+							}
+							else
+							{
+								$this->session->set_flashdata('message', 'Project updated!');
+								$this->session->set_flashdata('message_type', 'success');
+								
+								redirect('projects');
+							}
+						}
+						else
+						{
+							$this->session->set_flashdata('message', 'Unable to update project.');
+							$this->session->set_flashdata('message_type', 'error');
 							
 							redirect('projects');
 						}
 					}
 					else
 					{
-						$this->session->set_flashdata('message', 'Unable to update project.');
-						$this->session->set_flashdata('message_type', 'error');
-						
-						redirect('projects');
+						$this->load->view('inc/head', $header);
+						$this->load->view('projects/edit', $data);
+						$this->load->view('inc/foot', $footer);
 					}
-				}
-				else
-				{
-					$this->load->view('inc/head', $header);
-					$this->load->view('projects/edit', $data);
-					$this->load->view('inc/foot', $footer);
 				}
 			}
 		}
@@ -531,69 +543,76 @@ class Projects extends CI_Controller {
 		{		
 			$projects = json_decode($curl_response);	
 		        
-			$header = array(
-				'page' => 'projects',
-				'categories' => $this->bridge->categories(),
-				'category_pages' => $this->bridge->category_pages()
-			);
-			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
-	        {
-				$this->load->view('inc/head', $header);
-				$this->load->view('projects/unauthorised');
-				$this->load->view('inc/foot');
-	        }
-	        else
-	        {
-				$data = array(
-					'project' => $projects->result,
-					'project_id' => $project_id
-					);
-					
-		
-				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-				$this->form_validation->set_rules('project_title', 'Project Title', 'callback_project_title_check[' . $projects->result->title . ']');
-				$this->form_validation->set_message('project_title_check', 'You did not type the correct project title');
-		
-				if ($this->form_validation->run())
-				{			
-					//DELETE to N2
-					
-					$curl_response = $this->n2->delete_curl_request('research_projects/id/' . $project_id, $this->session->userdata('access_token'));
-					
-					if ($curl_response !== FALSE)
-					{				
-						$response = json_decode($curl_response);
+			if ($projects->http_status_code === 404)
+			{
+				show_404();
+			}
+			else
+			{
+				$header = array(
+					'page' => 'projects',
+					'categories' => $this->bridge->categories(),
+					'category_pages' => $this->bridge->category_pages()
+				);
+				if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
+		        {
+					$this->load->view('inc/head', $header);
+					$this->load->view('projects/unauthorised');
+					$this->load->view('inc/foot');
+		        }
+		        else
+		        {
+					$data = array(
+						'project' => $projects->result,
+						'project_id' => $project_id
+						);
 						
-						if ($response->error)
-						{
-							$header['flashmessage'] = $response->error_message;
-							$header['flashmessagetype'] = 'error';
-											
-							$this->load->view('inc/head', $header);
-							$this->load->view('projects/delete', $data);
-							$this->load->view('inc/foot');
+			
+					$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+					$this->form_validation->set_rules('project_title', 'Project Title', 'callback_project_title_check[' . $projects->result->title . ']');
+					$this->form_validation->set_message('project_title_check', 'You did not type the correct project title');
+			
+					if ($this->form_validation->run())
+					{			
+						//DELETE to N2
+						
+						$curl_response = $this->n2->delete_curl_request('research_projects/id/' . $project_id, $this->session->userdata('access_token'));
+						
+						if ($curl_response !== FALSE)
+						{				
+							$response = json_decode($curl_response);
+							
+							if ($response->error)
+							{
+								$header['flashmessage'] = $response->error_message;
+								$header['flashmessagetype'] = 'error';
+												
+								$this->load->view('inc/head', $header);
+								$this->load->view('projects/delete', $data);
+								$this->load->view('inc/foot');
+							}
+							else
+							{
+								$this->session->set_flashdata('message', 'Project deleted');
+								$this->session->set_flashdata('message_type', 'success');
+								
+								redirect('projects');
+							}
 						}
 						else
 						{
-							$this->session->set_flashdata('message', 'Project deleted');
-							$this->session->set_flashdata('message_type', 'success');
+							$this->session->set_flashdata('message', 'Unable to delete project');
+							$this->session->set_flashdata('message_type', 'error');
 							
 							redirect('projects');
 						}
 					}
 					else
 					{
-						$this->session->set_flashdata('message', 'Unable to delete project');
-						$this->session->set_flashdata('message_type', 'error');
-						
-						redirect('projects');
+						$this->load->view('inc/head', $header);
+						$this->load->view('projects/delete', $data);
+						$this->load->view('inc/foot');
 					}
-				}
-				else
-				{
-					$this->load->view('inc/head', $header);
-					$this->load->view('projects/delete', $data);
-					$this->load->view('inc/foot');
 				}
 			}
 		}
