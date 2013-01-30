@@ -13,27 +13,20 @@
 
 class N2 
 {
-
-	private $client;
-
-	public function __construct()
-	{
-		$this->client = new Nucleus\Client(array(
-	    	'access_token' => '123456'
-	    ));
-	}
-
 	public function __call($method, $params)
     {
-    
-    	if (isset($params[0]))
+		$client = new Nucleus\Client(array(
+	    	'access_token' => $params[0],
+	    	'base_url' => $_SERVER['NUCLEUS_BASE_URI']
+	    ));
+
+    	if (isset($params[1]))
     	{
-	    	return $this->client->$method($params[0]);
+	    	return $client->$method($params[1]);
 	    }
 	    else
 	    {
-		    return $this->client->$method();
+		    return $client->$method();
 	    }
     }
-
 }

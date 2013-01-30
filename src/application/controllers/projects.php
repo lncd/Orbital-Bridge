@@ -17,29 +17,27 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 		
-		$curl_response = $this->n2->get_curl_request('research_projects?account=' . $this->session->userdata('user_employee_id'), $this->session->userdata('access_token'));
+		$curl_response = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
 
 		$projects_active = array();
 		$projects_inactive = array();
 		
 		$total_funding = 0;
 		
-		if($curl_response !== FALSE)
-		{
-			$projects = json_decode($curl_response);
+			$projects = $curl_response;
 			$projects_active = array();
 			$projects_inactive = array();
 			
 			$total_funding = 0;
 			
-			foreach ($projects->results as $project)
+			foreach ($projects['results'] as $project)
 			{
-				if ($project->end_date_unix > time() OR $project->end_date_unix === NULL)
+				if ($project['end_date_unix'] > time() OR $project['end_date_unix'] === NULL)
 				{
 					$projects_active[] = $project;
-					if ($project->end_date_unix === NULL)
+					if ($project['end_date_unix'] === NULL)
 					{
-						$project->end_date_unix = time() + 604800;
+						$project['end_date_unix'] = time() + 604800;
 						$class = 'barFade';
 					}
 					else
@@ -47,12 +45,12 @@ class Projects extends CI_Controller {
 						$class = '';
 					}
 					$gantt_array[] = '{
-					"name": "' . $project->title . '",
+					"name": "' . $project['title'] . '",
 					"values": [{
-						"from": "/Date(' . $project->start_date_unix * 1000 . ')/",
-						"to": "/Date(' . $project->end_date_unix * 1000 . ')/",
-						"desc": "' . $project->title . '<br>Starts: ' . $project->start_date . '<br>Ends: ' . $project->end_date . '",
-						"label": "' . $project->title . '",
+						"from": "/Date(' . $project['start_date_unix'] * 1000 . ')/",
+						"to": "/Date(' . $project['end_date_unix'] * 1000 . ')/",
+						"desc": "' . $project['title'] . '<br>Starts: ' . $project['start_date'] . '<br>Ends: ' . $project['end_date'] . '",
+						"label": "' . $project['title'] . '",
 						"customClass": "' . $class . '"
 						}
 					]}';
@@ -62,9 +60,9 @@ class Projects extends CI_Controller {
 					$projects_inactive[] = $project;
 				}
 				
-				if ($project->funding !== NULL AND $project->funding->currency->name === 'Sterling')
+				if ($project['funding'] !== NULL AND $project['funding']['currency']['name'] === 'Sterling')
 				{
-					$total_funding += $project->funding->amount;
+					$total_funding += $project['funding']['amount'];
 				}
 			}
 			
@@ -91,13 +89,6 @@ class Projects extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/my', $data);
 			$this->load->view('inc/foot', $footer);
-		}
-		else
-		{					
-			$this->load->view('inc/head', $header);
-			$this->load->view('projects/error_projects');
-			$this->load->view('inc/foot');
-		}
 	}
 	
 	public function start()
@@ -159,69 +150,43 @@ class Projects extends CI_Controller {
 		if ($this->form_validation->run())
 		{
 
-			$fields = '{
-				"title" : "' . $this->input->post('project_title') . '",' .
-				'"lead" : "' . $this->session->userdata('user_id') . '",' .
-				'"description" : "' . $this->input->post('project_description') . '",' .
-				'"funded" : "';
+			$fields['title'] = $this->input->post('project_title');
+			$fields['lead'] = $this->session->userdata('user_id');
+			$fields['description'] = $this->input->post('project_description');
 				
-				if ($this->input->post('project_type') === 'funded')
-				{
-					$fields .= '1",	
-					"currency_id" : "' . $this->input->post('project_funding_currency') . '",' .
-					'"funding_amount" : "' . $this->input->post('project_funding_amount') . '",';
-				}
-				else
-				{
-					$fields .= '0",	
-					"currency_id" : null,' .
-					'"funding_amount" : null,';
-				}			
-					
-				$fields .=
-				'"start_date" : "' . $this->input->post('project_start_date') . '",';
-				
-				if ($this->input->post('project_end_date'))
-				{
-					$fields .= '"end_date" : "' . $this->input->post('project_end_date') . '"';
-				}
-				else
-				{
-					$fields .= '"end_date" : null';
-				}
-				$fields .= '}';
-				
-			//POST to N2
-			
-			$curl_response = $this->n2->post_curl_request('research_projects', $fields, $this->session->userdata('access_token'));
-			
-			if($curl_response !== FALSE)
-			{			
-				$response = json_decode($curl_response);
-				
-				if ($response->error)
-				{
-					$header['flashmessage'] = $response->error_message;
-					$header['flashmessagetype'] = 'error';
-									
-					$this->load->view('inc/head', $header);
-					$this->load->view('projects/create_unfunded');
-					$this->load->view('inc/foot', $footer);
-				}
-				else
-				{
-					$this->session->set_flashdata('message', 'Project created');
-					$this->session->set_flashdata('message_type', 'success');
-					
-					redirect('projects');
-				}
+			if ($this->input->post('project_type') === 'funded')
+			{
+				$fields['funded'] = (bool) 1;	
+				$fields['currency_id'] = (int) $this->input->post('project_funding_currency');
+				$fields['funding_amount'] = (int) $this->input->post('project_funding_amount');
 			}
 			else
 			{
-				$this->session->set_flashdata('message', 'Unable to create project');
-				$this->session->set_flashdata('message_type', 'error');
+				$fields['funded'] = (bool) 0;	
+			}		
+			$fields['start_date'] = $this->input->post('project_start_date');
+			$fields['end_date'] = $this->input->post('project_end_date');
+			
+								
+			//POST to N2
+			
+			try
+			{
+				$curl_response = $this->n2->CreateResearchProject($this->session->userdata('access_token'), $fields);
+				
+				$this->session->set_flashdata('message', 'Project created');
+				$this->session->set_flashdata('message_type', 'success');
 				
 				redirect('projects');
+			}
+			catch(Exception $e)
+			{
+				$this->session->set_flashdata('message', $e->getMessage());
+				$this->session->set_flashdata('message_type', 'error');
+												
+				$this->load->view('inc/head', $header);
+				$this->load->view('projects/create_unfunded');
+				$this->load->view('inc/foot', $footer);
 			}
 		}
 		else
@@ -240,34 +205,35 @@ class Projects extends CI_Controller {
 			redirect('signin');
 		}
 		
-		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $this->session->userdata('access_token'));
-
-		if($curl_response !== FALSE)
-		{		
-			$projects = json_decode($curl_response);		
-        
-			$header = array(
-				'page' => 'projects',
-				'categories' => $this->bridge->categories(),
-				'category_pages' => $this->bridge->category_pages()
-			);
-			
-			$data = array(
-				'project' => $projects->result
-				);
-
-			$this->load->view('inc/head', $header);
-			$this->load->view('projects/project', $data);
-			$this->load->view('inc/foot');
-			
-		}
-		else
+		try
 		{
+			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
+		}
+		catch(Exception $e)
+		{
+			var_dump($e->getMessage());
 			$this->session->set_flashdata('message', 'Unable to get project');
 			$this->session->set_flashdata('message_type', 'error');
 			
-			redirect('projects');
+			redirect('projects');			
 		}
+	
+    
+		$header = array(
+			'page' => 'projects',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$data = array(
+			'project' => $project['result']
+			);
+
+		$this->load->view('inc/head', $header);
+		$this->load->view('projects/project', $data);
+		$this->load->view('inc/foot');
+		
+	
 	}
 
 	public function edit($project_id)
@@ -281,11 +247,18 @@ class Projects extends CI_Controller {
 		$this->load->library('form_validation');
 		
 		
-		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $this->session->userdata('access_token'));
-		
-		if($curl_response !== FALSE)
-		{		
-			$projects = json_decode($curl_response);	
+
+		try
+		{
+			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
+		}
+		catch(Exception $e)
+		{
+			$this->session->set_flashdata('message', 'Unable to edit project');
+			$this->session->set_flashdata('message_type', 'error');
+			
+			redirect('projects');			
+		}		
         
 			$header = array(
 				'page' => 'projects',
@@ -293,7 +266,7 @@ class Projects extends CI_Controller {
 				'category_pages' => $this->bridge->category_pages()
 			);
 			
-			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
+			if ($project['result']['project_lead']['employee_id'] !== $this->session->userdata('user_employee_id'))
 	        {
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/unauthorised');
@@ -301,12 +274,12 @@ class Projects extends CI_Controller {
 	        }
 	        else
 	        {
-	        	$num_project_members = count($projects->result->research_project_members);
+	        	$num_project_members = count($project['result']['research_project_members']);
 	        
 	        	$tags = null;
 	        
 				$data = array(
-					'project' => $projects->result,
+					'project' => $project['result'],
 					'project_id' => $project_id
 					);
 	
@@ -398,8 +371,8 @@ class Projects extends CI_Controller {
 			            },
 		                initSelection : function (element, callback) {
 				        	callback({
-					        	id:' . $projects->result->project_lead->id . ',
-					        	text:"' . $projects->result->project_lead->first_name . ' ' . $projects->result->project_lead->last_name . '"
+					        	id:' . $project['result']['project_lead']['id'] . ',
+					        	text:"' . $project['result']['project_lead']['first_name'] . ' ' . $project['result']['project_lead']['last_name'] . '"
 					        });
 				        }
 	
@@ -412,6 +385,7 @@ class Projects extends CI_Controller {
 		
 				if ($this->form_validation->run())
 				{	
+					$fields['id'] = (int) $project_id;
 					$fields['title'] = $this->input->post('project_title');
 					$fields['lead'] = $this->input->post('project_lead');
 					$fields['description'] = $this->input->post('project_description');
@@ -462,38 +436,33 @@ class Projects extends CI_Controller {
 						
 						$fields['project_members'] = $members;
 					}
-					
-					$fields = json_encode($fields);
-					
+										
 					//POST to N2
 	
-					$curl_response = $this->n2->post_curl_request('research_projects/id/' . $project_id, $fields, $this->session->userdata('access_token'));
-	
-					if ($curl_response !== FALSE)
+					try
 					{
-						$response = json_decode($curl_response);
-					
-						if ($response->error)
-						{
-							$header['flashmessage'] = $response->error_message;
-							$header['flashmessagetype'] = 'error';
-											
-							$this->load->view('inc/head', $header);
-							$this->load->view('projects/edit', $data);
-							$this->load->view('inc/foot', $footer);
-						}
-						else
-						{
-							$this->session->set_flashdata('message', 'Project updated!');
-							$this->session->set_flashdata('message_type', 'success');
-							
-							redirect('projects');
-						}
+						$curl_response = $this->n2->EditResearchProject($this->session->userdata('access_token'), $fields);
+					}
+					catch(Exception $e)
+					{
+						$this->session->set_flashdata('message', $e->getMessage());
+						$this->session->set_flashdata('message_type', 'error');
+						
+						redirect('projects');
+					}
+					if ($curl_response['error'])
+					{
+						$header['flashmessage'] = $curl_response->error_message;
+						$header['flashmessagetype'] = 'error';
+										
+						$this->load->view('inc/head', $header);
+						$this->load->view('projects/edit', $data);
+						$this->load->view('inc/foot', $footer);
 					}
 					else
 					{
-						$this->session->set_flashdata('message', 'Unable to update project.');
-						$this->session->set_flashdata('message_type', 'error');
+						$this->session->set_flashdata('message', 'Project updated!');
+						$this->session->set_flashdata('message_type', 'success');
 						
 						redirect('projects');
 					}
@@ -505,14 +474,7 @@ class Projects extends CI_Controller {
 					$this->load->view('inc/foot', $footer);
 				}
 			}
-		}
-		else
-		{
-			$this->session->set_flashdata('message', 'Unable to edit project');
-			$this->session->set_flashdata('message_type', 'error');
-			
-			redirect('projects');			
-		}
+		
 	}
 	
 	public function delete($project_id)
@@ -525,18 +487,24 @@ class Projects extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 				
-		$curl_response = $this->n2->get_curl_request('research_projects/id/' . $project_id . '?access_token=' . $this->session->userdata('access_token'));
-		
-		if($curl_response !== FALSE)
-		{		
-			$projects = json_decode($curl_response);	
+		try
+		{
+			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
+		}
+		catch(Exception $e)
+		{
+			$this->session->set_flashdata('message', 'Unable to delete project');
+			$this->session->set_flashdata('message_type', 'error');
+			
+			redirect('projects');
+		}	
 		        
 			$header = array(
 				'page' => 'projects',
 				'categories' => $this->bridge->categories(),
 				'category_pages' => $this->bridge->category_pages()
 			);
-			if ($projects->result->project_lead->employee_id !== $this->session->userdata('user_employee_id'))
+			if ($project['result']['project_lead']['employee_id'] !== $this->session->userdata('user_employee_id'))
 	        {
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/unauthorised');
@@ -545,49 +513,36 @@ class Projects extends CI_Controller {
 	        else
 	        {
 				$data = array(
-					'project' => $projects->result,
+					'project' => $project['result'],
 					'project_id' => $project_id
 					);
 					
 		
 				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-				$this->form_validation->set_rules('project_title', 'Project Title', 'callback_project_title_check[' . $projects->result->title . ']');
+				$this->form_validation->set_rules('project_title', 'Project Title', 'callback_project_title_check[' . $project['result']['title'] . ']');
 				$this->form_validation->set_message('project_title_check', 'You did not type the correct project title');
 		
 				if ($this->form_validation->run())
 				{			
 					//DELETE to N2
 					
-					$curl_response = $this->n2->delete_curl_request('research_projects/id/' . $project_id, $this->session->userdata('access_token'));
-					
-					if ($curl_response !== FALSE)
-					{				
-						$response = json_decode($curl_response);
-						
-						if ($response->error)
-						{
-							$header['flashmessage'] = $response->error_message;
-							$header['flashmessagetype'] = 'error';
-											
-							$this->load->view('inc/head', $header);
-							$this->load->view('projects/delete', $data);
-							$this->load->view('inc/foot');
-						}
-						else
-						{
-							$this->session->set_flashdata('message', 'Project deleted');
-							$this->session->set_flashdata('message_type', 'success');
-							
-							redirect('projects');
-						}
-					}
-					else
+					try
 					{
-						$this->session->set_flashdata('message', 'Unable to delete project');
-						$this->session->set_flashdata('message_type', 'error');
+						$project = $this->n2->DeleteResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
+						$this->session->set_flashdata('message', 'Project deleted');
+						$this->session->set_flashdata('message_type', 'success');
 						
 						redirect('projects');
 					}
+					catch(Exception $e)
+					{		
+						$header['flashmessage'] = $response->error_message;
+						$header['flashmessagetype'] = 'error';
+										
+						$this->load->view('inc/head', $header);
+						$this->load->view('projects/delete', $data);
+						$this->load->view('inc/foot');
+					}	
 				}
 				else
 				{
@@ -596,14 +551,6 @@ class Projects extends CI_Controller {
 					$this->load->view('inc/foot');
 				}
 			}
-		}
-		else
-		{
-			$this->session->set_flashdata('message', 'Unable to delete project');
-			$this->session->set_flashdata('message_type', 'error');
-			
-			redirect('projects');
-		}
 	}
 	
 
