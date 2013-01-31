@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-pencil"></i> <?php echo $project->title; ?><small> Edit</small>
+		<i class="icon-pencil"></i> <?php echo $project['title']; ?><small> Edit</small>
 	</h1>
 
 </div>
@@ -18,7 +18,7 @@
 		$form_title = array(
 			'name'			=> 'project_title',
 			'required'   	=> 'required',
-			'value'			=> $project->title,
+			'value'			=> $project['title'],
 			'id'			=> 'project_title',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
@@ -45,7 +45,7 @@
 		echo '<span class="help-block">A short description of this research project. If you want, you can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> to add formatting to this.</span>';
 		echo '</div></div>';
 		
-		if ($project->funded)
+		if ($project['funded'])
 		{
 			$funded = 'funded';
 		}
@@ -65,7 +65,7 @@
 		
 		echo '<div id="funding_div"';
 		
-		if ( ! $project->funded)
+		if ( ! $project['funded'])
 		{
 			echo 'style="display:none">';
 		}
@@ -73,9 +73,9 @@
 		{
 			echo'>';
 		}
-		if (isset($project->funding->currency->id))
+		if (isset($project['funding']['currency']['id']))
 		{
-			$currency_id = $project->funding->currency->id;
+			$currency_id = $project['funding']['currency']['id'];
 		}
 		else
 		{
@@ -96,9 +96,9 @@
 		echo '</div></div>';
 	
 	
-		if (isset($project->funding->amount))
+		if (isset($project['funding']['amount']))
 		{
-			$funding_amount = $project->funding->amount;
+			$funding_amount = $project['funding']['amount'];
 		}
 		else
 		{
@@ -125,7 +125,7 @@
 			'name'			=> 'project_start_date',
 			'required'   	=> 'required',
 			'id'			=> 'project_start_date',
-			'value'			=> date('Y-m-d', $project->start_date_unix),
+			'value'			=> date('Y-m-d', $project['start_date_unix']),
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge datepicker'
 		);
@@ -136,9 +136,9 @@
 		echo form_input($form_start_date);
 		echo '</div></div>';
 		
-		if (isset($project->end_date_unix))
+		if (isset($project['end_date_unix']))
 		{
-			$end_date = date('Y-m-d', $project->end_date_unix);
+			$end_date = date('Y-m-d', $project['end_date_unix']);
 		}
 		else
 		{
@@ -160,11 +160,11 @@
 		echo '</div></div>';
 		
         $research_interests = array();
-        if (isset($project->research_interests))
+        if (isset($project['research_interests']))
         {
-			foreach ($project->research_interests as $key)
+			foreach ($project['research_interests'] as $key)
 			{
-			    $research_interests[] = $key->title;
+			    $research_interests[] = $key['title'];
 			}
         }
         
@@ -189,7 +189,7 @@
 		$form_project_lead = array(
 			'name'			=> 'project_lead',
 			'id'			=> 'project_lead',
-			'value'			=> $project->project_lead->id,
+			'value'			=> $project['project_lead']['id'],
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
@@ -214,9 +214,9 @@
 		
 		$member_id = 0;
 		
-		foreach($project->research_project_members as $project_member)
+		foreach($project['research_project_members'] as $project_member)
 		{
-			echo '<tr id="member_row_' . $member_id . '"><td>' . $project_member->person->title . ' ' . $project_member->person->first_name . ' ' . $project_member->person->last_name . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member->person->id . '"</td><td><select name="members[' . $member_id . '][role]">';
+			echo '<tr id="member_row_' . $member_id . '"><td>' . $project_member['person']['title'] . ' ' . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['id'] . '"</td><td><select name="members[' . $member_id . '][role]">';
 			foreach ($roles as $role => $value)
 			{
 		       echo '<option value="'. $value .'">'. $role .'</option>';

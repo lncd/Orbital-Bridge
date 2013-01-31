@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<?php echo($project->title) ?>
+		<?php echo($project['title']) ?>
 	</h1>
 
 </div>
@@ -14,15 +14,15 @@
 			
 				<?php
 					echo '<tr>';
-					echo '<td>Start Date</td><td>' . $project->start_date . '</td>';
+					echo '<td>Start Date</td><td>' . $project['start_date'] . '</td>';
 					echo '</tr>';
 					echo '<tr>';
-					echo '<td>End Date</td><td>' . $project->end_date . '</td>';
+					echo '<td>End Date</td><td>' . $project['end_date'] . '</td>';
 					echo '</tr>';
-					if ($project->funded)
+					if ($project['funded'])
 					{
 						echo '<tr>';
-						echo '<td>Funding</td><td>' . $project->funding->currency->symbol . $project->funding->amount . ' (' .  $project->funding->currency->name . ')</td>';
+						echo '<td>Funding</td><td>' . $project['funding']['currency']['symbol'] . $project['funding']['amount'] . ' (' .  $project['funding']['currency']['name'] . ')</td>';
 						echo '</tr>';
 					}
 				?>
@@ -39,14 +39,14 @@
 			
 				<?php
 					echo '<tr>';
-					echo '<td>Lead</td><td>' . $project->project_lead->name . '</td>';
+					echo '<td>Lead</td><td>' . $project['project_lead']['name'] . '</td>';
 					echo '</tr>';
-					if (isset($project->research_project_members))
+					if (isset($project['research_project_members']))
 					{
-						foreach ($project->research_project_members as $member)
+						foreach ($project['research_project_members'] as $member)
 						{
 							echo '<tr>';
-							echo '<td>Member</td><td>' . $member->person->first_name . ' ' . $member->person->last_name . '</td>';
+							echo '<td>Member</td><td>' . $member['person']['first_name'] . ' ' . $member['person']['last_name'] . '</td>';
 							echo '</tr>';
 						}
 					}
@@ -61,9 +61,9 @@
 		<h3>Other Links</h3>
 		<ul class="nav nav-pills nav-stacked">
 			<?php
-			if($project->ckan_uri !== 'https://ckan.lincoln.ac.uk/group/')
+			if($project['ckan_uri'] !== 'https://ckan.lincoln.ac.uk/group/')
 			{
-				echo '<li><a href="' . $project->ckan_uri . '">' . $project->ckan_uri . '</a></li>';
+				echo '<li><a href="' . $project['ckan_uri'] . '">' . $project['ckan_uri'] . '</a></li>';
 			}
 			else
 			{
@@ -76,9 +76,9 @@
 </div>
 
 <?php
-if ($project->project_lead->employee_id === $this->session->userdata('user_employee_id'))
+if ($project['project_lead']['employee_id'] === $this->session->userdata('user_employee_id'))
 {
-	echo '<a href="' . site_url('project/' . $project->id . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
-	echo '<a href="' . site_url('project/' . $project->id . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
+	echo '<a href="' . site_url('project/' . $project['id'] . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
+	echo '<a href="' . site_url('project/' . $project['id'] . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
 }
 ?>
