@@ -165,7 +165,15 @@ class Projects extends CI_Controller {
 				$fields['funded'] = (bool) 0;	
 			}		
 			$fields['start_date'] = $this->input->post('project_start_date');
-			$fields['end_date'] = $this->input->post('project_end_date');
+			if($this->input->post('project_end_date') !== NULL AND $this->input->post('project_end_date') !== '')
+			{
+				$fields['end_date'] = $this->input->post('project_end_date');
+			}
+			else
+			{
+				$fields['end_date'] = NULL;
+			}
+			
 			
 								
 			//POST to N2
@@ -211,7 +219,6 @@ class Projects extends CI_Controller {
 		}
 		catch(Exception $e)
 		{
-			var_dump($e->getMessage());
 			$this->session->set_flashdata('message', 'Unable to get project');
 			$this->session->set_flashdata('message_type', 'error');
 			
@@ -394,10 +401,16 @@ class Projects extends CI_Controller {
 					if ($this->input->post('project_type') === 'funded')
 					{
 						$fields['funded'] = TRUE;
-						$fields['currency_id'] = $this->input->post('project_funding_currency');
-						$fields['funding_amount'] = $this->input->post('project_funding_amount');
-					}
-	
+						$fields['currency_id'] = (int) $this->input->post('project_funding_currency');
+						if ($this->input->post('project_funding_amount'))
+						{
+							$fields['funding_amount'] = (int) $this->input->post('project_funding_amount');
+						}
+						else
+						{
+							$fields['funding_amount'] = NULL;
+						}
+					}	
 					else
 					{
 						$fields['funded'] = FALSE;
