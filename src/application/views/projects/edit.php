@@ -216,7 +216,7 @@
 		
 		foreach($project['research_project_members'] as $project_member)
 		{
-			echo '<tr id="member_row_' . $member_id . '"><td>' . $project_member->person->title . ' ' . $project_member->person->first_name . ' ' . $project_member->person->last_name . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member->person->id . '"</td><td><select name="members[' . $member_id . '][role]">';
+			echo '<tr id="member_row_' . $member_id . '"><td>' . $project_member['person']['title'] . ' ' . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['id'] . '"</td><td><select name="members[' . $member_id . '][role]">';
 			foreach ($roles as $role => $value)
 			{
 		       echo '<option value="'. $value .'">'. $role .'</option>';

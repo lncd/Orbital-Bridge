@@ -441,7 +441,7 @@ class Projects extends CI_Controller {
 							{
 								if ( ! in_array($member['id'], $members_test))
 								{
-									$members[] = array('person_id' => $member['id'], 'role_id' => $member['role']);
+									$members[] = array('person_id' => (int) $member['id'], 'role_id' => (int) $member['role']);
 								}
 								$members_test[] = $member['id'];
 							}
