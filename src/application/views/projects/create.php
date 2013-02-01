@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-plus"></i> Create an Unfunded Research Project
+		<i class="icon-plus"></i> Create a Research Project
 	</h1>
 
 </div>
@@ -14,7 +14,7 @@
 	
 		echo validation_errors();
 	
-		echo form_open('projects/create_unfunded', array('class' => 'form-horizontal'));
+		echo form_open('projects/create', array('class' => 'form-horizontal'));
 	
 		$form_title = array(
 			'name'			=> 'project_title',
