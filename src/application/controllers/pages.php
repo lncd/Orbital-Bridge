@@ -65,6 +65,11 @@ class Pages extends CI_Controller {
 					
 					break;
 					
+				case 'redirect':
+				
+					redirect($page->redirect_uri);
+					break;
+					
 				default:
 				
 					$this->load->view('inc/head', $header);
