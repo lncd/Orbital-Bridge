@@ -73,9 +73,9 @@
 		{
 			echo'>';
 		}
-		if (isset($project['funding']['currency']['id']))
+		if (isset($project['funding_currency']['id']))
 		{
-			$currency_id = $project['funding']['currency']['id'];
+			$currency_id = $project['funding_currency']['id'];
 		}
 		else
 		{
@@ -96,9 +96,9 @@
 		echo '</div></div>';
 	
 	
-		if (isset($project['funding']['amount']))
+		if (isset($project['funding_amount']))
 		{
-			$funding_amount = $project['funding']['amount'];
+			$funding_amount = $project['funding_amount'];
 		}
 		else
 		{

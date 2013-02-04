@@ -22,7 +22,7 @@
 					if ($project['funded'])
 					{
 						echo '<tr>';
-						echo '<td>Funding</td><td>' . $project['funding']['currency']['symbol'] . $project['funding']['amount'] . ' (' .  $project['funding']['currency']['name'] . ')</td>';
+						echo '<td>Funding</td><td>' . $project['funding_currency']['symbol'] . $project['funding_amount'] . ' (' .  $project['funding_currency']['name'] . ')</td>';
 						echo '</tr>';
 					}
 				?>
