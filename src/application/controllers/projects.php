@@ -150,7 +150,6 @@ class Projects extends CI_Controller {
 		{
 
 			$fields['title'] = $this->input->post('project_title');
-			$fields['lead'] = $this->session->userdata('user_id');
 			$fields['description'] = $this->input->post('project_description');
 				
 			if ($this->input->post('project_type') === 'funded')
@@ -267,7 +266,7 @@ class Projects extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
-		if ($project['result']['project_lead']['employee_id'] !== $this->session->userdata('user_employee_id'))
+		if ($project['result']['current_user_role'] !== 'Administrator')
         {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/unauthorised');
@@ -320,7 +319,7 @@ class Projects extends CI_Controller {
             	$("#addMember").click(function()
 				{
 					new_member_id ++;
-					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
+					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option><option value="2">Administrator</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
 				
             	$(".removeMemberButton").click(function()
 				{
@@ -349,35 +348,6 @@ class Projects extends CI_Controller {
 			            }
 			        });					
 				});
-				
-                 $("#project_lead").select2({
-					placeholder: "Enter project lead",
-					minimumInputLength: 3,
-					ajax: {
-					    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/staff",
-					    dataType: \'jsonp\',
-					    quietMillis: 100,
-					    
-		                data: function (term, page) { // page is the one-based page number tracked by Select2
-		                    return {
-		                        q: term //search term
-		                    };
-		                },
-		                results: function (data, page) {
-		                    var more = (page * 10) < data.total; // whether or not there are more results available
-		 
-		                    // notice we return the value of more so Select2 knows if more results can be loaded
-		                    return {results: data};
-		                }					
-		            },
-	                initSelection : function (element, callback) {
-			        	callback({
-				        	id:' . $project['result']['project_lead']['id'] . ',
-				        	text:"' . $project['result']['project_lead']['first_name'] . ' ' . $project['result']['project_lead']['last_name'] . '"
-				        });
-			        }
-
-		        });
 			});';
 			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
@@ -388,7 +358,6 @@ class Projects extends CI_Controller {
 			{	
 				$fields['id'] = (int) $project_id;
 				$fields['title'] = $this->input->post('project_title');
-				$fields['lead'] = $this->input->post('project_lead');
 				$fields['description'] = $this->input->post('project_description');
 				$fields['research_interests'] = $this->input->post('research_interests');
 				
@@ -510,7 +479,7 @@ class Projects extends CI_Controller {
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
-		if ($project['result']['project_lead']['employee_id'] !== $this->session->userdata('user_employee_id'))
+		if ($project['result']['current_user_role'] !== 'Administrator')
         {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/unauthorised');

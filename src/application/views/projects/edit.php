@@ -186,21 +186,6 @@
 		echo '<i class="icon-cogs"></i>' . ' Project Team';
 		echo '</h2>';
 		
-		$form_project_lead = array(
-			'name'			=> 'project_lead',
-			'id'			=> 'project_lead',
-			'value'			=> $project['project_lead']['id'],
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Project Lead', 'project_lead', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_project_lead);
-		echo '<span class="help-block">The member of staff principally responsible for this research project.</span>';
-		echo '</div></div>';
-		
 		echo form_label('Project Members', 'project_members', array('class' => 'control-label'));
 		echo '<div class="controls">';
 
@@ -209,7 +194,8 @@
 		echo '<tbody>';
 		
 		$roles = array(
-			'Member' => 1
+			'Member' => 1,
+			'Administrator' => 2
 		);
 		
 		$member_id = 0;
