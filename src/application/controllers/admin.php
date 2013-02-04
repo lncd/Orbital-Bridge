@@ -218,14 +218,17 @@ class Admin extends CI_Controller {
 		{
 			$this->form_validation->set_rules('page_slug', 'page_slug', 'trim|required|alpha_dash|max_length[128]|min_length[1]|callback_page_slug_edit_check[' . $pages->id . ']');
 		}
-		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
+		$this->form_validation->set_rules('page_type', 'Page Type', 'required');
 
 		if ($this->form_validation->run())
 		{
 			$p = new Page();
 			$p->where('id', $id)->get();
 			$p->title = $this->input->post('page_title');
-			$p->content = $this->input->post('page_content');
+			$p->mode = $this->input->post('page_type');
+			$p->content = $this->input->post('page_content') != '' ? $this->input->post('page_content') : NULL;
+			$p->git_page = $this->input->post('page_git_page') != '' ? $this->input->post('page_git_page') : NULL;
+			$p->redirect_uri = $this->input->post('page_redirect_uri') != '' ? $this->input->post('page_redirect_uri') : NULL;
 			if ($this->input->post('slug')) { $p->slug = $this->input->post('page_slug'); }
 			$p->save();
 			$this->session->set_flashdata('message', 'Page updated');
@@ -297,15 +300,18 @@ class Admin extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('page_title', 'Page Title', 'required');
-		$this->form_validation->set_rules('page_content', 'Page Content', 'required');
+		$this->form_validation->set_rules('page_type', 'Page Type', 'required');
 		$this->form_validation->set_rules('page_slug', 'Page URL', 'required');
 
 		if ($this->form_validation->run())
 		{
 			$p = new Page();
 			$p->title = $this->input->post('page_title');
-			$p->content = $this->input->post('page_content');
+			$p->mode = $this->input->post('page_type');
 			$p->slug = $this->input->post('page_slug');
+			$p->content = $this->input->post('page_content') != '' ? $this->input->post('page_content') : NULL;
+			$p->git_page = $this->input->post('page_git_page') != '' ? $this->input->post('page_git_page') : NULL;
+			$p->redirect_uri = $this->input->post('page_redirect_uri') != '' ? $this->input->post('page_redirect_uri') : NULL;
 			$p->save();
 			$this->session->set_flashdata('message', 'Page updated');
 			$this->session->set_flashdata('message_type', 'success');
@@ -408,9 +414,10 @@ class Admin extends CI_Controller {
 		if ($this->form_validation->run())
 		{
 			$p_c = new Page_category();
+			$num_cats = $p_c->count();
 			$p_c->title = $this->input->post('category_title');
 			$p_c->slug = $this->input->post('category_slug');
-			$p_c->order = 0;
+			$p_c->order = $num_cats + 1;
 			$p_c->active = (bool) $this->input->post('category_active');
 			$p_c->icon = $this->input->post('category_icon');
 			$p_c->save();
