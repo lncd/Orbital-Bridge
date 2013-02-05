@@ -1,12 +1,12 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-cogs"></i><?php echo $project->title; ?><small> Delete</small>
+		<i class="icon-cogs"></i><?php echo $project['title']; ?><small> Delete</small>
 	</h1>
 
 </div>
 
-<div class="alert alert-warning">You are about to delete the project <b><?php echo $project->title; ?></b>. To confirm this action, enter the project title and press 'Delete'.</div>
+<div class="alert alert-warning">You are about to delete the project <b><?php echo $project['title']; ?></b>. To confirm this action, enter the project title and press 'Delete'.</div>
 
 <div class="row">
 
@@ -16,13 +16,13 @@
 	
 	echo validation_errors();
 
-	echo form_open('project/' . $project->id . '/delete', array('class' => 'form-horizontal'));
+	echo form_open('project/' . $project['id'] . '/delete', array('class' => 'form-horizontal'));
 
 	$form_title = array(
 		'name'			=> 'project_title',
 		'required'   	=> 'required',
 		'id'			=> 'project_title',
-		'placeholder'	=> $project->title,
+		'placeholder'	=> $project['title'],
 		'maxlength'		=> '200',
 		'class'			=> 'input-xlarge'
 	);

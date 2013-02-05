@@ -9,7 +9,7 @@
 	
 	<div class="span12">
 		
-		You are not authorised to view this project. It is not one of yours!
+		You are not authorised to perform that action.
 	
 	</div>
 	

@@ -80,6 +80,8 @@
 
 <p><a href="https://eprints.lincoln.ac.uk/cgi/users/home" class="btn"><i class="icon-chevron-right"></i> Manage my Publications on ePrints</a></p>
 
+<small><i class="icon-info-sign"></i> Views count according to Google Analytics.</small>
+
 <?php 
 endif;
 ?>

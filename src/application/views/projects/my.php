@@ -40,7 +40,7 @@
 
 <?php endif; ?>
 		
-<p><a class="btn btn-success" href="projects/start"><i class="icon-plus"></i> Add New Project</a></p>
+<p><a class="btn btn-success" href="projects/start"><i class="icon-plus"></i> Add a Research Project</a></p>
 
 <?php if (count($active) > 0): ?>
 
@@ -58,7 +58,7 @@
 		foreach($active as $project)
 		{
 			echo '<tr>';
-			echo '<td><a href = ' . site_url('project/' . $project->id) . '>' . $project->title . '</a></td>';
+			echo '<td><a href = ' . site_url('project/' . $project['id']) . '>' . $project['title'] . '</a></td>';
 			echo '</tr>';
 		}
 	?>
@@ -91,7 +91,7 @@ if (count($inactive) > 0):
 			foreach($inactive as $project)
 			{
 				echo '<tr>';
-				echo '<td><a href = ' . site_url('project/' . $project->id) . '>' . $project->title . '</a></td>';
+				echo '<td><a href = ' . site_url('project/' . $project['id']) . '>' . $project['title'] . '</a></td>';
 				echo '</tr>';
 			}
 		?>
