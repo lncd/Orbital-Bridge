@@ -390,9 +390,9 @@ class Projects extends CI_Controller {
 				
 				$fields['start_date'] = $this->input->post('project_start_date');
 				
-				if($this->input->post('end_date'))
+				if($this->input->post('project_end_date'))
 				{
-					$fields['end_date'] = $this->input->post('end_start_date');
+					$fields['end_date'] = $this->input->post('project_end_date');
 				}
 				else
 				{
