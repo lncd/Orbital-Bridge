@@ -170,11 +170,13 @@ class Projects extends CI_Controller {
 			{
 				$fields['end_date'] = NULL;
 			}
-			
-			
-								
+
+			$members[] = array('person_id' => (int) $this->session->userdata('user_id'), 'role_id' => (int) 2);
+
+			$fields['project_members'] = $members;
+					
 			//POST to N2
-			
+
 			try
 			{
 				$curl_response = $this->n2->CreateResearchProject($this->session->userdata('access_token'), $fields);
