@@ -186,31 +186,12 @@
 		echo '<i class="icon-cogs"></i>' . ' Project Team';
 		echo '</h2>';
 		
-		$form_project_lead = array(
-			'name'			=> 'project_lead',
-			'id'			=> 'project_lead',
-			'value'			=> $project['project_lead']['id'],
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Project Lead', 'project_lead', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_project_lead);
-		echo '<span class="help-block">The member of staff principally responsible for this research project.</span>';
-		echo '</div></div>';
-		
 		echo form_label('Project Members', 'project_members', array('class' => 'control-label'));
 		echo '<div class="controls">';
 
 		echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
 		echo '<thead><tr><th>Members</th><th>Role</th><th>Options</th></tr></thead>';
 		echo '<tbody>';
-		
-		$roles = array(
-			'Member' => 1
-		);
 		
 		$member_id = 0;
 		
@@ -222,9 +203,15 @@
 				$title = $project_member['person']['title'] . ' ';
 			}
 			echo '<tr id="member_row_' . $member_id . '"><td>' . $title . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['id'] . '"</td><td><select name="members[' . $member_id . '][role]">';
-			foreach ($roles as $role => $value)
+			foreach ($roles as $role)
 			{
-		       echo '<option value="'. $value .'">'. $role .'</option>';
+		       echo '<option value="'. $role['id'] .'"';
+		       
+		       if($project_member['role']['id'] === $role['id'])
+		       {
+			       echo ' selected';
+		       }		       
+		       echo '>'. $role['name'] .'</option>';
 			}
 			echo '</td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>';
 			$member_id++;
