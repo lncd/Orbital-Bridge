@@ -355,6 +355,7 @@ class Projects extends CI_Controller {
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 			$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
 			$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
+			$this->form_validation->set_rules('members', 'Project team', 'required');
 	
 			if ($this->form_validation->run())
 			{	
@@ -400,12 +401,17 @@ class Projects extends CI_Controller {
 				
 				if($this->input->post('members'))
 				{
+					$is_admin = FALSE;
 					foreach($this->input->post('members') as $member)
 					{
 						if ($member['id'] !== '')
 						{
 							if ( ! in_array($member['id'], $members_test))
 							{
+								if((int)$member['role'] === 2)
+								{
+									$is_admin = TRUE;
+								}
 								$members[] = array('person_id' => (int) $member['id'], 'role_id' => (int) $member['role']);
 							}
 							$members_test[] = $member['id'];
@@ -413,6 +419,13 @@ class Projects extends CI_Controller {
 					}
 					
 					$fields['project_members'] = $members;
+				}
+				if($is_admin === FALSE)
+				{
+					$this->session->set_flashdata('message', 'A Project administrator is required');
+					$this->session->set_flashdata('message_type', 'error');
+					
+					redirect('project/' . $project_id . '/edit');
 				}
 									
 				//POST to N2
