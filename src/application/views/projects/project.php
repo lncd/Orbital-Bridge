@@ -43,7 +43,7 @@
 						foreach ($project['research_project_members'] as $member)
 						{
 							echo '<tr>';
-							echo '<td>Member</td><td>' . $member['person']['first_name'] . ' ' . $member['person']['last_name'] . '</td>';
+							echo '<td>' . $member['role']['name'] . '</td><td>' . $member['person']['first_name'] . ' ' . $member['person']['last_name'] . '</td>';
 							echo '</tr>';
 						}
 					}

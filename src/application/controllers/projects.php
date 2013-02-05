@@ -251,6 +251,7 @@ class Projects extends CI_Controller {
 		try
 		{
 			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
+			$roles = $this->n2->GetResearchProjectRoles($this->session->userdata('access_token'), array("id" => (int) $project_id));
 		}
 		catch(Exception $e)
 		{
@@ -280,6 +281,7 @@ class Projects extends CI_Controller {
         
 			$data = array(
 				'project' => $project['result'],
+				'roles' => $roles['results'],
 				'project_id' => $project_id
 				);
 
