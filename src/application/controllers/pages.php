@@ -16,19 +16,70 @@ class Pages extends CI_Controller {
 		$page = $p->get_by_slug($slug);
 		
 		if ($page->result_count() === 1)
-		{		
-			$this->load->helper('markdown');
+		{
+		
+			switch ($page->mode)
+			{
 			
-			$header['page'] = $slug;
+				case 'page':
+		
+					$this->load->helper('markdown');
+					
+					$header['page'] = $slug;
+					
+					$data = array(
+						'title' => $page->title,
+						'content' => $page->content
+					);
+					
+					$this->load->view('inc/head', $header);
+					$this->load->view('pages/page', $data);
+					$this->load->view('inc/foot');
+					
+					break;
+					
+				case 'git':
+				
+					if ($content = @file_get_contents($_SERVER['GITHUB_BASE_URI'] . '/master/' . $page->git_page)){
+						
+						$this->load->helper('markdown');
+					
+						$header['page'] = $slug;
+						
+						$data = array(
+							'title' => $page->title,
+							'content' => $content
+						);
+						
+						$this->load->view('inc/head', $header);
+						$this->load->view('pages/page', $data);
+						$this->load->view('inc/foot');
+						
+					}
+					else
+					{
+						$this->load->view('inc/head', $header);
+						$this->load->view('pages/error');
+						$this->load->view('inc/foot');
+					}
+					
+					break;
+					
+				case 'redirect':
+				
+					redirect($page->redirect_uri);
+					break;
+					
+				default:
+				
+					$this->load->view('inc/head', $header);
+					$this->load->view('pages/error');
+					$this->load->view('inc/foot');
+					break;
 			
-			$data = array(
-				'title' => $page->title,
-				'content' => $page->content
-			);
+			}
 			
-			$this->load->view('inc/head', $header);
-			$this->load->view('pages', $data);
-			$this->load->view('inc/foot');			
+						
 		}
 		else
 		{

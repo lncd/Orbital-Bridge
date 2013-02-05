@@ -17,77 +17,76 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 
-		$projects = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
-
 		$projects_active = array();
 		$projects_inactive = array();
 		
 		$total_funding = 0;
 		
-		$projects_active = array();
-		$projects_inactive = array();
-		
-		$total_funding = 0;
-
-		foreach ($projects['results'] as $project)
-		{
-			if ($project['end_date_unix'] > time() OR $project['end_date_unix'] === NULL)
+			$projects = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
+			$projects_active = array();
+			$projects_inactive = array();
+			
+			$total_funding = 0;
+						
+			foreach ($projects['results'] as $project)
 			{
-				$projects_active[] = $project;
-				if ($project['end_date_unix'] === NULL)
+				if ($project['end_date_unix'] > time() OR $project['end_date_unix'] === NULL)
 				{
-					$project['end_date_unix'] = time() + 604800;
-					$class = 'barFade';
+					$projects_active[] = $project;
+					if ($project['end_date_unix'] === NULL)
+					{
+						$project['end_date_unix'] = time() + 604800;
+						$class = 'barFade';
+					}
+					else
+					{
+						$class = '';
+					}
+					$gantt_array[] = '{
+					"name": "' . $project['title'] . '",
+					"values": [{
+						"from": "/Date(' . $project['start_date_unix'] * 1000 . ')/",
+						"to": "/Date(' . $project['end_date_unix'] * 1000 . ')/",
+						"desc": "' . $project['title'] . '<br>Starts: ' . $project['start_date'] . '<br>Ends: ' . $project['end_date'] . '",
+						"label": "' . $project['title'] . '",
+						"customClass": "' . $class . '"
+						}
+					]}';
 				}
 				else
 				{
-					$class = '';
+					$projects_inactive[] = $project;
 				}
-				$gantt_array[] = '{
-				"name": "' . $project['title'] . '",
-				"values": [{
-					"from": "/Date(' . $project['start_date_unix'] * 1000 . ')/",
-					"to": "/Date(' . $project['end_date_unix'] * 1000 . ')/",
-					"desc": "' . $project['title'] . '<br>Starts: ' . $project['start_date'] . '<br>Ends: ' . $project['end_date'] . '",
-					"label": "' . $project['title'] . '",
-					"customClass": "' . $class . '"
-					}
-				]}';
-			}
-			else
-			{
-				$projects_inactive[] = $project;
+				
+				if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling')
+				{
+					$total_funding += $project['funding_amount'];
+				}
 			}
 			
-			if (isset($project['funding_amount']) AND $project['funding_currency']['name'] === 'Sterling')
-			{
-				$total_funding += $project['funding_amount'];
-			}
-		}
-		
-		$data = array(
-			'active' => $projects_active,
-			'inactive' => $projects_inactive,
-			'total_projects' => count($projects_active) + count($projects_inactive),
-			'total_current_projects' => count($projects_active),
-			'total_funding' => $total_funding
-			);
-					
-		$footer['javascript'] = '$("#inactive_button").click(function () {
-				$(\'#inactive\').toggle(\'blind\');
-			});
+			$data = array(
+				'active' => $projects_active,
+				'inactive' => $projects_inactive,
+				'total_projects' => count($projects_active) + count($projects_inactive),
+				'total_current_projects' => count($projects_active),
+				'total_funding' => $total_funding
+				);
+						
+			$footer['javascript'] = '$("#inactive_button").click(function () {
+					$(\'#inactive\').toggle(\'blind\');
+				});
+				
+				$("#projectsTimeline").gantt({
+					source: [' .implode(',', $gantt_array) . '],
+					scale: "weeks",
+					minScale: "days",
+					maxScale: "months"
+				});
+				';
 			
-			$("#projectsTimeline").gantt({
-				source: [' .implode(',', $gantt_array) . '],
-				scale: "weeks",
-				minScale: "days",
-				maxScale: "months"
-			});
-			';
-		
-		$this->load->view('inc/head', $header);
-		$this->load->view('projects/my', $data);
-		$this->load->view('inc/foot', $footer);
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/my', $data);
+			$this->load->view('inc/foot', $footer);
 	}
 	
 	public function start()
@@ -109,7 +108,7 @@ class Projects extends CI_Controller {
 		$this->load->view('inc/foot');
 	}
 	
-	public function create_unfunded()
+	public function create()
 	{
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -189,14 +188,16 @@ class Projects extends CI_Controller {
 			{
 				$this->session->set_flashdata('message', $e->getMessage());
 				$this->session->set_flashdata('message_type', 'error');
-
-				redirect('projects/create_unfunded');
+												
+				$this->load->view('inc/head', $header);
+				$this->load->view('projects/create');
+				$this->load->view('inc/foot', $footer);
 			}
 		}
 		else
 		{
 			$this->load->view('inc/head', $header);
-			$this->load->view('projects/create_unfunded');
+			$this->load->view('projects/create');
 			$this->load->view('inc/foot', $footer);
 		}
 		
@@ -219,7 +220,8 @@ class Projects extends CI_Controller {
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');			
-		}	
+		}
+	
     
 		$header = array(
 			'page' => 'projects',
@@ -526,8 +528,11 @@ class Projects extends CI_Controller {
 				}
 				catch(Exception $e)
 				{		
-					$header['flashmessage'] = $response->error_message;
-					$header['flashmessagetype'] = 'error';
+
+					$this->session->set_flashdata('message', 'Unable to delete project');
+					$this->session->set_flashdata('message_type', 'error');
+					
+					redirect('projects');
 									
 					$this->load->view('inc/head', $header);
 					$this->load->view('projects/delete', $data);
