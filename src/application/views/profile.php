@@ -10,7 +10,7 @@
 
 <p>You can view your public profile, as well as edit your biography and research interests using the University's Staff Directory.</p>
 
-<p><a href="http://staff.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam'); ?>" class="btn btn-primary"><i class="icon-chevron-right"></i> View my Staff Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit my Staff Profile</a></p>
+<p><a href="http://staff.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam_id'); ?>" class="btn btn-primary"><i class="icon-chevron-right"></i> View my Staff Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit my Staff Profile</a></p>
 
 <hr>
 
