@@ -72,11 +72,34 @@
 	
 </div>
 
+			
+
+		
+<!-- Archive Project -->
+
+<form class="modal fade" id="archiveProject">
+	<div class="modal-header">
+		<button class="close" data-dismiss="modal">×</button>
+		<h3>Archive</h3>
+	</div>
+	<div class="modal-body">
+		Are you sure you want to Archive this project? It will remain visible, but no longer editable
+	</div>
+	<div class="modal-footer">
+		<a class="btn" data-dismiss="modal">Cancel</a>
+		<a href=" <?php echo(site_url('project/' . $project['id'] . '/archive')); ?>" class="btn btn-warning"><i class="icon-folder-close"></i> Archive</a>
+	</div>
+</form>
+
 <?php
 
 if ($project['current_user_role'] === 'Administrator')
 {
 	echo '<a href="' . site_url('project/' . $project['id'] . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
+	echo '<a class="btn btn-warning" data-toggle="modal" href="#archiveProject" ><i class = "icon-folder-close"></i> Archive</a>';
+}
+if ($project['current_user_role'] === 'Super Administrator')
+{
 	echo '<a href="' . site_url('project/' . $project['id'] . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
 }
 ?>

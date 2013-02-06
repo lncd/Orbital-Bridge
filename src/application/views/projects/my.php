@@ -100,4 +100,36 @@ if (count($inactive) > 0):
 
 </div>
 
+<?php endif; 
+
+if (count($archived) > 0):
+
+?>
+
+<h2>Archived Projects</h2>
+
+<p><a id="archived_button"><i class="icon-double-angle-down"></i> Show / Hide</a></p>
+
+<div id="archived" style="display:none">
+
+<table class="table table-bordered table-striped table-condensed">
+	<thead>
+		<tr>
+			<th>Project Name</th>
+		</tr>
+	</thead>
+	<tbody>
+		<?php
+			foreach($archived as $project)
+			{
+				echo '<tr>';
+				echo '<td><a href = ' . site_url('project/' . $project['id']) . '>' . $project['title'] . '</a></td>';
+				echo '</tr>';
+			}
+		?>
+	</tbody>
+</table>
+
+</div>
+
 <?php endif; ?>
