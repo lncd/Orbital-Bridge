@@ -6,11 +6,11 @@
 
 </div>
 		
-<p class="lead">Your Researcher Profile contains information about your research and publications, as well as your contact details and biography. The information is automatically generated from a number of different systems, including the Research Dashboard, Staff Profile, ePrints and CKAN.</p>
+<p class="lead">Your Researcher Profile contains information about your research and publications, as well as your contact details and biography. The information is automatically generated from a number of different systems, including the Research Dashboard, Staff Profile, Lincoln Repository and CKAN.</p>
 
 <p>You can view your public profile, as well as edit your biography and research interests using the University's Staff Directory.</p>
 
-<p><a href="http://staff.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam'); ?>" class="btn btn-primary"><i class="icon-chevron-right"></i> View my Staff Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit my Staff Profile</a></p>
+<p><a href="http://staff.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam_id'); ?>" class="btn btn-primary"><i class="icon-chevron-right"></i> View my Staff Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit my Staff Profile</a></p>
 
 <hr>
 
@@ -78,7 +78,7 @@
 
 </div>
 
-<p><a href="https://eprints.lincoln.ac.uk/cgi/users/home" class="btn"><i class="icon-chevron-right"></i> Manage my Publications on ePrints</a></p>
+<p><a href="https://eprints.lincoln.ac.uk/cgi/users/home" class="btn"><i class="icon-chevron-right"></i> Manage my Publications on the Lincoln Repository</a></p>
 
 <small><i class="icon-info-sign"></i> Views count according to Google Analytics.</small>
 
