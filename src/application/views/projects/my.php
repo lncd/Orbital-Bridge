@@ -44,7 +44,7 @@
 
 <?php if (count($active) > 0): ?>
 
-<h2>Current Projects</h2>
+<h3>Active Projects</h3>
 
 <table class="table table-bordered table-striped table-condensed">
 	<thead>
@@ -74,7 +74,7 @@ if (count($inactive) > 0):
 
 ?>
 
-<h2>Past Projects</h2>
+<h3>Archived Projects</h3>
 
 <p><a id="inactive_button"><i class="icon-double-angle-down"></i> Show / Hide</a></p>
 
@@ -100,4 +100,4 @@ if (count($inactive) > 0):
 
 </div>
 
-<?php endif; ?>
+<?php endif; 	
