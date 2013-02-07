@@ -26,7 +26,11 @@ class Projects extends CI_Controller {
 					
 		foreach ($projects['results'] as $project)
 		{
-			if ($project['end_date_unix'] > time() OR $project['end_date_unix'] === NULL OR $project['research_project_status']['type'] === 'archived')
+			if ($project['research_project_status']['type'] === 'archived')
+			{
+				$projects_inactive[] = $project;
+			}
+			else
 			{
 				$projects_active[] = $project;
 				if ($project['end_date_unix'] === NULL)
@@ -48,10 +52,6 @@ class Projects extends CI_Controller {
 					"customClass": "' . $class . '"
 					}
 				]}';
-			}
-			else
-			{
-				$projects_inactive[] = $project;
 			}
 			
 			if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling')
