@@ -21,18 +21,12 @@ class Projects extends CI_Controller {
 		
 		$projects = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
 		$projects_active = array();
-		$projects_inactive = array();
-		$projects_archived = array();
-			
+		$projects_inactive = array();			
 		$total_funding = 0;
 					
 		foreach ($projects['results'] as $project)
 		{
-			if ($project['status'] === 'archived')
-			{
-				$projects_archived[] = $project;
-			}
-			else if ($project['end_date_unix'] > time() OR $project['end_date_unix'] === NULL)
+			if ($project['end_date_unix'] > time() OR $project['end_date_unix'] === NULL OR $project['research_project_status']['type'] === 'archived')
 			{
 				$projects_active[] = $project;
 				if ($project['end_date_unix'] === NULL)
@@ -69,7 +63,6 @@ class Projects extends CI_Controller {
 		$data = array(
 			'active' => $projects_active,
 			'inactive' => $projects_inactive,
-			'archived' => $projects_archived,
 			'total_projects' => count($projects_active) + count($projects_inactive),
 			'total_current_projects' => count($projects_active),
 			'total_funding' => $total_funding
@@ -78,10 +71,6 @@ class Projects extends CI_Controller {
 		$footer['javascript'] = '$("#inactive_button").click(function () {
 				$(\'#inactive\').toggle(\'blind\');
 			});
-			
-			$("#archived_button").click(function () {
-				$(\'#archived\').toggle(\'blind\');
-			})
 			
 			$("#projectsTimeline").gantt({
 				source: [' .implode(',', $gantt_array) . '],
@@ -181,7 +170,9 @@ class Projects extends CI_Controller {
 			$members[] = array('person_id' => (int) $this->session->userdata('user_id'), 'role_id' => (int) 2);
 
 			$fields['project_members'] = $members;
-					
+			
+			$fields['research_project_status_id'] = 18;
+
 			//POST to N2
 
 			try
@@ -565,7 +556,7 @@ class Projects extends CI_Controller {
 				
 		try
 		{
-			$project = $this->n2->ArchiveResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id, "status" => "archived"));
+			$project = $this->n2->EditResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id, "research_project_status_id" => 19));
 			$this->session->set_flashdata('message', 'Project archived');
 			$this->session->set_flashdata('message_type', 'success');
 			

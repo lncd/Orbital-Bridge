@@ -5,53 +5,123 @@
 	</h1>
 
 </div>
+
+<h4>Status</h4>
 <div class="row">
+
+	<div class="span4">
 	
-	<div class="span12">
+		<?php echo '<p class="lead">';
+		if ($project['research_project_status']['needs_attention'])
+		{
+			echo '<span style="color:red">';
+		}
+		else
+		{
+			echo '<span>';
+		}
+		echo $project['research_project_status']['text'] . '</span>';
+		?>
 		
-		<table class="table table-bordered table-striped">
-			<tbody>
-			
-				<?php
-					echo '<tr>';
-					echo '<td>Start Date</td><td>' . $project['start_date'] . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<td>End Date</td><td>' . $project['end_date'] . '</td>';
-					echo '</tr>';
-					if ($project['funded'])
-					{
-						echo '<tr>';
-						echo '<td>Funding</td><td>' . $project['funding_currency']['symbol'] . $project['funding_amount'] . ' (' .  $project['funding_currency']['name'] . ')</td>';
-						echo '</tr>';
-					}
-				?>
-			
-			</tbody>
-		</table>
+	</div>
+
+	<div class="span8">
+		
+<p><?php echo $project['research_project_status']['description']; ?></p>
+	</div>
+
+</div>
+
+<hr>
+
+<div class="row">
+
+	<div class="span4">
+	
+		<h4>Start Date</h4>
+	
+		<?php echo date('jS F Y', $project['start_date_unix']); ?>
+	
 	</div>
 	
+	<div class="span4">
+	</div>
+	
+	<div class="span4 align-right">
+	
+		<?php if($project['end_date']):
+		echo '<h4>End Date</h4>';
+	
+		echo date('jS F Y', $project['end_date_unix']);
+		
+		endif; ?>
+		
+	</div>
+
+</div>
+
+<?php
+
+	if (time() < $project['start_date_unix'])
+	{
+		$bar_percent = 0;
+	}
+	else if (time() > $project['end_date_unix'])
+	{
+		$bar_percent = 100;
+	}
+	else
+	{
+		$bar_percent = ((time() - $project['start_date_unix']) / ($project['end_date_unix'] - $project['start_date_unix'])) * 100;
+	}
+?>
+
+<div class="progress margin-top">
+  <div class="bar bar-success" style="width: <?php echo $bar_percent ?>%;"></div>
+</div>
+
+<hr>
+
+<div class="row">
 	<div class="span8">
-	
-	<h3>Project Team</h3>
-		<table class="table table-bordered table-striped">
-			<tbody>
-			
-				<?php
-					if (isset($project['research_project_members']))
+		<h3>Funding</h3>
+			<table class="table table-bordered table-striped">
+				<tbody>			
+					<?php
+					echo '<tr>';
+					echo '<th scope="row">Funding Amount</th><td>' . $project['funding_amount'] . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+					echo '<th scope="row">Funding Type</th><td>' . $project['research_funding_type']['title'] . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+					echo '<th scope="row">Funding Body</th><td>' . $project['research_funding_body']['title'] . '</td>';
+					echo '</tr>';
+					echo '<tr>';
+					echo '<th scope="row">Involved Schools</th>';
+					echo '<td>';
+					
+					foreach ($project['schools'] as $school)
 					{
-						foreach ($project['research_project_members'] as $member)
-						{
-							echo '<tr>';
-							echo '<td>' . $member['role']['name'] . '</td><td>' . $member['person']['first_name'] . ' ' . $member['person']['last_name'] . '</td>';
-							echo '</tr>';
-						}
+						echo $school['title'] . '<br>';
 					}
-				?>
-			
-			</tbody>
-		</table>
-	
+					
+					echo '</td>';
+					echo '</tr>';
+					echo '<tr>';
+					echo '<th scope="row">Involved Colleges</th>';
+					echo '<td>';
+					
+					foreach ($project['colleges'] as $college)
+					{
+						echo $college['title'] . '<br>';
+					}
+					
+					echo '</td>';
+					echo '</tr>';
+					?>
+				</tbody>
+			</table>
 	</div>
 
 	<div class="span4">
@@ -60,7 +130,7 @@
 			<?php
 			if($project['ckan_uri'] !== 'https://ckan.lincoln.ac.uk/group/')
 			{
-				echo '<li><a href="' . $project['ckan_uri'] . '">' . $project['ckan_uri'] . '</a></li>';
+				echo '<li><a href="' . $project['ckan_uri'] . '">View group on CKAN</a></li>';
 			}
 			else
 			{
@@ -69,7 +139,33 @@
 			?>
 		</ul>
 	</div>
+</div>
+
+<div class="row">
 	
+	<div class="span12">
+	
+	<h3>Project Team</h3>
+		<table class="table table-bordered table-striped">
+			<thead><tr><th>Member</th><th>Role</th></tr></thead>
+			<tbody>
+			
+				<?php
+					if (isset($project['research_project_members']))
+					{
+						foreach ($project['research_project_members'] as $member)
+						{
+							echo '<tr>';
+							echo '<td>' . $member['person']['first_name'] . ' ' . $member['person']['last_name'] . '</td><td>' . $member['role']['name'] . '</td>';
+							echo '</tr>';
+						}
+					}
+				?>
+			
+			</tbody>
+		</table>
+	
+	</div>	
 </div>
 
 			

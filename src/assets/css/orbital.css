@@ -23,3 +23,7 @@
 .form_width {
 	min-width: 284px;
 }
+
+.align-right{
+	text-align: right;
+}
