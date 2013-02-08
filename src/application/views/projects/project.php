@@ -94,6 +94,7 @@
 	<hr>
 	';
 }
+
 ?>
 
 <div class="row">
@@ -102,37 +103,62 @@
 			<table class="table table-bordered table-striped">
 				<tbody>			
 					<?php
-					echo '<tr>';
-					echo '<th scope="row">Funding Amount</th><td>' . $project['funding_amount'] . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Funding Type</th><td>' . $project['research_funding_type']['title'] . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Funding Body</th><td>' . $project['research_funding_body']['title'] . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Involved Schools</th>';
-					echo '<td>';
 					
-					foreach ($project['schools'] as $school)
+					if( ! (bool) $project['funded'])
 					{
-						echo $school['title'] . '<br>';
+						echo '<tr>';
+						echo '<th scope="row">Funding Type</th><td>Unfunded</td>';
+						echo '</tr>';
 					}
-					
-					echo '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Involved Colleges</th>';
-					echo '<td>';
-					
-					foreach ($project['colleges'] as $college)
+					else
 					{
-						echo $college['title'] . '<br>';
+						if(isset($project['funding_amount']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Amount</th><td>' . $project['funding_amount'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['research_funding_type']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Type</th><td>' . $project['research_funding_type']['title'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['research_funding_body']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Body</th><td>' . $project['research_funding_body']['title'] . '</td>';
+							echo '</tr>';
+						}
+						if(count($project['schools']) > 0)
+						{
+							echo '<tr>';
+							echo '<th scope="row">Involved Schools</th>';
+							echo '<td>';
+							
+							foreach ($project['schools'] as $school)
+							{
+								echo $school['title'] . '<br>';
+							}
+							
+							echo '</td>';
+							echo '</tr>';
+						}
+						if(count($project['colleges']) > 0)
+						{
+							echo '<tr>';
+							echo '<th scope="row">Involved Colleges</th>';
+							echo '<td>';
+							
+							foreach ($project['colleges'] as $college)
+							{
+								echo $college['title'] . '<br>';
+							}
+							
+							echo '</td>';
+							echo '</tr>';
+						}
 					}
-					
-					echo '</td>';
-					echo '</tr>';
 					?>
 				</tbody>
 			</table>
