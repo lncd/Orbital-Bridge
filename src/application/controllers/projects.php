@@ -205,6 +205,8 @@ class Projects extends CI_Controller {
 	
 	public function project($project_id)
 	{
+		$this->load->helper('markdown');
+	
 		if (!$this->session->userdata('access_token'))
 		{
 			redirect('signin');
@@ -362,7 +364,7 @@ class Projects extends CI_Controller {
 			{	
 				$fields['id'] = (int) $project_id;
 				$fields['title'] = $this->input->post('project_title');
-				$fields['description'] = $this->input->post('project_description');
+				$fields['summary'] = $this->input->post('project_description');
 				$fields['research_interests'] = $this->input->post('research_interests');
 				
 				if ($this->input->post('project_type') === 'funded')

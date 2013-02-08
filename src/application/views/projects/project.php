@@ -81,6 +81,20 @@
 </div>
 
 <hr>
+<?php if(isset($project['summary']))
+{
+	echo'
+		<h4>Summary</h4>
+		<div class="row">
+			<div class="span12 align-left">
+		
+				' . markdown($project['summary']) . '
+			</div>
+		</div>
+	<hr>
+	';
+}
+?>
 
 <div class="row">
 	<div class="span8">
