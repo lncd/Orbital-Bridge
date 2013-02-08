@@ -139,7 +139,6 @@ class Projects extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
 		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
-		$this->form_validation->set_rules('project_type', 'Project Type', 'valid_match[funded, unfunded)');
 
 		if ($this->form_validation->run())
 		{
@@ -147,16 +146,8 @@ class Projects extends CI_Controller {
 			$fields['title'] = $this->input->post('project_title');
 			$fields['description'] = $this->input->post('project_description');
 				
-			if ($this->input->post('project_type') === 'funded')
-			{
-				$fields['funded'] = (bool) 1;	
-				$fields['currency_id'] = (int) $this->input->post('project_funding_currency');
-				$fields['funding_amount'] = (int) $this->input->post('project_funding_amount');
-			}
-			else
-			{
-				$fields['funded'] = (bool) 0;	
-			}		
+			$fields['funded'] = (bool) 0;	
+
 			$fields['start_date'] = $this->input->post('project_start_date');
 			if($this->input->post('project_end_date') !== NULL AND $this->input->post('project_end_date') !== '')
 			{
