@@ -28,11 +28,13 @@
 		echo form_label('Title', 'project_title', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_title);
+		echo '<span class="help-block">This title will be used in various places to refer to your research project. It should be short, but descriptive.</span>';
 		echo '</div></div>';
 	
 		$form_description = array(
 			'name'			=> 'project_description',
 			'id'			=> 'project_description',
+			'required'   	=> 'required',
 			'rows'			=> '10',
 			'class'			=> 'input-block-level',
 			'style'			=> 'width:100%;'
@@ -42,7 +44,7 @@
 		echo form_label('Description', 'project_description', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_textarea($form_description);
-		echo '<span class="help-block">You can use Markdown to add formatting to this project.</span>';
+		echo '<span class="help-block">The project description is shown alongside the project in places such as the Research Directory.</span>';
 		echo '</div></div>';
 		
 		
@@ -58,6 +60,7 @@
 		echo form_label('Start Date', 'project_start_date', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_start_date);
+		echo '<span class="help-block">The date on which work started (or will start) on this project.</span>';
 		echo '</div></div>';
 		
 		$form_end_date = array(
@@ -71,6 +74,7 @@
 		echo form_label('End Date', 'project_end_date', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_end_date);
+		echo '<span class="help-block">Optionally (if known), the date on which work on this project will finish.</span>';
 		echo '</div></div>';
 	
 		echo '<div class="form-actions">';
