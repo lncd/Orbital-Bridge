@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-plus"></i> Create a Research Project
+		<i class="icon-plus"></i> Add an Unfunded Research Project
 	</h1>
 
 </div>
