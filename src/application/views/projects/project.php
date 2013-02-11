@@ -119,7 +119,7 @@
 						if(isset($project['funding_amount']))
 						{
 							echo '<tr>';
-							echo '<th scope="row">Funding Amount</th><td>' . $project['funding_amount'] . '</td>';
+							echo '<th scope="row">Funding Amount</th><td>' . $project['funding_currency']['symbol'] . $project['funding_amount'] . '</td>';
 							echo '</tr>';
 						}
 						if(isset($project['research_funding_type']))
