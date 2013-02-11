@@ -134,6 +134,24 @@
 							echo '<th scope="row">Funding Body</th><td>' . $project['research_funding_body']['title'] . '</td>';
 							echo '</tr>';
 						}
+						if(isset($project['bid_submitted_date']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Bid Submitted Date</th><td>' . $project['bid_submitted_date'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['bid_award_date']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Bid Award Date</th><td>' . $project['bid_award_date'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['ams_success']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Status</th><td>' . $project['ams_success'] . '</td>';
+							echo '</tr>';
+						}
 						if(count($project['schools']) > 0)
 						{
 							echo '<tr>';
