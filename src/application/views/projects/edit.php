@@ -35,6 +35,7 @@
 			$form_description = array(
 				'name'			=> 'project_description',
 				'id'			=> 'project_description',
+				'value'			=> $project['summary'],
 				'rows'			=> '5',
 				'class'			=> 'input-block-level',
 				'style'			=> 'width:100%;'

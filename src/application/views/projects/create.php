@@ -34,7 +34,6 @@
 		$form_description = array(
 			'name'			=> 'project_description',
 			'id'			=> 'project_description',
-			'required'   	=> 'required',
 			'rows'			=> '10',
 			'class'			=> 'input-block-level',
 			'style'			=> 'width:100%;'

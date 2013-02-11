@@ -141,6 +141,10 @@ class Projects extends CI_Controller {
 		{
 
 			$fields['title'] = $this->input->post('project_title');
+			if($this->input->post('project_description'))
+			{
+				$fields['summary'] = $this->input->post('project_description');
+			}
 			$fields['description'] = $this->input->post('project_description');
 				
 			$fields['funded'] = (bool) 0;	
