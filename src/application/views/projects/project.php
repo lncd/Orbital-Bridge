@@ -61,7 +61,11 @@
 </div>
 
 <?php
-
+	$bar_style='';
+	if( ! isset($project['end_date_unix']))
+	{
+		$bar_style='progress-striped';
+	}
 	if (time() < $project['start_date_unix'])
 	{
 		$bar_percent = 0;
@@ -76,7 +80,7 @@
 	}
 ?>
 
-<div class="progress margin-top">
+<div class="progress <?php echo $bar_style ?> margin-top">
   <div class="bar bar-success" style="width: <?php echo $bar_percent ?>%;"></div>
 </div>
 
@@ -94,6 +98,7 @@
 	<hr>
 	';
 }
+
 ?>
 
 <div class="row">
@@ -102,37 +107,80 @@
 			<table class="table table-bordered table-striped">
 				<tbody>			
 					<?php
-					echo '<tr>';
-					echo '<th scope="row">Funding Amount</th><td>' . $project['funding_amount'] . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Funding Type</th><td>' . $project['research_funding_type']['title'] . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Funding Body</th><td>' . $project['research_funding_body']['title'] . '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Involved Schools</th>';
-					echo '<td>';
 					
-					foreach ($project['schools'] as $school)
+					if( ! (bool) $project['funded'])
 					{
-						echo $school['title'] . '<br>';
+						echo '<tr>';
+						echo '<th scope="row">Funding Type</th><td>Unfunded</td>';
+						echo '</tr>';
 					}
-					
-					echo '</td>';
-					echo '</tr>';
-					echo '<tr>';
-					echo '<th scope="row">Involved Colleges</th>';
-					echo '<td>';
-					
-					foreach ($project['colleges'] as $college)
+					else
 					{
-						echo $college['title'] . '<br>';
+						if(isset($project['funding_amount']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Amount</th><td>' . $project['funding_currency']['symbol'] . $project['funding_amount'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['research_funding_type']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Type</th><td>' . $project['research_funding_type']['title'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['research_funding_body']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Body</th><td>' . $project['research_funding_body']['title'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['bid_submitted_date']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Bid Submitted Date</th><td>' . $project['bid_submitted_date'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['bid_award_date']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Bid Award Date</th><td>' . $project['bid_award_date'] . '</td>';
+							echo '</tr>';
+						}
+						if(isset($project['ams_success']))
+						{
+							echo '<tr>';
+							echo '<th scope="row">Funding Status</th><td>' . $project['ams_success'] . '</td>';
+							echo '</tr>';
+						}
+						if(count($project['schools']) > 0)
+						{
+							echo '<tr>';
+							echo '<th scope="row">Involved Schools</th>';
+							echo '<td>';
+							
+							foreach ($project['schools'] as $school)
+							{
+								echo $school['title'] . '<br>';
+							}
+							
+							echo '</td>';
+							echo '</tr>';
+						}
+						if(count($project['colleges']) > 0)
+						{
+							echo '<tr>';
+							echo '<th scope="row">Involved Colleges</th>';
+							echo '<td>';
+							
+							foreach ($project['colleges'] as $college)
+							{
+								echo $college['title'] . '<br>';
+							}
+							
+							echo '</td>';
+							echo '</tr>';
+						}
 					}
-					
-					echo '</td>';
-					echo '</tr>';
 					?>
 				</tbody>
 			</table>
@@ -206,6 +254,9 @@
 if ($project['current_user_role'] === 'Administrator')
 {
 	echo '<a href="' . site_url('project/' . $project['id'] . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
+}
+if ($project['current_user_role'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())
+{
 	echo '<a class="btn btn-warning" data-toggle="modal" href="#archiveProject" ><i class = "icon-folder-close"></i> Archive</a>';
 }
 if ($project['current_user_role'] === 'Super Administrator')

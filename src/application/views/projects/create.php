@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-plus"></i> Create a Research Project
+		<i class="icon-plus"></i> Add an Unfunded Research Project
 	</h1>
 
 </div>
@@ -28,6 +28,7 @@
 		echo form_label('Title', 'project_title', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_title);
+		echo '<span class="help-block">This title will be used in various places to refer to your research project. It should be short, but descriptive.</span>';
 		echo '</div></div>';
 	
 		$form_description = array(
@@ -42,56 +43,10 @@
 		echo form_label('Description', 'project_description', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_textarea($form_description);
-		echo '<span class="help-block">You can use Markdown to add formatting to this project.</span>';
+		echo '<span class="help-block">The project description is shown alongside the project in places such as the Research Directory.</span>';
 		echo '</div></div>';
 		
-	
-		$form_project_type = array(
-			'name'		=> 'project_type',
-			'id'		=> 'project_type',
-			'value'		=> '0'
-		);
-	
-		$project_type['funded'] = 'Funded';
-		$project_type['unfunded'] = 'No funding';
-	
-		echo '<div class="control-group">';
-		echo form_label('Project type', 'project_type', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_dropdown('project_type', $project_type, set_value('project_type', 'unfunded'), 'id="project_type" class="span4"');
-		echo '</div></div>';
 		
-		echo '<div id="funding_div" style="display:none">';
-		
-		$form_project_funding_currency = array(
-			'name'		=> 'project_funding_currency',
-			'id'		=> 'project_funding_currency',
-			'value'		=> '1'
-		);
-
-		$funding_type['1'] = '&pound; (Sterling)';
-	
-		echo '<div class="control-group">';
-		echo form_label('Funding Currency', 'project_funding_currency', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_dropdown('project_funding_currency', $funding_type, set_value('project_funding_currency', '1'), 'id="project_funding_currency" class="span4"');
-		echo '</div></div>';
-	
-		$form_funding_amount = array(
-			'name'			=> 'project_funding_amount',
-			'id'			=> 'project_funding_amount',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Funding Amount', 'project_funding_amount', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_funding_amount);
-		echo '</div></div>';
-	
-		echo '</div>';
-	
 		$form_start_date = array(
 			'name'			=> 'project_start_date',
 			'required'   	=> 'required',
@@ -104,6 +59,7 @@
 		echo form_label('Start Date', 'project_start_date', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_start_date);
+		echo '<span class="help-block">The date on which work started (or will start) on this project.</span>';
 		echo '</div></div>';
 		
 		$form_end_date = array(
@@ -117,6 +73,7 @@
 		echo form_label('End Date', 'project_end_date', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_end_date);
+		echo '<span class="help-block">Optionally (if known), the date on which work on this project will finish.</span>';
 		echo '</div></div>';
 	
 		echo '<div class="form-actions">';

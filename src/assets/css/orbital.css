@@ -1,3 +1,35 @@
+#cwd-header {
+	background: #337c5c;
+	
+}
+
+/* main navigation bar color */
+#cwd-header .navbar .navbar-inner {
+	background: #275a44;
+}
+
+/* navigation item color */
+#cwd-header .navbar .navbar-inner ul li a {
+	background-color: #275a44;
+}
+
+/* navigation item hover color */
+#cwd-header .navbar .navbar-inner ul li a:hover {
+	background-color: #358863;
+}
+
+/* navigation item active and open (for dropdowns) color */
+#cwd-header .navbar .navbar-inner ul li.active a,
+#cwd-header .navbar .navbar-inner ul li.open a {
+	background: #2d4b3e;
+}
+
+/* navigation item active and open hover color */
+#cwd-header .navbar .navbar-inner ul li.active a:hover,
+#cwd-header .navbar .navbar-inner ul li.open a:hover {
+	background: #2d4b3e;
+}
+
 .sortable_item {
 	list-style-type: none;
 	margin: 0;

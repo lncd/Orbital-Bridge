@@ -17,8 +17,6 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 
-		$total_funding = 0;
-		
 		$projects = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
 		$projects_active = array();
 		$projects_inactive = array();			
@@ -53,8 +51,7 @@ class Projects extends CI_Controller {
 					}
 				]}';
 			}
-			
-			if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling')
+			if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling' AND $project['ams_success'] === 'Successful' AND $project['research_project_status']['text'] !== 'Deleted')
 			{
 				$total_funding += $project['funding_amount'];
 			}
@@ -139,24 +136,19 @@ class Projects extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 		$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
 		$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
-		$this->form_validation->set_rules('project_type', 'Project Type', 'valid_match[funded, unfunded)');
 
 		if ($this->form_validation->run())
 		{
 
 			$fields['title'] = $this->input->post('project_title');
+			if($this->input->post('project_description'))
+			{
+				$fields['summary'] = $this->input->post('project_description');
+			}
 			$fields['description'] = $this->input->post('project_description');
 				
-			if ($this->input->post('project_type') === 'funded')
-			{
-				$fields['funded'] = (bool) 1;	
-				$fields['currency_id'] = (int) $this->input->post('project_funding_currency');
-				$fields['funding_amount'] = (int) $this->input->post('project_funding_amount');
-			}
-			else
-			{
-				$fields['funded'] = (bool) 0;	
-			}		
+			$fields['funded'] = (bool) 0;	
+
 			$fields['start_date'] = $this->input->post('project_start_date');
 			if($this->input->post('project_end_date') !== NULL AND $this->input->post('project_end_date') !== '')
 			{
@@ -356,15 +348,19 @@ class Projects extends CI_Controller {
 			});';
 			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-			$this->form_validation->set_rules('project_title', 'Project Title', 'trim|required|max_length[255]|min_length[3]');
-			$this->form_validation->set_rules('project_start_date', 'Project Start Date', 'trim|required');
 			$this->form_validation->set_rules('members', 'Project team', 'required');
 	
 			if ($this->form_validation->run())
 			{	
 				$fields['id'] = (int) $project_id;
-				$fields['title'] = $this->input->post('project_title');
-				$fields['summary'] = $this->input->post('project_description');
+				if($this->input->post('project_type'))
+				{
+					$fields['title'] = $this->input->post('project_title');
+				}
+				if ($this->input->post('project_description'))
+				{
+					$fields['summary'] = $this->input->post('project_description');
+				}
 				$fields['research_interests'] = $this->input->post('research_interests');
 				
 				if ($this->input->post('project_type') === 'funded')
@@ -386,8 +382,10 @@ class Projects extends CI_Controller {
 					$fields['currency_id'] = NULL;
 					$fields['funding_amount'] = NULL;
 				}
-				
-				$fields['start_date'] = $this->input->post('project_start_date');
+				if($this->input->post('project_start_date'))
+				{
+					$fields['start_date'] = $this->input->post('project_start_date');
+				}
 				
 				if($this->input->post('project_end_date'))
 				{
@@ -432,7 +430,6 @@ class Projects extends CI_Controller {
 				}
 									
 				//POST to N2
-
 				try
 				{
 					$curl_response = $this->n2->EditResearchProject($this->session->userdata('access_token'), $fields);

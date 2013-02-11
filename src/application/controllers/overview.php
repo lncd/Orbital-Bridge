@@ -2,7 +2,7 @@
 
 class Overview extends CI_Controller {
 
-	public function eprints()
+	public function repository()
 	{
 	
 		$header = array(
@@ -64,12 +64,22 @@ class Overview extends CI_Controller {
 				xkey: 'y',
 				ykeys: ['a'],
 				labels: ['Publications'],
-				hideHover: true
+				hideHover: true,
+				barColors: [
+					'#337C5C',
+					'#59BB90',
+					'#A2D8C0'
+				]
 			});
 			
 			Morris.Donut({
 				element: 'eprints-types',
-				data: [" . implode(',', $ep_types) . "]
+				data: [" . implode(',', $ep_types) . "],
+				colors: [
+					'#337C5C',
+					'#59BB90',
+					'#A2D8C0'
+				]
 			});
 			
 			Morris.Line({
@@ -78,15 +88,96 @@ class Overview extends CI_Controller {
 				xkey: 'y',
 				ykeys: ['a'],
 				labels: ['Views'],
-				hideHover: true
+				hideHover: true,
+				lineColors: [
+					'#337C5C',
+					'#59BB90',
+					'#A2D8C0'
+				]
 			});";
 			
 		}
 		
 		$this->load->view('inc/head', $header);
-		$this->load->view('overview/eprints', $data);
+		$this->load->view('overview/repository', $data);
 		$this->load->view('inc/foot', $footer);
 	}
+	
+	public function projects()
+	{
+	
+		$header = array(
+			'page' => 'overview',
+			'categories' => $this->bridge->categories(),
+			'category_pages' => $this->bridge->category_pages()
+		);
+		
+		$footer = array();
+		
+		$data['projects_total'] = FALSE;
+		
+		if ($projects_stats = @file_get_contents($_SERVER['NUCLEUS_BASE_URI'] . 'research_projects/stats?access_token=' . $_SERVER['NUCLEUS_TOKEN']))
+		{
+			
+			$projects_data = json_decode($projects_stats);
+			
+			$data['projects_total'] = $projects_data->results->total;
+			
+			$project_types = array();
+			
+			$successful_funding_types = (array) $projects_data->results->successful_funding_types;
+			
+			asort($successful_funding_types);
+			
+			foreach ($successful_funding_types as $type => $value)
+			{
+				$project_types[] = '{ label: \'' . $type . '\', value: ' . $value . ' }';
+			}
+			
+			$footer['javascript'] = "Morris.Donut({
+				element: 'funded',
+				data: [
+					{ label: 'Funded', value: " . $projects_data->results->total_funded . " },
+					{ label: 'Unfunded', value: " . $projects_data->results->total_unfunded . " }
+				],
+				colors: [
+					'#337C5C',
+					'#59BB90',
+					'#A2D8C0'
+				]
+			});
+			
+			Morris.Donut({
+				element: 'funding-success',
+				data: [
+					{ label: 'Pending', value: " . $projects_data->results->total_funding_pending . " },
+					{ label: 'Successful', value: " . $projects_data->results->total_funding_successful . " },
+					{ label: 'Unsuccessful', value: " . $projects_data->results->total_funding_unsuccessful . " }
+				],
+				colors: [
+					'#337C5C',
+					'#59BB90',
+					'#A2D8C0'
+				]
+			});
+			
+			Morris.Donut({
+				element: 'funding-types',
+				data: [" . implode(',', $project_types) . "],
+				colors: [
+					'#337C5C',
+					'#59BB90',
+					'#A2D8C0'
+				]
+			});";
+			
+		}
+	
+		$this->load->view('inc/head', $header);
+		$this->load->view('overview/projects', $data);
+		$this->load->view('inc/foot', $footer);
+	}
+	
 }
 
 // EOF
