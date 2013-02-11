@@ -61,7 +61,11 @@
 </div>
 
 <?php
-
+	$bar_style='';
+	if( ! isset($project['end_date_unix']))
+	{
+		$bar_style='progress-striped';
+	}
 	if (time() < $project['start_date_unix'])
 	{
 		$bar_percent = 0;
@@ -76,7 +80,7 @@
 	}
 ?>
 
-<div class="progress margin-top">
+<div class="progress <?php echo $bar_style ?> margin-top">
   <div class="bar bar-success" style="width: <?php echo $bar_percent ?>%;"></div>
 </div>
 
@@ -232,6 +236,9 @@
 if ($project['current_user_role'] === 'Administrator')
 {
 	echo '<a href="' . site_url('project/' . $project['id'] . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
+}
+if ($project['current_user_role'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())
+{
 	echo '<a class="btn btn-warning" data-toggle="modal" href="#archiveProject" ><i class = "icon-folder-close"></i> Archive</a>';
 }
 if ($project['current_user_role'] === 'Super Administrator')
