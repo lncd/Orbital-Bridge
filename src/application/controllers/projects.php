@@ -348,7 +348,7 @@ class Projects extends CI_Controller {
 			});';
 			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-			$this->form_validation->set_rules('members', 'Project team', 'required');
+			$this->form_validation->set_rules('project_visibility', 'Project visibility', 'required');
 	
 			if ($this->form_validation->run())
 			{	
@@ -361,8 +361,10 @@ class Projects extends CI_Controller {
 				{
 					$fields['summary'] = $this->input->post('project_description');
 				}
-				$fields['research_interests'] = $this->input->post('research_interests');
-				
+				if ($this->input->post('research_interests'))
+				{
+					$fields['research_interests'] = $this->input->post('research_interests');
+				}
 				if ($this->input->post('project_type') === 'funded')
 				{
 					$fields['funded'] = TRUE;
@@ -395,6 +397,14 @@ class Projects extends CI_Controller {
 				{
 					$fields['end_date'] = NULL;
 				}
+				if($this->input->post('project_visibility') === 'visible')
+				{
+					$fields['project_visibility'] = 1;
+				}
+				else
+				{
+					$fields['project_visibility'] = 0;
+				}
 				
 				//Members
 				$members = array();
@@ -421,7 +431,7 @@ class Projects extends CI_Controller {
 					
 					$fields['project_members'] = $members;
 				}
-				if($is_admin === FALSE)
+				if($this->input->post('members') AND $is_admin === FALSE)
 				{
 					$this->session->set_flashdata('message', 'A Project administrator is required');
 					$this->session->set_flashdata('message_type', 'error');
