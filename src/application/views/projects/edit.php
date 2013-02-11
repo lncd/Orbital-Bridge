@@ -162,7 +162,13 @@
 			echo '</div></div>';
 		}
 		
+		if ($project['source'] === 'ams')
+		{
+			echo '<div class="alert alert-info">This project comes from the AMS. If you want to edit details, do it in the AMS.</div>';
+		}
+		
         $research_interests = array();
+        
         if (isset($project['research_interests']))
         {
 			foreach ($project['research_interests'] as $key)
