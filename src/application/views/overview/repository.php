@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-dashboard"></i> ePrints Overview
+		<i class="icon-dashboard"></i> Repository Overview
 	</h1>
 
 </div>

@@ -2,7 +2,7 @@
 
 class Overview extends CI_Controller {
 
-	public function eprints()
+	public function repository()
 	{
 	
 		$header = array(
@@ -99,7 +99,7 @@ class Overview extends CI_Controller {
 		}
 		
 		$this->load->view('inc/head', $header);
-		$this->load->view('overview/eprints', $data);
+		$this->load->view('overview/repository', $data);
 		$this->load->view('inc/foot', $footer);
 	}
 }
