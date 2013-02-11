@@ -93,12 +93,22 @@ class Profile extends CI_Controller {
 					xkey: 'y',
 					ykeys: ['a'],
 					labels: ['Publications'],
-					hideHover: true
+					hideHover: true,
+					barColors: [
+						'#337C5C',
+						'#59BB90',
+						'#A2D8C0'
+					]
 				});
 				
 				Morris.Donut({
 					element: 'eprints-types',
-					data: [" . implode(',', $ep_types) . "]
+					data: [" . implode(',', $ep_types) . "],
+					colors: [
+						'#337C5C',
+						'#59BB90',
+						'#A2D8C0'
+					]
 				});";
 				
 			}
