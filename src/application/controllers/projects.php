@@ -17,8 +17,6 @@ class Projects extends CI_Controller {
 		
 		$gantt_array = array();
 
-		$total_funding = 0;
-		
 		$projects = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
 		$projects_active = array();
 		$projects_inactive = array();			
@@ -53,8 +51,7 @@ class Projects extends CI_Controller {
 					}
 				]}';
 			}
-			
-			if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling')
+			if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling' AND $project['ams_success'] === 'Successful' AND $project['research_project_status']['text'] !== 'Deleted')
 			{
 				$total_funding += $project['funding_amount'];
 			}
