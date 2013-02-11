@@ -45,7 +45,7 @@
 			echo form_label('Description', 'project_description', array('class' => 'control-label'));
 			echo '<div class="controls">';
 			echo form_textarea($form_description);
-			echo '<span class="help-block">A short description of this research project. If you want, you can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> to add formatting to this.</span>';
+			echo '<span class="help-block">A short description of this research project.</span>';
 			echo '</div></div>';
 			
 			if ($project['funded'])
@@ -162,10 +162,9 @@
 			echo form_input($form_end_date);
 			echo '</div></div>';
 		}
-		
-		if ($project['source'] === 'ams')
+		else
 		{
-			echo '<div class="alert alert-info">This project comes from the AMS. If you want to edit details, do it in the AMS.</div>';
+			echo '<div class="alert alert-info">This project has been imported from the University\'s <a href="http://ams.lincoln.ac.uk">Awards Management System</a>. To edit details not available on this page please use the AMS, and changes will be reflected automatically in a few hours.</div>';
 		}
 		
         $research_interests = array();
