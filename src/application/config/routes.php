@@ -64,6 +64,7 @@ $route['projects'] = 'projects/my';
 $route['projects/start'] = "projects/start";
 $route['projects/create'] = "projects/create";
 $route['project/(:any)/edit'] = "projects/edit/$1";
+$route['project/(:any)/create_ckan_group'] = "projects/create_ckan_group/$1";
 $route['project/(:any)/delete'] = "projects/delete/$1";
 $route['project/(:any)/archive'] = "projects/archive/$1";
 $route['project/(:any)'] = "projects/project/$1";

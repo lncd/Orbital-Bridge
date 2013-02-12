@@ -233,6 +233,49 @@ class Projects extends CI_Controller {
 	
 	}
 
+	public function create_ckan_group($project_id)
+	{
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+		try
+		{
+			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
+		}
+		catch(Exception $e)
+		{
+			$this->session->set_flashdata('message', 'Unable to get project details');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('projects');			
+		}
+		if ($project['result']['current_user_role'] !== 'Administrator')
+        {
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/unauthorised');
+			$this->load->view('inc/foot');
+        }
+        else
+        {        
+			$this->load->library('../bridge_applications/ckan');
+			$result = json_decode($this->ckan->create_group(url_title($project['result']['title'], '-', TRUE)));
+			
+			if($result->success === true)
+			{        
+				$this->session->set_flashdata('message', 'Project environment created');
+				$this->session->set_flashdata('message_type', 'success');
+				
+				redirect('project/' . $project_id);
+			}
+			else
+			{
+				$this->session->set_flashdata('message', $result->error->name[0]);
+				$this->session->set_flashdata('message_type', 'error');
+				redirect('project/' . $project_id);
+			}
+        }
+	}
+	
 	public function edit($project_id)
 	{
 		if (!$this->session->userdata('access_token'))
