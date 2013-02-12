@@ -1,7 +1,7 @@
 <div class="page-header">
 
 	<h1>
-		<?php echo($project['title']) ?>
+		<i class="icon-beaker"></i> <?php echo($project['title']) ?>
 	</h1>
 
 </div>
