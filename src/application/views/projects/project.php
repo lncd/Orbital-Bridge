@@ -250,7 +250,10 @@
 
 if ($project['current_user_role'] === 'Administrator')
 {
-	echo '<a href="' . site_url('project/' . $project['id'] . '/create_ckan_group')  . '" class="btn btn"><i class="icon-plus"></i> Create Research Data Environment</a> ';
+	if( ! $project['ckan_group'])
+	{
+		echo '<a href="' . site_url('project/' . $project['id'] . '/create_ckan_group')  . '" class="btn btn"><i class="icon-plus"></i> Create Research Data Environment</a> ';
+	}
 	echo '<a href="' . site_url('project/' . $project['id'] . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
 }
 if ($project['current_user_role'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())

@@ -72,7 +72,7 @@ class Projects extends CI_Controller {
 			$("#projectsTimeline").gantt({
 				source: [' .implode(',', $gantt_array) . '],
 				scale: "weeks",
-				minScale: "days",
+				minScale: "weeks",
 				maxScale: "months"
 			});
 			';
@@ -249,31 +249,54 @@ class Projects extends CI_Controller {
 			$this->session->set_flashdata('message_type', 'error');
 			redirect('projects');			
 		}
-		if ($project['result']['current_user_role'] !== 'Administrator')
-        {
-			$this->load->view('inc/head', $header);
-			$this->load->view('projects/unauthorised');
-			$this->load->view('inc/foot');
+		
+		if ( ! (bool) $project['result']['ckan_group'])
+		{
+			if ($project['result']['current_user_role'] !== 'Administrator')
+	        {
+				$this->load->view('inc/head', $header);
+				$this->load->view('projects/unauthorised');
+				$this->load->view('inc/foot');
+	        }
+	        else
+	        {        
+				$this->load->library('../bridge_applications/ckan');
+				$result = json_decode($this->ckan->create_group(url_title($project['result']['title'], '-', TRUE)));
+				
+				if($result->success === true)
+				{
+					try
+					{
+						$fields['id'] = (int) $project_id;
+						$fields['ckan_group'] = url_title($project['result']['title'], '-', TRUE);
+						$curl_response = $this->n2->EditResearchProject($this->session->userdata('access_token'), $fields);
+					}
+					catch(Exception $e)
+					{
+						$this->session->set_flashdata('message', 'Project environment created, but: ' . $e->getMessage());
+						$this->session->set_flashdata('message_type', 'warning');
+						
+						redirect('projects');
+					}
+					$this->session->set_flashdata('message', 'Project environment created');
+					$this->session->set_flashdata('message_type', 'success');
+					
+					redirect('project/' . $project_id);
+				}
+				else
+				{
+					$this->session->set_flashdata('message', $result->error->name[0]);
+					$this->session->set_flashdata('message_type', 'error');
+					redirect('project/' . $project_id);
+				}
+	        }
         }
         else
-        {        
-			$this->load->library('../bridge_applications/ckan');
-			$result = json_decode($this->ckan->create_group(url_title($project['result']['title'], '-', TRUE)));
-			
-			if($result->success === true)
-			{        
-				$this->session->set_flashdata('message', 'Project environment created');
-				$this->session->set_flashdata('message_type', 'success');
-				
-				redirect('project/' . $project_id);
-			}
-			else
-			{
-				$this->session->set_flashdata('message', $result->error->name[0]);
-				$this->session->set_flashdata('message_type', 'error');
-				redirect('project/' . $project_id);
-			}
-        }
+        {
+			$this->session->set_flashdata('message', 'Project environment already exists in database');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('project/' . $project_id);			
+		}
 	}
 	
 	public function edit($project_id)
