@@ -365,7 +365,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -460,7 +460,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -487,7 +487,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -499,13 +499,16 @@ class Ckan {
 	 * @access public
 	 */
 
-	public function create_group($group)
+	public function create_group($name, $title, $description, $users)
 	{
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/action/group_create';
 
 		$fields = array(
-			'name' => $group
+			'name' => $name,
+			'title' => $title,
+			'description' => $description,
+			'users' => $users
 		);
 
 		$fields = json_encode($fields);
@@ -545,7 +548,7 @@ class Ckan {
 	 * @return null
 	 */
 
-	public function update_group($group, $name, $title, $description)
+	public function update_group($group, $name, $title, $description, $users)
 	{
 		//set POST variables
 		$url = 'https://ckan.lincoln.ac.uk/api/action/group_update';
@@ -554,12 +557,13 @@ class Ckan {
 			'id' => $group,
 			'name' => $name,
 			'title' => $title,
-			'description' => $description
+			'description' => $description,
+			'users' => $users
 		);
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -581,7 +585,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
