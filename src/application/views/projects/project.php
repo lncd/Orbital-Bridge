@@ -60,51 +60,87 @@
 
 </div>
 
-<?php
-	$bar_style='';
-	if( ! isset($project['end_date_unix']))
-	{
-		$bar_style='progress-striped';
-	}
-	if (time() < $project['start_date_unix'])
-	{
-		$bar_percent = 0;
-	}
-	else if (time() > $project['end_date_unix'])
-	{
-		$bar_percent = 100;
-	}
-	else
-	{
-		$bar_percent = ((time() - $project['start_date_unix']) / ($project['end_date_unix'] - $project['start_date_unix'])) * 100;
-	}
-?>
+<div class="row">
+	<div class="span12">
 
-<div class="progress <?php echo $bar_style ?> margin-top">
-  <div class="bar bar-success" style="width: <?php echo $bar_percent ?>%;"></div>
+		<?php
+			$bar_style='';
+			if( ! isset($project['end_date_unix']))
+			{
+				$bar_style='progress-striped';
+			}
+			if (time() < $project['start_date_unix'])
+			{
+				$bar_percent = 0;
+			}
+			else if (time() > $project['end_date_unix'])
+			{
+				$bar_percent = 100;
+			}
+			else
+			{
+				$bar_percent = ((time() - $project['start_date_unix']) / ($project['end_date_unix'] - $project['start_date_unix'])) * 100;
+			}
+		?>
+		
+		<div class="progress <?php echo $bar_style ?> margin-top">
+		  <div class="bar bar-success" style="width: <?php echo $bar_percent ?>%;"></div>
+		</div>
+		
+	</div>
+	
 </div>
 
 <hr>
-<?php if(isset($project['summary']))
-{
-	echo'
-		<h4>Summary</h4>
-		<div class="row">
-			<div class="span12 align-left">
-		
-				' . markdown($project['summary']) . '
-			</div>
-		</div>
-	<hr>
-	';
-}
-
-?>
 
 <div class="row">
+
 	<div class="span8">
+		
+		<h3>Summary</h3>
+		<?php echo markdown($project['summary']); ?>
+		
+	</div>
+	
+	<div class="span4">
+
+		<h3>Options</h3>
+		<ul class="nav nav-pills nav-stacked">
+		
+		<?php
+
+		if($project['ckan_url'] !== NULL)
+		{
+			echo '<li><a href="' . $project['ckan_url'] . '" target="_blank"><i class="icon-eye-open"></i> View project group on CKAN</a></li>';
+		}
+		
+		if ($project['current_user_role'] === 'Administrator')
+		{
+			if($project['ckan_group_id'] === NULL)
+			{
+				echo '<li><a href="' . site_url('project/' . $project['id'] . '/create_ckan_group')  . '"><i class="icon-magic"></i> Create Research Data Environment</a> ';
+			}
+			echo '<li><a href="' . site_url('project/' . $project['id'] . '/edit')  . '"><i class="icon-pencil"></i> Edit Project Details</a></li>';
+		}
+		if ($project['current_user_role'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())
+		{
+			echo '<li><a data-toggle="modal" href="#archiveProject" ><i class="icon-folder-close"></i> Archive Project</a></li>';
+		}
+		if ($project['current_user_role'] === 'Super Administrator')
+		{
+			echo '<li><a href="' . site_url('project/' . $project['id'] . '/delete') . '"><i class="icon-trash"></i> Delete Project</a></li>';
+		}
+		?>
+			
+		</ul>
+	
+	</div>
+</div>
+
+<div class="row">
+	<div class="span12">
 		<h3>Funding</h3>
-			<table class="table table-bordered table-striped">
+			<table class="table table-bordered table-striped table-condensed">
 				<tbody>			
 					<?php
 					
@@ -185,22 +221,6 @@
 				</tbody>
 			</table>
 	</div>
-
-	<div class="span4">
-		<h3>Other Links</h3>
-		<ul class="nav nav-pills nav-stacked">
-			<?php
-			if($project['ckan_uri'] !== 'https://ckan.lincoln.ac.uk/group/')
-			{
-				echo '<li><a href="' . $project['ckan_uri'] . '">View group on CKAN</a></li>';
-			}
-			else
-			{
-				echo '<li>None to display</li>';
-			}
-			?>
-		</ul>
-	</div>
 </div>
 
 <div class="row">
@@ -208,7 +228,7 @@
 	<div class="span12">
 	
 	<h3>Project Team</h3>
-		<table class="table table-bordered table-striped">
+		<table class="table table-bordered table-striped table-condensed">
 			<thead><tr><th>Member</th><th>Role</th></tr></thead>
 			<tbody>
 			
@@ -245,23 +265,3 @@
 		<a href=" <?php echo(site_url('project/' . $project['id'] . '/archive')); ?>" class="btn btn-warning"><i class="icon-folder-close"></i> Archive</a>
 	</div>
 </form>
-
-<?php
-
-if ($project['current_user_role'] === 'Administrator')
-{
-	if( ! $project['ckan_group'])
-	{
-		echo '<a href="' . site_url('project/' . $project['id'] . '/create_ckan_group')  . '" class="btn btn"><i class="icon-plus"></i> Create Research Data Environment</a> ';
-	}
-	echo '<a href="' . site_url('project/' . $project['id'] . '/edit')  . '" class="btn btn"><i class="icon-pencil"></i> Edit Details</a> ';
-}
-if ($project['current_user_role'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())
-{
-	echo '<a class="btn btn-warning" data-toggle="modal" href="#archiveProject" ><i class = "icon-folder-close"></i> Archive</a>';
-}
-if ($project['current_user_role'] === 'Super Administrator')
-{
-	echo '<a href="' . site_url('project/' . $project['id'] . '/delete') . '" class="btn btn-danger"><i class="icon-trash"></i> Delete</a>';
-}
-?>
