@@ -365,7 +365,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -460,7 +460,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -487,7 +487,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -563,7 +563,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**
@@ -585,7 +585,7 @@ class Ckan {
 
 		$fields = json_encode($fields);
 
-		$this->post_curl_request($url, $fields);
+		return $this->post_curl_request($url, $fields);
 	}
 
 	/**

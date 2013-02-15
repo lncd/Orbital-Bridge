@@ -269,7 +269,6 @@ class Projects extends CI_Controller {
 					$members[] = array('name' => $member['person']['sam_id'], 'capacity' => 'admin');
 				}
 				$result = json_decode($this->ckan->create_group(url_title($project['result']['title'], '-', TRUE), $project['result']['title'], $project['result']['summary'], $members));
-
 				if($result->success === true)
 				{
 					try
