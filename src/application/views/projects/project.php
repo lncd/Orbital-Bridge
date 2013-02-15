@@ -238,7 +238,7 @@
 				foreach ($project['datasets'] as $dataset)
 				{
 					echo '<tr>';
-					echo '<td><a href="' . $dataset['ckan_url'] . '">' . $dataset['title'] . '</a></td><td>OOOO!</td>';
+					echo '<td><a href="' . $dataset['ckan_url'] . '">' . $dataset['title'] . '</a></td><td><a class="btn btn-small disabled"><i class="icon-upload"></i> Publish to Lincoln Repository</a></td>';
 					echo '</tr>';
 				}
 				?>
