@@ -250,7 +250,7 @@
 
 if ($project['current_user_role'] === 'Administrator')
 {
-	if( ! $project['ckan_group'])
+	if( ! $project['ckan_group_id'])
 	{
 		echo '<a href="' . site_url('project/' . $project['id'] . '/create_ckan_group')  . '" class="btn btn"><i class="icon-plus"></i> Create Research Data Environment</a> ';
 	}
