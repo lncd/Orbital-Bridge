@@ -72,7 +72,7 @@ class Projects extends CI_Controller {
 			$("#projectsTimeline").gantt({
 				source: [' .implode(',', $gantt_array) . '],
 				scale: "weeks",
-				minScale: "days",
+				minScale: "weeks",
 				maxScale: "months"
 			});
 			';
@@ -233,6 +233,90 @@ class Projects extends CI_Controller {
 	
 	}
 
+	public function create_ckan_group($project_id)
+	{
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+		try
+		{
+			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
+		}
+		catch(Exception $e)
+		{
+			$this->session->set_flashdata('message', 'Unable to get project details');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('projects');			
+		}
+		
+		if ( ! (bool) $project['result']['ckan_group_id'])
+		{
+			if ($project['result']['current_user_role'] !== 'Administrator')
+	        {
+				$this->load->view('inc/head', $header);
+				$this->load->view('projects/unauthorised');
+				$this->load->view('inc/foot');
+	        }
+	        else
+	        {        
+				$this->load->library('../bridge_applications/ckan');
+
+				$members = array(array('name' => 'orbital', 'capacity' => 'admin'));
+
+				foreach($project['result']['research_project_members'] as $member)
+				{
+					$members[] = array('name' => $member['person']['sam_id'], 'capacity' => 'admin');
+				}
+				$result = json_decode($this->ckan->create_group(url_title($project['result']['title'], '-', TRUE), $project['result']['title'], $project['result']['summary'], $members));
+				if($result->success === true)
+				{
+					try
+					{
+						$fields['id'] = (int) $project_id;
+						$fields['ckan_group_id'] = $result->result->id;
+						$curl_response = $this->n2->EditResearchProject($this->session->userdata('access_token'), $fields);
+					}
+					catch(Exception $e)
+					{
+						$this->session->set_flashdata('message', 'Project environment created, but: ' . $e->getMessage());
+						$this->session->set_flashdata('message_type', 'warning');
+						
+						redirect('projects');
+					}
+					$this->session->set_flashdata('message', 'Project environment created');
+					$this->session->set_flashdata('message_type', 'success');
+					
+					redirect('project/' . $project_id);
+				}
+				else
+				{
+					$this->session->set_flashdata('message', $result->error->name[0]);
+					$this->session->set_flashdata('message_type', 'error');
+					redirect('project/' . $project_id);
+				}
+	        }
+        }
+        else
+        {
+			$this->session->set_flashdata('message', 'Project environment already exists in database');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('project/' . $project_id);			
+		}
+	}
+	
+	public function publish_to_repository($dataset_id)
+	{
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+
+		$this->load->view('inc/head', $header);
+		$this->load->view('projects/publish_to_repository', array('project' => $project['result']));
+		$this->load->view('inc/foot');
+	}
+	
 	public function edit($project_id)
 	{
 		if (!$this->session->userdata('access_token'))
@@ -348,7 +432,7 @@ class Projects extends CI_Controller {
 			});';
 			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-			$this->form_validation->set_rules('members', 'Project team', 'required');
+			$this->form_validation->set_rules('project_visibility', 'Project visibility', 'required');
 	
 			if ($this->form_validation->run())
 			{	
@@ -361,8 +445,10 @@ class Projects extends CI_Controller {
 				{
 					$fields['summary'] = $this->input->post('project_description');
 				}
-				$fields['research_interests'] = $this->input->post('research_interests');
-				
+				if ($this->input->post('research_interests'))
+				{
+					$fields['research_interests'] = $this->input->post('research_interests');
+				}
 				if ($this->input->post('project_type') === 'funded')
 				{
 					$fields['funded'] = TRUE;
@@ -395,6 +481,14 @@ class Projects extends CI_Controller {
 				{
 					$fields['end_date'] = NULL;
 				}
+				if($this->input->post('project_visibility') === 'visible')
+				{
+					$fields['project_visibility'] = 1;
+				}
+				else
+				{
+					$fields['project_visibility'] = 0;
+				}
 				
 				//Members
 				$members = array();
@@ -421,7 +515,7 @@ class Projects extends CI_Controller {
 					
 					$fields['project_members'] = $members;
 				}
-				if($is_admin === FALSE)
+				if($this->input->post('members') AND $is_admin === FALSE)
 				{
 					$this->session->set_flashdata('message', 'A Project administrator is required');
 					$this->session->set_flashdata('message_type', 'error');
@@ -567,7 +661,6 @@ class Projects extends CI_Controller {
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');
-
 		}	
 	}
 
