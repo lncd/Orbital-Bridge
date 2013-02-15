@@ -111,20 +111,20 @@
 
 		if($project['ckan_url'] !== NULL)
 		{
-			echo '<li><a href="' . $project['ckan_url'] . '" target="_blank"><i class="icon-eye-open"></i> View project group on CKAN</a></li>';
+			echo '<li><a href="' . $project['ckan_url'] . '" target="_blank"><i class="icon-external-link"></i> View project on CKAN</a></li>';
 		}
 		
 		if ($project['current_user_role'] === 'Administrator')
 		{
 			if($project['ckan_group_id'] === NULL)
 			{
-				echo '<li><a href="' . site_url('project/' . $project['id'] . '/create_ckan_group')  . '"><i class="icon-magic"></i> Create Research Data Environment</a> ';
+				echo '<li><a data-toggle="modal" href="#createEnvironment"><i class="icon-magic"></i> Create Research Data Environment</a> ';
 			}
 			echo '<li><a href="' . site_url('project/' . $project['id'] . '/edit')  . '"><i class="icon-pencil"></i> Edit Project Details</a></li>';
 		}
 		if ($project['current_user_role'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())
 		{
-			echo '<li><a data-toggle="modal" href="#archiveProject" ><i class="icon-folder-close"></i> Archive Project</a></li>';
+			echo '<li><a data-toggle="modal" href="#archiveProject"><i class="icon-folder-close"></i> Archive Project</a></li>';
 		}
 		if ($project['current_user_role'] === 'Super Administrator')
 		{
@@ -223,6 +223,34 @@
 	</div>
 </div>
 
+<?php if (count($project['datasets']) > 0): ?>
+
+<div class="row">
+	
+	<div class="span12">
+	
+	<h3>Datasets</h3>
+		<table class="table table-bordered table-striped table-condensed">
+			<thead><tr><th>Title</th><th>Options</th></tr></thead>
+			<tbody>
+			
+				<?php
+				foreach ($project['datasets'] as $dataset)
+				{
+					echo '<tr>';
+					echo '<td><a href="' . $dataset['ckan_url'] . '">' . $dataset['title'] . '</a></td><td>OOOO!</td>';
+					echo '</tr>';
+				}
+				?>
+			
+			</tbody>
+		</table>
+	
+	</div>	
+</div>
+
+<?php endif; ?>
+
 <div class="row">
 	
 	<div class="span12">
@@ -250,9 +278,7 @@
 	</div>	
 </div>
 
-<!-- Archive Project -->
-
-<form class="modal fade" id="archiveProject">
+<div class="modal fade" id="archiveProject">
 	<div class="modal-header">
 		<button class="close" data-dismiss="modal">×</button>
 		<h3>Archive</h3>
@@ -264,4 +290,18 @@
 		<a class="btn" data-dismiss="modal">Cancel</a>
 		<a href=" <?php echo(site_url('project/' . $project['id'] . '/archive')); ?>" class="btn btn-warning"><i class="icon-folder-close"></i> Archive</a>
 	</div>
-</form>
+</div>
+
+<div class="modal fade" id="createEnvironment">
+	<div class="modal-header">
+		<button class="close" data-dismiss="modal">×</button>
+		<h3>Create Research Environment</h3>
+	</div>
+	<div class="modal-body">
+		Creating this project's research data environment will automatically create a group for this project's data in CKAN, the University's research data repository. Once created, this environment will be linked to your Researcher Dashboard to simplify the process of sharing your research data (if required), as well as giving you an improved overview of your research data.
+	</div>
+	<div class="modal-footer">
+		<a class="btn" data-dismiss="modal">Cancel</a>
+		<a href=" <?php site_url('project/' . $project['id'] . '/create_ckan_group'); ?>" class="btn btn-primary"><i class="icon-magic"></i> Create Research Data Environment</a>
+	</div>
+</div>
