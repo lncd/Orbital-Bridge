@@ -305,6 +305,18 @@ class Projects extends CI_Controller {
 		}
 	}
 	
+	public function publish_to_repository($dataset_id)
+	{
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+
+		$this->load->view('inc/head', $header);
+		$this->load->view('projects/publish_to_repository', array('project' => $project['result']));
+		$this->load->view('inc/foot');
+	}
+	
 	public function edit($project_id)
 	{
 		if (!$this->session->userdata('access_token'))
