@@ -11,7 +11,7 @@
 
 			<div class="span8">
 				&copy; University of Lincoln<br>
-				Orbital Bridge v0.4 "Girder" &middot; Developed by <a href="http://lncd.org">LNCD</a>
+				Orbital Bridge v0.4.1 "Girder" &middot; Developed by <a href="http://lncd.org">LNCD</a>
 			</div>
 
 			<div class="span2">
