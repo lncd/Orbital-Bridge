@@ -302,6 +302,6 @@
 	</div>
 	<div class="modal-footer">
 		<a class="btn" data-dismiss="modal">Cancel</a>
-		<a href=" <?php site_url('project/' . $project['id'] . '/create_ckan_group'); ?>" class="btn btn-primary"><i class="icon-magic"></i> Create Research Data Environment</a>
+		<a href=" <?php echo(site_url('project/' . $project['id'] . '/create_ckan_group')); ?>" class="btn btn-primary"><i class="icon-magic"></i> Create Research Data Environment</a>
 	</div>
 </div>
