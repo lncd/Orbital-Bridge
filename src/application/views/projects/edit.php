@@ -202,7 +202,12 @@
 		{
 			$visible = 'hidden';
 		}
-	
+		
+		if ($project['research_project_status']['text'] === 'Archived')
+		{
+			echo '<div class="alert alert-info">This project has been completed and archived. You can only edit the visibility.</div>';
+		}
+		
 		$project_visibilty['visible'] = 'Publicly Visible';
 		$project_visibilty['hidden'] = 'Hidden';
 	
