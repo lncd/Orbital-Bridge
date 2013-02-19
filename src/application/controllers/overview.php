@@ -106,6 +106,11 @@ class Overview extends CI_Controller {
 	public function projects()
 	{
 	
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin');
+		}
+	
 		$header = array(
 			'page' => 'overview',
 			'categories' => $this->bridge->categories(),
