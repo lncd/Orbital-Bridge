@@ -47,7 +47,7 @@
 				echo form_label('Description', 'project_description', array('class' => 'control-label'));
 				echo '<div class="controls">';
 				echo form_textarea($form_description);
-				echo '<span class="help-block">A short description of this research project. If you want, you can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> to add formatting to this.</span>';
+				echo '<span class="help-block">A short description of this research project.</span>';
 				echo '</div></div>';
 				
 				if ($project['funded'])
