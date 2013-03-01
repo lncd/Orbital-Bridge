@@ -83,8 +83,7 @@ class Projects extends CI_Controller {
 	}
 	
 	public function start()
-	{
-	
+	{	
 		if (!$this->session->userdata('access_token'))
 		{
 			redirect('signin');
@@ -116,8 +115,7 @@ class Projects extends CI_Controller {
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
-		
-							
+
 		$footer['javascript'] = '$(document).ready(function() {
 			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 			
@@ -191,8 +189,7 @@ class Projects extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/create');
 			$this->load->view('inc/foot', $footer);
-		}
-		
+		}		
 	}
 	
 	public function project($project_id)
@@ -229,8 +226,6 @@ class Projects extends CI_Controller {
 		$this->load->view('inc/head', $header);
 		$this->load->view('projects/project', $data);
 		$this->load->view('inc/foot');
-		
-	
 	}
 
 	public function create_ckan_group($project_id)
@@ -645,8 +640,7 @@ class Projects extends CI_Controller {
 		if (!$this->session->userdata('access_token'))
 		{
 			redirect('signin');
-		}		
-				
+		}
 		try
 		{
 			$project = $this->n2->EditResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id, "research_project_status_id" => 19));
@@ -661,12 +655,12 @@ class Projects extends CI_Controller {
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');
-		}	
+		}
 	}
 
 	public function project_title_check($str, $project_title)
 	{
-		if ($str == $project_title)
+		if ($str === $project_title)
 		{
 			return TRUE;
 		}
