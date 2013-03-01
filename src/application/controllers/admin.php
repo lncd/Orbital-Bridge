@@ -17,7 +17,6 @@ class Admin extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/error');
 			$this->load->view('inc/foot');
-
 		}
 	}
 
@@ -36,7 +35,6 @@ class Admin extends CI_Controller {
 
 	public function pages()
 	{
-
 		$header = array(
 			'page' => 'admin',
 			'categories' => $this->bridge->categories(),

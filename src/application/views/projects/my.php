@@ -26,9 +26,16 @@
 	
 	<div class="span4">
 	
-		<h4>Total Funding (Sterling Only)</h4>
+		<h4>Total Funding</h4>
 	
-		<p><span class="bignumber">&pound;<?php echo number_format($total_funding); ?></span></p>
+		<?php
+		foreach($total_funding as $funding)
+		{
+			echo '<p><span class="bignumber">' . $funding['symbol'] . number_format($funding['value']) .'</span></p>';
+
+		}
+		?>
+	
 	
 	</div>
 

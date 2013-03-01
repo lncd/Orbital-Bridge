@@ -20,7 +20,7 @@ class Projects extends CI_Controller {
 		$projects = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
 		$projects_active = array();
 		$projects_inactive = array();			
-		$total_funding = 0;
+		$total_funding = array();
 					
 		foreach ($projects['results'] as $project)
 		{
@@ -51,9 +51,17 @@ class Projects extends CI_Controller {
 					}
 				]}';
 			}
-			if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling' AND $project['ams_success'] === 'Successful' AND $project['research_project_status']['text'] !== 'Deleted')
+			
+			if ($project['funding_amount'] !== NULL AND $project['ams_success'] === 'Successful' AND $project['research_project_status']['text'] !== 'Deleted')
 			{
-				$total_funding += $project['funding_amount'];
+				if(isset($total_funding[$project['funding_currency']['id']]))
+				{
+					$total_funding[$project['funding_currency']['id']]['value'] = $total_funding[$project['funding_currency']['id']]['value'] + $project['funding_amount'];
+				}
+				else
+				{
+					$total_funding[$project['funding_currency']['id']] = array('symbol' => $project['funding_currency']['symbol'], 'value' => $project['funding_amount']);
+				}
 			}
 		}
 		
@@ -137,7 +145,6 @@ class Projects extends CI_Controller {
 
 		if ($this->form_validation->run())
 		{
-
 			$fields['title'] = $this->input->post('project_title');
 			if($this->input->post('project_description'))
 			{
