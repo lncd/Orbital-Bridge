@@ -151,6 +151,11 @@ class Projects extends CI_Controller {
 				$fields['end_date'] = NULL;
 			}
 
+			if($this->input->post('project_website'))
+			{
+				$fields['website'] = $this->input->post('project_website');
+			}
+				
 			$members[] = array('person_id' => (int) $this->session->userdata('user_id'), 'role_id' => (int) 2);
 
 			$fields['project_members'] = $members;
@@ -447,6 +452,10 @@ class Projects extends CI_Controller {
 				else
 				{
 					$fields['project_visibility'] = 0;
+				}
+				if($this->input->post('project_website'))
+				{
+					$fields['website'] = $this->input->post('project_website');
 				}
 				
 				//Members
