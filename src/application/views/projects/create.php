@@ -45,7 +45,20 @@
 		echo form_textarea($form_description);
 		echo '<span class="help-block">The project description is shown alongside the project in places such as the Research Directory.</span>';
 		echo '</div></div>';
-		
+			
+		$form_website = array(
+			'name'			=> 'project_website',
+			'id'			=> 'project_website',
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Website', 'project_website', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_website);
+		echo '<span class="help-block">If the project has one, a website where people can find out more.</span>';
+		echo '</div></div>';
 		
 		$form_start_date = array(
 			'name'			=> 'project_start_date',

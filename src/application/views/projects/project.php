@@ -94,6 +94,17 @@
 <hr>
 
 <div class="row">
+<?php
+	if(isset($project['website']) AND $project['website'] !== '')
+	{
+		echo '<div class="span8">';
+		echo '<h3>Website</h3>';
+		echo '<a href="' . $project['website'] .'">' . $project['website'] . '</a>';
+		echo '</div>';
+	}
+?>
+</div>
+<div class="row">
 
 	<div class="span8">
 		
