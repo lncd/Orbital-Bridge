@@ -47,85 +47,24 @@
 				echo form_label('Description', 'project_description', array('class' => 'control-label'));
 				echo '<div class="controls">';
 				echo form_textarea($form_description);
-				echo '<span class="help-block">A short description of this research project. If you want, you can use <a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a> to add formatting to this.</span>';
-				echo '</div></div>';
-				
-				if ($project['funded'])
-				{
-					$funded = 'funded';
-				}
-				else
-				{
-					$funded = 'unfunded';
-				}
-			
-				$project_type['funded'] = 'Funded';
-				$project_type['unfunded'] = 'Unfunded';
-			
-				echo '<div class="control-group">';
-				echo form_label('Project type', 'project_type', array('class' => 'control-label'));
-				echo '<div class="controls">';
-				echo form_dropdown('project_type', $project_type, set_value('project_type', $funded), 'id="project_type" class="span4"');
-				echo '</div></div>';
-				
-				echo '<div id="funding_div"';
-				
-				if ( ! $project['funded'])
-				{
-					echo 'style="display:none">';
-				}
-				else
-				{
-					echo'>';
-				}
-				if (isset($project['funding_currency']['id']))
-				{
-					$currency_id = $project['funding_currency']['id'];
-				}
-				else
-				{
-					$currency_id = NULL;
-				}
-				$form_project_funding_currency = array(
-					'name'		=> 'project_funding_currency',
-					'id'		=> 'project_funding_currency',
-					'value'		=> $currency_id
-				);
-		
-				$funding_type['1'] = '&pound; (Sterling)';
-			
-				echo '<div class="control-group">';
-				echo form_label('Funding Currency', 'project_funding_currency', array('class' => 'control-label'));
-				echo '<div class="controls">';
-				echo form_dropdown('project_funding_currency', $funding_type, set_value('project_funding_currency', $currency_id), 'id="project_funding_currency" class="span4"');
+				echo '<span class="help-block">A short description of this research project.</span>';
 				echo '</div></div>';
 			
-			
-				if (isset($project['funding_amount']))
-				{
-					$funding_amount = $project['funding_amount'];
-				}
-				else
-				{
-					$funding_amount = NULL;
-				}
-			
-				$form_funding_amount = array(
-					'name'			=> 'project_funding_amount',
-					'id'			=> 'project_funding_amount',
-					'value'			=> $funding_amount,
+				$form_website = array(
+					'name'			=> 'project_website',
+					'value'			=> $project['website'],
+					'id'			=> 'project_website',
 					'maxlength'		=> '200',
 					'class'			=> 'input-xlarge'
 				);
 			
 				echo '<div class="control-group">';
-				echo form_label('Funding Amount', 'project_funding_amount', array('class' => 'control-label'));
+				echo form_label('Website', 'project_website', array('class' => 'control-label'));
 				echo '<div class="controls">';
-				echo form_input($form_funding_amount);
+				echo form_input($form_website);
+				echo '<span class="help-block">If the project has one, a website where people can find out more.</span>';
 				echo '</div></div>';
-			
-				echo '</div>';
-			
+				
 				$form_start_date = array(
 					'name'			=> 'project_start_date',
 					'required'   	=> 'required',
@@ -202,7 +141,12 @@
 		{
 			$visible = 'hidden';
 		}
-	
+		
+		if ($project['research_project_status']['text'] === 'Archived')
+		{
+			echo '<div class="alert alert-info">This project has been completed and archived. You can only edit the visibility.</div>';
+		}
+		
 		$project_visibilty['visible'] = 'Publicly Visible';
 		$project_visibilty['hidden'] = 'Hidden';
 	

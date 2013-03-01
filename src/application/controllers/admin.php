@@ -17,7 +17,6 @@ class Admin extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('admin/error');
 			$this->load->view('inc/foot');
-
 		}
 	}
 
@@ -36,7 +35,6 @@ class Admin extends CI_Controller {
 
 	public function pages()
 	{
-
 		$header = array(
 			'page' => 'admin',
 			'categories' => $this->bridge->categories(),
@@ -403,15 +401,15 @@ class Admin extends CI_Controller {
 				$c->active = FALSE;
 			}
 
-			$page_cat_links = new Page_category_link();
-			$page_cat_links->where('page_category_id', $id)->get();
-			foreach ($page_cat_links as $page_cat_link)
-			{
-				$page_cat_link->delete();
-			}
-
 			if ($this->input->post('pages_list'))
 			{
+				$page_cat_links = new Page_category_link();
+				$page_cat_links->where('page_category_id', $id)->get();
+				foreach ($page_cat_links as $page_cat_link)
+				{
+					$page_cat_link->delete();
+				}
+
 				$pages_array = explode(',', $this->input->post('pages_list'));
 				$order = 1;
 				foreach($pages_array as $new_page)

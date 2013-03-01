@@ -20,7 +20,7 @@ class Projects extends CI_Controller {
 		$projects = $this->n2->GetResearchProjects($this->session->userdata('access_token'), array("account" => $this->session->userdata('user_employee_id')));
 		$projects_active = array();
 		$projects_inactive = array();			
-		$total_funding = 0;
+		$total_funding = array();
 					
 		foreach ($projects['results'] as $project)
 		{
@@ -51,9 +51,17 @@ class Projects extends CI_Controller {
 					}
 				]}';
 			}
-			if ($project['funding_amount'] !== NULL AND $project['funding_currency']['name'] === 'Sterling' AND $project['ams_success'] === 'Successful' AND $project['research_project_status']['text'] !== 'Deleted')
+			
+			if ($project['funding_amount'] !== NULL AND $project['ams_success'] === 'Successful' AND $project['research_project_status']['text'] !== 'Deleted')
 			{
-				$total_funding += $project['funding_amount'];
+				if(isset($total_funding[$project['funding_currency']['id']]))
+				{
+					$total_funding[$project['funding_currency']['id']]['value'] = $total_funding[$project['funding_currency']['id']]['value'] + $project['funding_amount'];
+				}
+				else
+				{
+					$total_funding[$project['funding_currency']['id']] = array('symbol' => $project['funding_currency']['symbol'], 'value' => $project['funding_amount']);
+				}
 			}
 		}
 		
@@ -83,8 +91,7 @@ class Projects extends CI_Controller {
 	}
 	
 	public function start()
-	{
-	
+	{	
 		if (!$this->session->userdata('access_token'))
 		{
 			redirect('signin');
@@ -116,21 +123,9 @@ class Projects extends CI_Controller {
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
-		
-							
+
 		$footer['javascript'] = '$(document).ready(function() {
 			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-			
-			$("#project_type").change(function () {
-				if ($("#project_type").val() == "funded")
-				{
-					$(\'#funding_div\').show(200, "swing");
-				}
-				else if ($("#project_type").val() == "unfunded")
-				{
-					$(\'#funding_div\').hide(200, "swing");
-				}
-			})
 		});';
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
@@ -139,15 +134,12 @@ class Projects extends CI_Controller {
 
 		if ($this->form_validation->run())
 		{
-
 			$fields['title'] = $this->input->post('project_title');
 			if($this->input->post('project_description'))
 			{
 				$fields['summary'] = $this->input->post('project_description');
 			}
 			$fields['description'] = $this->input->post('project_description');
-				
-			$fields['funded'] = (bool) 0;	
 
 			$fields['start_date'] = $this->input->post('project_start_date');
 			if($this->input->post('project_end_date') !== NULL AND $this->input->post('project_end_date') !== '')
@@ -159,6 +151,11 @@ class Projects extends CI_Controller {
 				$fields['end_date'] = NULL;
 			}
 
+			if($this->input->post('project_website'))
+			{
+				$fields['website'] = $this->input->post('project_website');
+			}
+				
 			$members[] = array('person_id' => (int) $this->session->userdata('user_id'), 'role_id' => (int) 2);
 
 			$fields['project_members'] = $members;
@@ -191,8 +188,7 @@ class Projects extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/create');
 			$this->load->view('inc/foot', $footer);
-		}
-		
+		}		
 	}
 	
 	public function project($project_id)
@@ -229,8 +225,6 @@ class Projects extends CI_Controller {
 		$this->load->view('inc/head', $header);
 		$this->load->view('projects/project', $data);
 		$this->load->view('inc/foot');
-		
-	
 	}
 
 	public function create_ckan_group($project_id)
@@ -367,17 +361,6 @@ class Projects extends CI_Controller {
 			$footer['javascript'] = '$(document).ready(function() {
 				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
-				$("#project_type").change(function () {
-					if ($("#project_type").val() == "funded")
-					{
-						$(\'#funding_div\').show(200, "swing");
-					}
-					else if ($("#project_type").val() == "unfunded")
-					{
-						$(\'#funding_div\').hide(200, "swing");
-					}
-				});
-				
 				$(window).keydown(function(event){
 					if(event.keyCode == 13) {
 						event.preventDefault();
@@ -449,25 +432,6 @@ class Projects extends CI_Controller {
 				{
 					$fields['research_interests'] = $this->input->post('research_interests');
 				}
-				if ($this->input->post('project_type') === 'funded')
-				{
-					$fields['funded'] = TRUE;
-					$fields['currency_id'] = (int) $this->input->post('project_funding_currency');
-					if ($this->input->post('project_funding_amount'))
-					{
-						$fields['funding_amount'] = (int) $this->input->post('project_funding_amount');
-					}
-					else
-					{
-						$fields['funding_amount'] = NULL;
-					}
-				}	
-				else
-				{
-					$fields['funded'] = FALSE;
-					$fields['currency_id'] = NULL;
-					$fields['funding_amount'] = NULL;
-				}
 				if($this->input->post('project_start_date'))
 				{
 					$fields['start_date'] = $this->input->post('project_start_date');
@@ -488,6 +452,10 @@ class Projects extends CI_Controller {
 				else
 				{
 					$fields['project_visibility'] = 0;
+				}
+				if($this->input->post('project_website'))
+				{
+					$fields['website'] = $this->input->post('project_website');
 				}
 				
 				//Members
@@ -645,8 +613,7 @@ class Projects extends CI_Controller {
 		if (!$this->session->userdata('access_token'))
 		{
 			redirect('signin');
-		}		
-				
+		}
 		try
 		{
 			$project = $this->n2->EditResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id, "research_project_status_id" => 19));
@@ -661,12 +628,12 @@ class Projects extends CI_Controller {
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');
-		}	
+		}
 	}
 
 	public function project_title_check($str, $project_title)
 	{
-		if ($str == $project_title)
+		if ($str === $project_title)
 		{
 			return TRUE;
 		}
