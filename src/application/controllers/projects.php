@@ -126,17 +126,6 @@ class Projects extends CI_Controller {
 
 		$footer['javascript'] = '$(document).ready(function() {
 			$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-			
-			$("#project_type").change(function () {
-				if ($("#project_type").val() == "funded")
-				{
-					$(\'#funding_div\').show(200, "swing");
-				}
-				else if ($("#project_type").val() == "unfunded")
-				{
-					$(\'#funding_div\').hide(200, "swing");
-				}
-			})
 		});';
 		
 		$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
@@ -151,8 +140,6 @@ class Projects extends CI_Controller {
 				$fields['summary'] = $this->input->post('project_description');
 			}
 			$fields['description'] = $this->input->post('project_description');
-				
-			$fields['funded'] = (bool) 0;	
 
 			$fields['start_date'] = $this->input->post('project_start_date');
 			if($this->input->post('project_end_date') !== NULL AND $this->input->post('project_end_date') !== '')
@@ -369,17 +356,6 @@ class Projects extends CI_Controller {
 			$footer['javascript'] = '$(document).ready(function() {
 				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 				
-				$("#project_type").change(function () {
-					if ($("#project_type").val() == "funded")
-					{
-						$(\'#funding_div\').show(200, "swing");
-					}
-					else if ($("#project_type").val() == "unfunded")
-					{
-						$(\'#funding_div\').hide(200, "swing");
-					}
-				});
-				
 				$(window).keydown(function(event){
 					if(event.keyCode == 13) {
 						event.preventDefault();
@@ -450,25 +426,6 @@ class Projects extends CI_Controller {
 				if ($this->input->post('research_interests'))
 				{
 					$fields['research_interests'] = $this->input->post('research_interests');
-				}
-				if ($this->input->post('project_type') === 'funded')
-				{
-					$fields['funded'] = TRUE;
-					$fields['currency_id'] = (int) $this->input->post('project_funding_currency');
-					if ($this->input->post('project_funding_amount'))
-					{
-						$fields['funding_amount'] = (int) $this->input->post('project_funding_amount');
-					}
-					else
-					{
-						$fields['funding_amount'] = NULL;
-					}
-				}	
-				else
-				{
-					$fields['funded'] = FALSE;
-					$fields['currency_id'] = NULL;
-					$fields['funding_amount'] = NULL;
 				}
 				if($this->input->post('project_start_date'))
 				{
