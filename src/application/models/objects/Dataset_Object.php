@@ -22,6 +22,8 @@ class Dataset_Object {
 	protected $_subjects; //JACS CODES
 	protected $_date;
 	protected $_keywords = array();
+	protected $_metadata_visibility;
+	protected $_is_published;
 	
 	//Get and SET $title
 	public function set_title($title)
@@ -93,5 +95,14 @@ class Dataset_Object {
 	public function get_keywords()
 	{
 		return $this->_keywords;
+	}
+	
+	public function get_metadata_visibility()
+	{
+		return $this->_metadata_visibility;
+	}
+	public function get_is_published()
+	{
+		return $this->_is_published;
 	}
 }

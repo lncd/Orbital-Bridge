@@ -10,7 +10,7 @@
 	
 	<div class="span12">
 	
-	<?php
+	<?php 
 		echo validation_errors();
 	
 		echo form_open('project/' . $project_id . '/edit', array('class' => 'form-horizontal'));

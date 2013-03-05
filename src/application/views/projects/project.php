@@ -109,7 +109,7 @@
 	<div class="span8">
 		
 		<h3>Summary</h3>
-		<?php echo markdown($project['summary']); ?>
+		<?php echo $project['summary_html']; ?>
 		
 	</div>
 	
@@ -249,7 +249,7 @@
 				foreach ($project['datasets'] as $dataset)
 				{
 					echo '<tr>';
-					echo '<td><a href="' . $dataset['ckan_url'] . '">' . $dataset['title'] . '</a></td><td><a class="btn btn-small disabled"><i class="icon-upload"></i> Publish to Lincoln Repository</a></td>';
+					echo '<td><a href="' . $dataset['ckan_url'] . '">' . $dataset['title'] . '</a></td><td><a href="' . site_url('dataset/' . $dataset['id'] . '/deposit') . '" class="btn btn-small disabled"><i class="icon-upload"></i> Publish to Lincoln Repository</a></td>';
 					echo '</tr>';
 				}
 				?>
