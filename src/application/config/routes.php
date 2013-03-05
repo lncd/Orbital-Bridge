@@ -68,6 +68,7 @@ $route['project/(:any)/create_ckan_group'] = "projects/create_ckan_group/$1";
 $route['project/(:any)/delete'] = "projects/delete/$1";
 $route['project/(:any)/archive'] = "projects/archive/$1";
 $route['project/(:any)'] = "projects/project/$1";
+$route['dataset/(:any)/deposit'] = "datasets/deposit_to_eprints/$1";
 
 $route['test'] = 'test';
 
