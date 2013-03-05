@@ -31,10 +31,10 @@
 		echo '</div></div>';
 
 		$form_uri_slug = array(
-			'name'			=> 'dataset_title',
+			'name'			=> 'dataset_uri_slug',
 			'required'   	=> 'required',
 			'value'			=> $dataset_metadata->get_uri_slug(),
-			'id'			=> 'dataset_title',
+			'id'			=> 'dataset_uri_slug',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
@@ -58,6 +58,30 @@
 		echo form_label('Creator(s)', 'dataset_creator', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_creator);
+		echo '</div></div>';
+		
+		$credit['author'] = 'Author';
+		$credit['contributor'] = 'Contributor';
+		$credit['maintainer'] = 'Maintainer';
+		$credit['none'] = 'No Credit';
+	
+		echo '<div class="control-group">';
+		echo form_label('Dataset Credit', 'dataset_credit', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_dropdown('dataset_credit', $credit, 'id="dataset-credit" class="span4"');
+		echo '</div></div>';
+
+		$form_publisher = array(
+			'name'			=> 'dataset_publisher',
+			'id'			=> 'dataset_publisher',
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Publisher', 'dataset_publisher', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_publisher);
 		echo '</div></div>';
 
 		$form_date = array(

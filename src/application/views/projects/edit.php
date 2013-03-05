@@ -44,7 +44,7 @@
 				);
 			
 				echo '<div class="control-group">';
-				echo form_label('Description', 'project_description', array('class' => 'control-label'));
+				echo form_label('Summary', 'project_description', array('class' => 'control-label'));
 				echo '<div class="controls">';
 				echo form_textarea($form_description);
 				echo '<span class="help-block">A short description of this research project.</span>';

@@ -31,42 +31,75 @@ class Datasets extends CI_Controller {
 		else
 		{
 			$this->load->library('../bridge_applications/ckan');
-			$data = array(
-				'dataset_metadata' => $this->ckan->read_dataset('https://ckan.lincoln.ac.uk/api/rest/dataset/' . $dataset['result']['ckan_id']),
-				'dataset_id' => $dataset_id
-			);
-			
-			$footer['javascript'] = '$(document).ready(function() {
-				$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
-				
-				$(window).keydown(function(event){
-					if(event.keyCode == 13) {
-						event.preventDefault();
-						return false;
-					}
-				});
-				 $("#dataset_keywords").select2({
-	                tags:[],
-	                tokenSeparators: [","],
-	                minimumInputLength: 2
-	            });
-            })';            
-            
-			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-			$this->form_validation->set_rules('dataset_title', 'Dataset Title', 'required');
-	
-			if ($this->form_validation->run())
+			if ($dataset_metadata = $this->ckan->read_dataset('https://ckan.lincoln.ac.uk/api/rest/dataset/' . $dataset['result']['ckan_id']))
 			{
-				$this->session->set_flashdata('message', 'This feature has not yet been implemented');
-				$this->session->set_flashdata('message_type', 'info');
-			
-				redirect('project/' . $dataset['result']['research_project']['id']);
+				$data = array(
+					'dataset_metadata' => $dataset_metadata,
+					'dataset_id' => $dataset_id
+				);
+				
+				$footer['javascript'] = '$(document).ready(function() {
+					$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+					
+					$(window).keydown(function(event){
+						if(event.keyCode == 13) {
+							event.preventDefault();
+							return false;
+						}
+					});
+					 $("#dataset_keywords").select2({
+		                tags:[],
+		                tokenSeparators: [","],
+		                minimumInputLength: 2
+		            });
+	            })';            
+	            
+				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
+				$this->form_validation->set_rules('dataset_title', 'Dataset Title', 'required');
+		
+				if ($this->form_validation->run())
+				{
+					$dataset_metadata->set_title($this->input->post('dataset_title'));
+					$dataset_metadata->set_uri_slug($this->input->post('dataset_uri_slug'));
+					$dataset_metadata->set_creator($this->input->post('dataset_creators'));
+					$dataset_metadata->set_date($this->input->post('dataset_date'));
+					$dataset_metadata->set_metadata_visibility($this->input->post('dataset_metadata_visibility'));
+					$dataset_metadata->set_is_published($this->input->post('dataset_is_published'));
+					/*
+					$this->load->library('../bridge_applications/sword');
+					if($this->sword->create_dataset($_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], $dataset_metadata))
+					{
+						$this->session->set_flashdata('message', 'Dataset deposited');
+						$this->session->set_flashdata('message_type', 'info');
+					
+						redirect('project/' . $dataset['result']['research_project']['id']);
+					}
+					else
+					{	
+						$this->session->set_flashdata('message', 'Unable to deposit Dataset');
+						$this->session->set_flashdata('message_type', 'error');
+					
+						redirect('project/' . $dataset['result']['research_project']['id']);
+					}
+*/
+					$this->session->set_flashdata('message', 'This feature is not yet implemented');
+					$this->session->set_flashdata('message_type', 'error');
+					
+					redirect('projects');
+				}
+				else
+				{			
+					$this->load->view('inc/head', $header);
+					$this->load->view('projects/deposit_dataset', $data);
+					$this->load->view('inc/foot', $footer);
+				}
 			}
 			else
-			{			
-				$this->load->view('inc/head', $header);
-				$this->load->view('projects/deposit_dataset', $data);
-				$this->load->view('inc/foot', $footer);
+			{
+				$this->session->set_flashdata('message', 'Unable to get dataset information');
+				$this->session->set_flashdata('message_type', 'error');
+			
+				redirect('project/' . $dataset['result']['research_project']['id']);
 			}
 		}
 	}
