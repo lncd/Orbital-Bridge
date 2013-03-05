@@ -238,9 +238,12 @@
 
 <div class="row">
 	
-	<div class="span12">
+	<div class="span6">
 	
-	<h3>Datasets</h3>
+		<h3>Datasets</h3>
+		
+		<?php if (count($project['datasets']) > 0): ?>
+		
 		<table class="table table-bordered table-striped table-condensed">
 			<thead><tr><th>Title</th><th>Options</th></tr></thead>
 			<tbody>
@@ -256,8 +259,40 @@
 			
 			</tbody>
 		</table>
+		
+		<?php else: ?>
+		
+		<p>There aren't currently any datasets in CKAN which are associated with this project's group.</p>
+		
+		<?php endif; ?>
 	
-	</div>	
+	</div>
+	
+	<div class="span6">
+	
+		<h3>Publications</h3>
+		
+		<?php if (count($project['publications']) > 0): ?>
+		
+		<ul class="nav nav-pills nav-stacked">
+			
+			<?php
+			foreach ($project['publications'] as $publication)
+			{
+				echo '<li><a href="' . $publication['eprints_uri'] . '">' . $publication['reference_plain'] . '</a></li>';
+			}
+			?>
+			
+		</ul>
+		
+		<?php else: ?>
+		
+		<p>There aren't currently any publications in the Lincoln Repository which are associated with this project.</p>
+		
+		<?php endif; ?>
+	
+	</div>
+		
 </div>
 
 <?php endif; ?>
