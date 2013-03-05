@@ -13,15 +13,14 @@ class Datasets extends CI_Controller {
 		$this->load->library('form_validation');
 
 		$dataset = $this->n2->GetDataset($this->session->userdata('access_token'), array("id" => (int) $dataset_id));
-
 		
 		$header = array(
 			'page' => 'projects',
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
-		$admin = FALSE;
 		
+		$admin = FALSE;
 		
 		if ($dataset['result']['research_project']['current_user_role'] !== 'Administrator')
         {
@@ -51,9 +50,8 @@ class Datasets extends CI_Controller {
 	                tokenSeparators: [","],
 	                minimumInputLength: 2
 	            });
-            })';
+            })';            
             
-            			
 			$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 			$this->form_validation->set_rules('dataset_title', 'Dataset Title', 'required');
 	
