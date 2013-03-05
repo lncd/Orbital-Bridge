@@ -109,7 +109,7 @@
 	<div class="span8">
 		
 		<h3>Summary</h3>
-		<?php echo markdown($project['summary']); ?>
+		<?php echo $project['summary_html']; ?>
 		
 	</div>
 	
