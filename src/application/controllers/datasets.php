@@ -12,7 +12,16 @@ class Datasets extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$dataset = $this->n2->GetDataset($this->session->userdata('access_token'), array("id" => (int) $dataset_id));
+		try
+		{
+			$dataset = $this->n2->GetDataset($this->session->userdata('access_token'), array("id" => (int) $dataset_id));
+		}
+		catch(Exception $e)
+		{
+			$this->session->set_flashdata('message', 'That dataset could not be found');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('projects');
+		}
 		
 		$header = array(
 			'page' => 'projects',
