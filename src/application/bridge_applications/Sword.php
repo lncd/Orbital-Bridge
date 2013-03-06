@@ -131,7 +131,7 @@ class Sword {
 		}
 		//$eprint->addChild('full_text_status', 'public');
 		//$eprint->addChild('pres_type', 'paper');
-		//$eprint->addChild('abstract', 'This is where the abstract of this record would appear. This is only demonstration data.');
+		$eprint->addChild('abstract', $dataset->get_abstact());
 		$eprint->addChild('date', $dataset->get_date());
 		//$eprint->addChild('event_title', '4th Conference on Animal Things');
 		//$eprint->addChild('event_location', 'Dallas, Texas');

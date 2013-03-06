@@ -30,6 +30,21 @@
 		echo form_input($form_title);
 		echo '</div></div>';
 
+		$form_abstract = array(
+			'name'			=> 'dataset_abstract',
+			'required'   	=> 'required',
+			'value'			=> $dataset_metadata->get_abstract(),
+			'id'			=> 'dataset_abstract',
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Abstract', 'dataset_abstract', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_abstract);
+		echo '</div></div>';
+
 		$form_uri_slug = array(
 			'name'			=> 'dataset_uri_slug',
 			'required'   	=> 'required',

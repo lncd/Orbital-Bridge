@@ -30,6 +30,7 @@ class Dataset_Object {
 	protected $_size;
 	protected $_format;
 	protected $_version;
+	protected $_abstract;
 	
 	//Get and SET $title
 	public function set_title($title)
@@ -187,5 +188,15 @@ class Dataset_Object {
 	public function get_version()
 	{
 		return $this->_version;
+	}
+	//Get and SET $abstract
+	public function set_abstract($abstract)
+	{
+		$this->_abstract = $abstract;
+		return TRUE;
+	}
+	public function get_abstract()
+	{
+		return $this->_abstract;
 	}
 }

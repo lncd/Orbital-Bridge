@@ -44,7 +44,7 @@
 				);
 			
 				echo '<div class="control-group">';
-				echo form_label('Summary', 'project_description', array('class' => 'control-label'));
+				echo form_label('Description', 'project_description', array('class' => 'control-label'));
 				echo '<div class="controls">';
 				echo form_textarea($form_description);
 				echo '<span class="help-block">A short description of this research project.</span>';
@@ -166,7 +166,7 @@
 			echo '<div class="controls">';
 	
 			echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
-			echo '<thead><tr><th>Members</th><th>Role</th><th>Options</th></tr></thead>';
+			echo '<thead><tr><th>Members</th><th>Permission</th><th>Role</th><th>Options</th></tr></thead>';
 			echo '<tbody>';
 			
 			$member_id = 0;
@@ -178,18 +178,18 @@
 				{
 					$title = $project_member['person']['title'] . ' ';
 				}
-				echo '<tr id="member_row_' . $member_id . '"><td>' . $title . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['id'] . '"</td><td><select name="members[' . $member_id . '][role]">';
-				foreach ($roles as $role)
+				echo '<tr id="member_row_' . $member_id . '"><td>' . $title . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['id'] . '"</td><td><select name="members[' . $member_id . '][permission]">';
+				foreach ($permissions as $permission)
 				{
-			       echo '<option value="'. $role['id'] .'"';
+			       echo '<option value="'. $permission['id'] .'"';
 			       
-			       if($project_member['role']['id'] === $role['id'])
+			       if($project_member['permission']['id'] === $permission['id'])
 			       {
 				       echo ' selected';
 			       }		       
-			       echo '>'. $role['name'] .'</option>';
+			       echo '>'. $permission['name'] .'</option>';
 				}
-				echo '</td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>';
+				echo '</td><td><input type="text" id="role" name="role"><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>';
 				$member_id++;
 			}
 			?>

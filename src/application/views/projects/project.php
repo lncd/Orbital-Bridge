@@ -125,7 +125,7 @@
 			echo '<li><a href="' . $project['ckan_url'] . '" target="_blank"><i class="icon-external-link"></i> View project on CKAN</a></li>';
 		}
 		
-		if ($project['current_user_role'] === 'Administrator')
+		if ($project['current_user_permission'] === 'Administrator')
 		{
 			if($project['ckan_group_id'] === NULL)
 			{
@@ -133,11 +133,11 @@
 			}
 			echo '<li><a href="' . site_url('project/' . $project['id'] . '/edit')  . '"><i class="icon-pencil"></i> Edit Project Details</a></li>';
 		}
-		if ($project['current_user_role'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())
+		if ($project['current_user_permission'] === 'Administrator' AND $project['source'] !== 'ams' AND isset($project['end_date_unix']) AND $project['end_date_unix'] < Time())
 		{
 			echo '<li><a data-toggle="modal" href="#archiveProject"><i class="icon-folder-close"></i> Archive Project</a></li>';
 		}
-		if ($project['current_user_role'] === 'Super Administrator')
+		if ($project['current_user_permission'] === 'Super Administrator')
 		{
 			echo '<li><a href="' . site_url('project/' . $project['id'] . '/delete') . '"><i class="icon-trash"></i> Delete Project</a></li>';
 		}
@@ -268,7 +268,7 @@
 	
 	<h3>Project Team</h3>
 		<table class="table table-bordered table-striped table-condensed">
-			<thead><tr><th>Member</th><th>Role</th></tr></thead>
+			<thead><tr><th>Member</th><th>Permission</th></tr></thead>
 			<tbody>
 			
 				<?php
@@ -277,7 +277,7 @@
 						foreach ($project['research_project_members'] as $member)
 						{
 							echo '<tr>';
-							echo '<td>' . $member['person']['first_name'] . ' ' . $member['person']['last_name'] . '</td><td>' . $member['role']['name'] . '</td>';
+							echo '<td>' . $member['person']['first_name'] . ' ' . $member['person']['last_name'] . '</td><td>' . $member['permission']['name'] . '</td>';
 							echo '</tr>';
 						}
 					}
