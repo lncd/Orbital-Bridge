@@ -12,7 +12,16 @@ class Datasets extends CI_Controller {
 		$this->load->helper('form');
 		$this->load->library('form_validation');
 
-		$dataset = $this->n2->GetDataset($this->session->userdata('access_token'), array("id" => (int) $dataset_id));
+		try
+		{
+			$dataset = $this->n2->GetDataset($this->session->userdata('access_token'), array("id" => (int) $dataset_id));
+		}
+		catch(Exception $e)
+		{
+			$this->session->set_flashdata('message', 'That dataset could not be found');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('projects');
+		}
 		
 		$header = array(
 			'page' => 'projects',
@@ -22,7 +31,7 @@ class Datasets extends CI_Controller {
 		
 		$admin = FALSE;
 		
-		if ($dataset['result']['research_project']['current_user_role'] !== 'Administrator')
+		if ($dataset['result']['research_project']['current_user_permission'] !== 'Administrator')
         {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/unauthorised');
@@ -52,7 +61,7 @@ class Datasets extends CI_Controller {
 		                tokenSeparators: [","],
 		                minimumInputLength: 2
 		            });
-	            })';            
+	            })';
 	            
 				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 				$this->form_validation->set_rules('dataset_title', 'Dataset Title', 'required');
@@ -65,9 +74,11 @@ class Datasets extends CI_Controller {
 					$dataset_metadata->set_date($this->input->post('dataset_date'));
 					$dataset_metadata->set_metadata_visibility($this->input->post('dataset_metadata_visibility'));
 					$dataset_metadata->set_is_published($this->input->post('dataset_is_published'));
+					$dataset_metadata->set_abstract($this->input->post('dataset_abstract'));
+					
 					/*
 					$this->load->library('../bridge_applications/sword');
-					if($this->sword->create_dataset($_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], $dataset_metadata))
+					if($this->sword->create_dataset($_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], $_SERVER['SWORD_ENDPOINT'], $dataset_metadata))
 					{
 						$this->session->set_flashdata('message', 'Dataset deposited');
 						$this->session->set_flashdata('message_type', 'info');
@@ -88,7 +99,7 @@ class Datasets extends CI_Controller {
 					redirect('projects');
 				}
 				else
-				{			
+				{
 					$this->load->view('inc/head', $header);
 					$this->load->view('projects/deposit_dataset', $data);
 					$this->load->view('inc/foot', $footer);
