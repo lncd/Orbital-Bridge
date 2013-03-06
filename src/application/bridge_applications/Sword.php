@@ -131,7 +131,7 @@ class Sword {
 		}
 		//$eprint->addChild('full_text_status', 'public');
 		//$eprint->addChild('pres_type', 'paper');
-		//$eprint->addChild('abstract', 'This is where the abstract of this record would appear. This is only demonstration data.');
+		$eprint->addChild('abstract', $dataset->get_abstact());
 		$eprint->addChild('date', $dataset->get_date());
 		//$eprint->addChild('event_title', '4th Conference on Animal Things');
 		//$eprint->addChild('event_location', 'Dallas, Texas');
@@ -152,17 +152,12 @@ class Sword {
 	 * @access public
 	 */
 
-	function create_dataset($username = "sword-test", $password = "sword-test", $dataset)
+	function create_dataset($username = $_SERVER['SWORD_USER'], $password = $_SERVER['SWORD_PASS'], $endpoint = $_SERVER['SWORD_ENDPOINT'], $dataset)
 	{
 		//$dataset = file_get_contents("/Users/hnewton/Desktop/test-import.xml");
 		$sword_xml = $this->create_SWORD($dataset);
 
-		$host     = "eprints.lincoln.ac.uk";
-		$endpoint = "sword-app/deposit";
-		$collection = "inbox"; # could be "review" or "inbox"
-		$url = "http://" . $username . ":" . $password . "@"
-			. $host . "/" . $endpoint . "/" . $collection;
-
+		$url = "http://" . $username . ":" . $password . "@" . $endpoint;
 
 		//open connection
 		$ch = curl_init();

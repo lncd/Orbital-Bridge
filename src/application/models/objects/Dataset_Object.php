@@ -24,6 +24,13 @@ class Dataset_Object {
 	protected $_keywords = array();
 	protected $_metadata_visibility;
 	protected $_is_published;
+	protected $_contributor;
+	protected $_publication_date;
+	protected $_language;
+	protected $_size;
+	protected $_format;
+	protected $_version;
+	protected $_abstract;
 	
 	//Get and SET $title
 	public function set_title($title)
@@ -104,6 +111,17 @@ class Dataset_Object {
 		return TRUE;
 	}
 	
+	//Get and SET $publication_date
+	public function set_publication_date($date)
+	{
+		$this->_publication_date = $publication_date;
+		return TRUE;
+	}
+	
+	public function get_publication_date()
+	{
+		return $this->_publication_date;
+	}
 	public function get_metadata_visibility()
 	{
 		return $this->_metadata_visibility;
@@ -118,5 +136,67 @@ class Dataset_Object {
 	public function get_is_published()
 	{
 		return $this->_is_published;
+	}
+	
+	//Get and SET $contributor
+	public function set_contributor($contributor)
+	{
+		$this->_contributor = $contributor;
+		return TRUE;
+	}
+	public function get_contributor()
+	{
+		return $this->_contributor;
+	}
+	
+	//Get and SET $language
+	public function set_language($language)
+	{
+		$this->_language = $language;
+		return TRUE;
+	}
+	public function get_language()
+	{
+		return $this->_language;
+	}
+	//Get and SET $size
+	public function set_size($size)
+	{
+		$this->_size = $size;
+		return TRUE;
+	}
+	public function get_size()
+	{
+		return $this->_size;
+	}
+	//Get and SET $format
+	public function set_format($format)
+	{
+		$this->_format = $format;
+		return TRUE;
+	}
+	public function get_format()
+	{
+		return $this->_format;
+	}
+	//Get and SET $version
+	public function set_version($version)
+	{
+		$this->_version = $version;
+		return TRUE;
+	}
+	public function get_version()
+	{
+		return $this->_version;
+	}
+	//Get and SET $abstract
+	public function set_abstract($abstract)
+	{
+		$this->_abstract = $abstract;
+		return TRUE;
+	}
+	public function get_abstract()
+	{
+		return $this->_abstract;
 	}
 }

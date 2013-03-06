@@ -156,7 +156,7 @@ class Projects extends CI_Controller {
 				$fields['website'] = $this->input->post('project_website');
 			}
 				
-			$members[] = array('person_id' => (int) $this->session->userdata('user_id'), 'role_id' => (int) 2);
+			$members[] = array('person_id' => (int) $this->session->userdata('user_id'), 'permission_id' => (int) 2);
 
 			$fields['project_members'] = $members;
 			
@@ -246,7 +246,7 @@ class Projects extends CI_Controller {
 		
 		if ( ! (bool) $project['result']['ckan_group_id'])
 		{
-			if ($project['result']['current_user_role'] !== 'Administrator')
+			if ($project['result']['current_user_permission'] !== 'Administrator')
 	        {
 				$this->load->view('inc/head', $header);
 				$this->load->view('projects/unauthorised');
@@ -324,7 +324,7 @@ class Projects extends CI_Controller {
 		try
 		{
 			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
-			$roles = $this->n2->GetResearchProjectRoles($this->session->userdata('access_token'), array("id" => (int) $project_id));
+			$permissions = $this->n2->GetResearchProjectPermissions($this->session->userdata('access_token'), array("id" => (int) $project_id));
 		}
 		catch(Exception $e)
 		{
@@ -340,7 +340,7 @@ class Projects extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
-		if ($project['result']['current_user_role'] !== 'Administrator')
+		if ($project['result']['current_user_permission'] !== 'Administrator')
         {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/unauthorised');
@@ -354,7 +354,7 @@ class Projects extends CI_Controller {
         
 			$data = array(
 				'project' => $project['result'],
-				'roles' => $roles['results'],
+				'permissions' => $permissions['results'],
 				'project_id' => $project_id
 				);
 
@@ -383,7 +383,7 @@ class Projects extends CI_Controller {
             	$("#addMember").click(function()
 				{
 					new_member_id ++;
-					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][role]"><option value="1">Member</option><option value="2">Administrator</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
+					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][permission]"><option value="1">Member</option><option value="2">Administrator</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
 				
             	$(".removeMemberButton").click(function()
 				{
@@ -471,11 +471,11 @@ class Projects extends CI_Controller {
 						{
 							if ( ! in_array($member['id'], $members_test))
 							{
-								if((int)$member['role'] === 2)
+								if((int)$member['permission'] === 2)
 								{
 									$is_admin = TRUE;
 								}
-								$members[] = array('person_id' => (int) $member['id'], 'role_id' => (int) $member['role']);
+								$members[] = array('person_id' => (int) $member['id'], 'permission_id' => (int) $member['permission']);
 							}
 							$members_test[] = $member['id'];
 						}
@@ -556,7 +556,7 @@ class Projects extends CI_Controller {
 			'categories' => $this->bridge->categories(),
 			'category_pages' => $this->bridge->category_pages()
 		);
-		if ($project['result']['current_user_role'] !== 'Administrator')
+		if ($project['result']['current_user_permission'] !== 'Administrator')
         {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/unauthorised');
