@@ -61,6 +61,27 @@ class Datasets extends CI_Controller {
 		                tokenSeparators: [","],
 		                minimumInputLength: 2
 		            });
+					 $("#dataset_subjects").select2({
+						placeholder: "Search for a JACS code",
+						minimumInputLength: 3,
+						ajax: {
+						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/jacs_codes",
+						    dataType: \'jsonp\',
+						    quietMillis: 100,
+						    
+			                data: function (term, page) { // page is the one-based page number tracked by Select2
+			                    return {
+			                        q: term //search term
+			                    };
+			                },
+			                results: function (data, page) {
+			                    var more = (page * 10) < data.total; // whether or not there are more results available
+			 
+			                    // notice we return the value of more so Select2 knows if more results can be loaded
+			                    return {results: data};
+			                }					
+			            }
+			        });	
 	            })';
 	            
 				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
@@ -68,17 +89,32 @@ class Datasets extends CI_Controller {
 		
 				if ($this->form_validation->run())
 				{
+					$dataset_metadata->set_is_published('pub');
 					$dataset_metadata->set_title($this->input->post('dataset_title'));
 					$dataset_metadata->set_uri_slug($this->input->post('dataset_uri_slug'));
-					$dataset_metadata->set_creator($this->input->post('dataset_creators'));
+					$dataset_metadata->unset_creators();
+					foreach (explode(',', $this->input->post('dataset_creators')) as $creator)
+					{
+						$dataset_metadata->add_creator($creator);
+					}
 					$dataset_metadata->set_date($this->input->post('dataset_date'));
+					$dataset_metadata->set_type_of_data($this->input->post('dataset_type_of_data'));
 					$dataset_metadata->set_metadata_visibility($this->input->post('dataset_metadata_visibility'));
 					$dataset_metadata->set_is_published($this->input->post('dataset_is_published'));
 					$dataset_metadata->set_abstract($this->input->post('dataset_abstract'));
+					$dataset_metadata->unset_keywords();
+					foreach (explode(',', $this->input->post('dataset_keywords')) as $keyword)
+					{
+						$dataset_metadata->add_keyword($keyword);
+					}
+					$dataset_metadata->unset_subjects();
+					foreach (explode(',', $this->input->post('dataset_subjects')) as $subject)
+					{
+						$dataset_metadata->add_subjects($subject);
+					}
 					
-					/*
 					$this->load->library('../bridge_applications/sword');
-					if($this->sword->create_dataset($_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], $_SERVER['SWORD_ENDPOINT'], $dataset_metadata))
+					if($this->sword->create_dataset($dataset_metadata))
 					{
 						$this->session->set_flashdata('message', 'Dataset deposited');
 						$this->session->set_flashdata('message_type', 'info');
@@ -92,11 +128,13 @@ class Datasets extends CI_Controller {
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
-*/
+
 					$this->session->set_flashdata('message', 'This feature is not yet implemented');
 					$this->session->set_flashdata('message_type', 'error');
 					
 					redirect('projects');
+					
+					
 				}
 				else
 				{

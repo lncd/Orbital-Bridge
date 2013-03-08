@@ -31,6 +31,8 @@ class Dataset_Object {
 	protected $_format;
 	protected $_version;
 	protected $_abstract;
+	protected $_type_of_data;
+	protected $_divisions;
 	
 	//Get and SET $title
 	public function set_title($title)
@@ -56,8 +58,15 @@ class Dataset_Object {
 		return $this->_uri_slug;
 	}
 	
+	//UNSET $creators
+	public function unset_creators()
+	{
+		unset($this->_creators);
+		return TRUE;
+	}
+	
 	//Get and SET $creators
-	public function set_creator($creator)
+	public function add_creator($creator)
 	{
 		$this->_creators[] = $creator;
 		return TRUE;
@@ -68,10 +77,17 @@ class Dataset_Object {
 		return $this->_creators;
 	}
 	
-	//Get and SET $subjects
-	public function set_subjects($subjects)
+	//UNSET $subjects
+	public function unset_subjects()
 	{
-		$this->_subjects = $subjects;
+		unset($this->_subjects);
+		return TRUE;
+	}
+	
+	//Get and SET $subjects
+	public function add_subjects($subjects)
+	{
+		$this->_subjects[] = $subjects;
 		return TRUE;
 	}
 	
@@ -92,6 +108,13 @@ class Dataset_Object {
 		return $this->_date;
 	}
 	
+	//UNSET $keywords
+	public function unset_keywords()
+	{
+		unset($this->_keywords);
+		return TRUE;
+	}
+	
 	//Get and SET $keywords
 	public function add_keyword($keyword)
 	{
@@ -110,6 +133,10 @@ class Dataset_Object {
 		$this->_metadata_visibility = $metadata_visibility;
 		return TRUE;
 	}
+	public function get_metadata_visibility()
+	{
+		return $this->_metadata_visibility;
+	}
 	
 	//Get and SET $publication_date
 	public function set_publication_date($date)
@@ -121,10 +148,6 @@ class Dataset_Object {
 	public function get_publication_date()
 	{
 		return $this->_publication_date;
-	}
-	public function get_metadata_visibility()
-	{
-		return $this->_metadata_visibility;
 	}
 		
 	//Get and SET $is_published
@@ -198,5 +221,26 @@ class Dataset_Object {
 	public function get_abstract()
 	{
 		return $this->_abstract;
+	}
+	//Get and SET $type_of_data
+	public function set_type_of_data($type_of_data)
+	{
+		$this->_type_of_data = $type_of_data;
+		return TRUE;
+	}
+	public function get_type_of_data()
+	{
+		return $this->_type_of_data;
+	}
+	
+	//Get and SET $divisions
+	public function set_divisions($divisions)
+	{
+		$this->_divisions = $tdivisions;
+		return TRUE;
+	}
+	public function get_divisions()
+	{
+		return $this->_divisions;
 	}
 }

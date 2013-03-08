@@ -383,7 +383,7 @@ class Projects extends CI_Controller {
             	$("#addMember").click(function()
 				{
 					new_member_id ++;
-					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][permission]"><option value="1">Member</option><option value="2">Administrator</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
+					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][permission]"><option value="1">Member</option><option value="2">Administrator</option></td><td><input type="text" name="members[\' + new_member_id + \'][role]" value="Contributor"></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
 				
             	$(".removeMemberButton").click(function()
 				{
@@ -475,7 +475,7 @@ class Projects extends CI_Controller {
 								{
 									$is_admin = TRUE;
 								}
-								$members[] = array('person_id' => (int) $member['id'], 'permission_id' => (int) $member['permission']);
+								$members[] = array('person_id' => (int) $member['id'], 'permission_id' => (int) $member['permission'], 'role_id' => (int) $member['role']);
 							}
 							$members_test[] = $member['id'];
 						}

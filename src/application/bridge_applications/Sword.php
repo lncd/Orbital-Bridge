@@ -107,8 +107,9 @@ class Sword {
 		//$eprint->addChild('lastmod', '2006-10-25 00:45:02');
 		//$eprint->addChild('status_changed', '2006-10-25 00:45:02');
 		$eprint->addChild('type', 'dataset');
+		$eprint->addChild('data_type', $dataset->get_type_of_data());
 		$eprint->addChild('official_url', $dataset->get_uri_slug()); //'www.example.com/data'
-		$eprint->addChild('metadata_visibility', 'show');
+		$eprint->addChild('metadata_visibility', $dataset->get_metadata_visibility());
 		$creators_name = $eprint->addChild('creators_name');
 		$item = $creators_name->addChild('item');
 		foreach($dataset->get_creators() as $creator)
@@ -118,7 +119,7 @@ class Sword {
 			$item->addChild('given', $creator[0]); //'Y.'
 		}
 		$eprint->addChild('title', $dataset->get_title()); //'On Testing The Atom Protocol...'
-		$eprint->addChild('ispublished', 'pub');
+		$eprint->addChild('ispublished', $dataset->get_is_published());
 		$subjects = $eprint->addChild('subjects');
 		foreach($dataset->get_subjects() as $subject)
 		{
@@ -127,11 +128,11 @@ class Sword {
 		$keywords = $eprint->addChild('keywords');
 		foreach($dataset->get_keywords() as $keyword)
 		{
-			$subjects->addChild('item', (string) $keyword); //'GR'
+			$keywords->addChild('item', (string) $keyword); //'GR'
 		}
 		//$eprint->addChild('full_text_status', 'public');
 		//$eprint->addChild('pres_type', 'paper');
-		$eprint->addChild('abstract', $dataset->get_abstact());
+		$eprint->addChild('abstract', $dataset->get_abstract());
 		$eprint->addChild('date', $dataset->get_date());
 		//$eprint->addChild('event_title', '4th Conference on Animal Things');
 		//$eprint->addChild('event_location', 'Dallas, Texas');
@@ -152,12 +153,12 @@ class Sword {
 	 * @access public
 	 */
 
-	function create_dataset($username = $_SERVER['SWORD_USER'], $password = $_SERVER['SWORD_PASS'], $endpoint = $_SERVER['SWORD_ENDPOINT'], $dataset)
+	function create_dataset($dataset)
 	{
 		//$dataset = file_get_contents("/Users/hnewton/Desktop/test-import.xml");
 		$sword_xml = $this->create_SWORD($dataset);
 
-		$url = "http://" . $username . ":" . $password . "@" . $endpoint;
+		$url = "http://" . $_SERVER['SWORD_USER'] . ":" . $_SERVER['SWORD_PASS'] . "@" . $_SERVER['SWORD_ENDPOINT'];
 
 		//open connection
 		$ch = curl_init();
@@ -174,5 +175,7 @@ class Sword {
 
 		//close connection
 		curl_close($ch);
+		
+		return $result;
 	}
 }
