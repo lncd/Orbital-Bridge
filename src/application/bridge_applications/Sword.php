@@ -114,9 +114,10 @@ class Sword {
 		$item = $creators_name->addChild('item');
 		foreach($dataset->get_creators() as $creator)
 		{
-			$creator = explode(' ', $creator, 2);
-			$item->addChild('family', $creator[1]); //'Lericolais'
-			$item->addChild('given', $creator[0]); //'Y.'
+			$item->addChild('family', $creator->last_name); //'Lericolais'
+			$item->addChild('given', $creator->first_name); //'Y.'
+			$item->addChild('type', $creator->type);
+			$item->addChild('id', $creator->id);
 		}
 		$eprint->addChild('title', $dataset->get_title()); //'On Testing The Atom Protocol...'
 		$eprint->addChild('ispublished', $dataset->get_is_published());

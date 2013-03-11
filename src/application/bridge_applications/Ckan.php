@@ -387,8 +387,7 @@ class Ckan {
 		$dataset = new Dataset_Object();
 
 		$dataset->set_title($data->title);
-		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
-		$dataset->add_creator($data->author);
+		$dataset->add_creator($data->author, 'creator', NULL);
 		$dataset->set_date(strtotime($data->metadata_created));
 		foreach($data->tags as $tag)
 		{
@@ -425,9 +424,7 @@ class Ckan {
 			$dataset = new Dataset_Object();
 
 			$dataset->set_title($data->title);
-			$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
-			$dataset->set_creator($data->author);
-			$dataset->set_subjects(array()); //JACS CODES
+			$dataset->add_creator($data->author, 'creator', NULL);
 			$dataset->set_date(strtotime($data->metadata_created));
 			foreach($data->tags as $tag)
 			{

@@ -64,6 +64,7 @@ class Datasets extends CI_Controller {
 					 $("#dataset_subjects").select2({
 						placeholder: "Search for a JACS code",
 						minimumInputLength: 3,
+						multiple: true,
 						ajax: {
 						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/jacs_codes",
 						    dataType: \'jsonp\',
@@ -112,6 +113,10 @@ class Datasets extends CI_Controller {
 					{
 						$dataset_metadata->add_subjects($subject);
 					}
+					
+					// >> GET DOI HERE << //					
+					
+					
 					
 					$this->load->library('../bridge_applications/sword');
 					if($this->sword->create_dataset($dataset_metadata))

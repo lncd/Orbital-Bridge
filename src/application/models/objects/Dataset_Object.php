@@ -66,8 +66,21 @@ class Dataset_Object {
 	}
 	
 	//Get and SET $creators
-	public function add_creator($creator)
+	public function add_creator($name, $type, $id)
 	{
+		$creator = new stdClass;
+		try
+		{
+			$creator->first_name = explode(' ', $name, 2)[0];
+			$creator->last_name = explode(' ', $name, 2)[1];
+		}
+		catch (Exception $e)
+		{
+			$creator->last_name = $name;
+		}
+		$creator->type = $type;
+		$creator->id = $id;
+	
 		$this->_creators[] = $creator;
 		return TRUE;
 	}

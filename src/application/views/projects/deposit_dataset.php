@@ -62,7 +62,7 @@
 		$form_creators = array(
 			'name'			=> 'dataset_creators',
 			'required'   	=> 'required',
-			'value'			=> implode(',', $dataset_metadata->get_creators()),
+			'value'			=> $dataset_metadata->get_creators()[0]->first_name . ' ' . $dataset_metadata->get_creators()[0]->last_name,
 			'id'			=> 'dataset_creators',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
@@ -190,7 +190,7 @@
 			'id'			=> 'dataset_subjects',
 			'value'			=> implode(',', $subjects),
 			'maxlength'		=> '200',
-			'class'		=> 'form_width'
+			'class'			=> 'form_width'
 		);
 	
 		echo '<div class="control-group">';
