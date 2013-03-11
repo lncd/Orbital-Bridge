@@ -88,56 +88,6 @@
 		echo form_input($form_contributor);
 		echo '</div></div>';
 
-		$form_publisher = array(
-			'name'			=> 'dataset_publisher',
-			'id'			=> 'dataset_publisher',
-			'required'   	=> 'required',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Publisher', 'dataset_publisher', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_publisher);
-		echo '</div></div>';
-
-		$pub_date = $dataset_metadata->get_publication_date();
-		if ($pub_date === '' OR $pub_date == NULL)
-		{
-			$pub_date = time();
-		}
-
-		$form_publication_date = array(
-			'name'			=> 'dataset_publication_date',
-			'required'   	=> 'required',
-			'value'			=> date("Y-m-d", $pub_date),
-			'id'			=> 'dataset_publication_date',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge datepicker'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Publication date', 'dataset_publication_date', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_publication_date);
-		echo '<span class="help-block">If the project does not have a publication data, this will default to the current date.</span>';
-		echo '</div></div>';
-
-		$form_date = array(
-			'name'			=> 'dataset_date',
-			'value'			=> date("Y-m-d", $dataset_metadata->get_date()),
-			'id'			=> 'dataset_date',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge datepicker'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Date', 'dataset_date', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_date);
-		echo '</div></div>';
-		
 		$form_type_of_data = array(
 			'name'			=> 'dataset_type_of_data',
 			'value'			=> $dataset_metadata->get_type_of_data(),

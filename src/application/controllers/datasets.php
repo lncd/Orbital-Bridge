@@ -48,7 +48,6 @@ class Datasets extends CI_Controller {
 				);
 				
 				$footer['javascript'] = '$(document).ready(function() {
-					$(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
 					
 					$(window).keydown(function(event){
 						if(event.keyCode == 13) {
@@ -96,12 +95,13 @@ class Datasets extends CI_Controller {
 					$dataset_metadata->unset_creators();
 					foreach (explode(',', $this->input->post('dataset_creators')) as $creator)
 					{
-						$dataset_metadata->add_creator($creator);
+						$dataset_metadata->add_creator($creator, 'creator', NULL);
 					}
-					$dataset_metadata->set_date($this->input->post('dataset_date'));
+					$dataset_metadata->set_date(date('Y-m-d'));
+					$dataset_metadata->set_publication_date(date('Y-m-d'));
+					$dataset_metadata->set_publisher('University of Lincoln');
 					$dataset_metadata->set_type_of_data($this->input->post('dataset_type_of_data'));
 					$dataset_metadata->set_metadata_visibility($this->input->post('dataset_metadata_visibility'));
-					$dataset_metadata->set_is_published($this->input->post('dataset_is_published'));
 					$dataset_metadata->set_abstract($this->input->post('dataset_abstract'));
 					$dataset_metadata->unset_keywords();
 					foreach (explode(',', $this->input->post('dataset_keywords')) as $keyword)
@@ -114,9 +114,14 @@ class Datasets extends CI_Controller {
 						$dataset_metadata->add_subjects($subject);
 					}
 					
+					
 					// >> GET DOI HERE << //					
 					
+					echo $dataset_metadata->mint_doi();
 					
+					
+					
+					/*
 					
 					$this->load->library('../bridge_applications/sword');
 					if($this->sword->create_dataset($dataset_metadata))
@@ -139,7 +144,7 @@ class Datasets extends CI_Controller {
 					
 					redirect('projects');
 					
-					
+					*/
 				}
 				else
 				{

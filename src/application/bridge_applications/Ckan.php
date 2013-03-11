@@ -377,7 +377,7 @@ class Ckan {
 	 * @access public
 	 */
 
-	public function read_dataset($dataset_uri = 'https://ckan.lincoln.ac.uk/api/rest/dataset/')
+	public function read_dataset($dataset_uri)
 	{
 		$data = json_decode($this->get_curl_request($dataset_uri));
 
@@ -386,6 +386,7 @@ class Ckan {
 		$this->_ci->load->model('objects/Dataset_Object');
 		$dataset = new Dataset_Object();
 
+		$dataset->set_url($_SERVER['CKAN_BASE_URL'] . '/dataset/' . $data->id);
 		$dataset->set_title($data->title);
 		$dataset->add_creator($data->author, 'creator', NULL);
 		$dataset->set_date(strtotime($data->metadata_created));
@@ -393,7 +394,7 @@ class Ckan {
 		{
 			$dataset->add_keyword($tag);
 		}
-		$dataset->set_uri_slug($data->url);
+		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
 
 		return $dataset;
 	}
@@ -430,7 +431,7 @@ class Ckan {
 			{
 				$dataset->add_keyword($tag);
 			}
-			$dataset->set_uri_slug($data->url);
+			$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
 
 			$datasets[] = $dataset;
 		}
