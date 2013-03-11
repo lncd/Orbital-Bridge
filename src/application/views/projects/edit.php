@@ -189,7 +189,7 @@
 			       }		       
 			       echo '>'. $permission['name'] .'</option>';
 				}
-				echo '</td><td><input type="text" id="role" name="role"><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>';
+				echo '</td><td><input type="text" id="members[' . $member_id . '][role]" name="members[' . $member_id . '][role]" value="' . $project_member['role'] . '"><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>';
 				$member_id++;
 			}
 			?>
