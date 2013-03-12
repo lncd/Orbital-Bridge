@@ -28,7 +28,7 @@
 		$form_title = array(
 			'name'			=> 'dataset_title',
 			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_title(),
+			'value'			=> set_value('dataset_title', $dataset_metadata->get_title()),
 			'id'			=> 'dataset_title',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
@@ -44,7 +44,7 @@
 		$form_abstract = array(
 			'name'			=> 'dataset_abstract',
 			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_abstract(),
+			'value'			=> set_value('dataset_abstract', $dataset_metadata->get_abstract()),
 			'id'			=> 'dataset_abstract',
 			'class'			=> 'input-block-level'
 		);
@@ -59,7 +59,7 @@
 		$form_creators = array(
 			'name'			=> 'dataset_creators',
 			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_creators()[0]->first_name . ' ' . $dataset_metadata->get_creators()[0]->last_name,
+			'value'			=> set_value('dataset_creators', $dataset_metadata->get_creators()[0]->first_name . ' ' . $dataset_metadata->get_creators()[0]->last_name),
 			'id'			=> 'dataset_creators',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
@@ -73,7 +73,7 @@
 
 		$form_contributor = array(
 			'name'			=> 'dataset_contributor',
-			'value'			=> $dataset_metadata->get_contributor(),
+			'value'			=> set_value('dataset_contributor', $dataset_metadata->get_contributor()),
 			'id'			=> 'dataset_contributor',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
@@ -87,7 +87,7 @@
 
 		$form_type_of_data = array(
 			'name'			=> 'dataset_type_of_data',
-			'value'			=> $dataset_metadata->get_type_of_data(),
+			'value'			=> set_value('dataset_type_of_data', $dataset_metadata->get_type_of_data()),
 			'id'			=> 'dataset_type_of_data',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
@@ -112,7 +112,7 @@
 		$form_dataset_keywords = array(
 			'name'			=> 'dataset_keywords',
 			'id'			=> 'dataset_keywords',
-			'value'			=> implode(',', $dataset_metadata->get_keywords()),
+			'value'			=> set_value('dataset_keywords', implode(',', $dataset_metadata->get_keywords())),
 			'class'		=> 'form_width'
 		);
 	
@@ -150,7 +150,7 @@
 		
 		$form_divisions = array(
 			'name'			=> 'dataset_divisions',
-			'value'			=> $dataset_metadata->get_divisions(),
+			'value'			=> set_value('dataset_divisions', $dataset_metadata->get_divisions()),
 			'id'			=> 'dataset_divisions',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
@@ -170,14 +170,6 @@
 		echo '<div class="controls">';
 		echo form_dropdown('dataset_metadata_visibility', $metadata_visibility, 'id="dataset_metadata_visibility" class="span4"');
 		echo '</div></div>';
-
-		$form_metadata_visibility = array(
-			'name'			=> 'dataset_metadata_visibility',
-			'id'			=> 'dataset_metadata_visibility',
-			'required'   	=> 'required',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
 
 				
 		echo'

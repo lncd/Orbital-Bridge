@@ -85,15 +85,14 @@ class Datasets extends CI_Controller {
 	            })';
 	            
 				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
-				$this->form_validation->set_rules('dataset_title', 'Dataset Title', 'required');
-				$this->form_validation->set_rules('dataset_abstract', 'Dataset Abstract', 'required');
-				$this->form_validation->set_rules('dataset_creator', 'Dataset Creator', 'required');
-				$this->form_validation->set_rules('dataset_contributor', 'Dataset Contributor', 'required');
-				$this->form_validation->set_rules('dataset_type_of_data', 'Dataset Data Type', 'required');
-				$this->form_validation->set_rules('dataset_keywords', 'Dataset Keywords', 'required');
-				$this->form_validation->set_rules('dataset_subjects', 'Dataset Subjects', 'required');
-				$this->form_validation->set_rules('dataset_divisions', 'Dataset Divisions', 'required');
-				$this->form_validation->set_rules('dataset_metadata_visibility', 'Dataset Visibility', 'required');
+				$this->form_validation->set_rules('dataset_title', 'Title', 'required');
+				$this->form_validation->set_rules('dataset_abstract', 'Abstract', 'required');
+				$this->form_validation->set_rules('dataset_creators', 'Creator', 'required');
+				$this->form_validation->set_rules('dataset_type_of_data', 'Type of Data', 'required');
+				$this->form_validation->set_rules('dataset_keywords', 'Keywords', 'required');
+				$this->form_validation->set_rules('dataset_subjects', 'Subjects', 'required');
+				$this->form_validation->set_rules('dataset_divisions', 'Divisions', 'required');
+				$this->form_validation->set_rules('dataset_metadata_visibility', 'Visibility', 'required');
 		
 				if ($this->form_validation->run())
 				{
@@ -144,6 +143,8 @@ class Datasets extends CI_Controller {
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
+					
+					/*
 					
 					try
 					{
