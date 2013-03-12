@@ -1,10 +1,20 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-pencil"></i> <?php echo $dataset_metadata->get_title(); ?><small> Edit</small>
+		<i class="icon-upload"></i> <?php echo $dataset_metadata->get_title(); ?><small> Publish to Lincoln Repository</small>
 	</h1>
 
 </div>
+
+<p class="lead">Publishing will publicly announce the existence of your dataset on the Lincoln Repository, as well as start the process of long-term preservation of your data.</p>
+
+<p>Usually you should only publish a dataset either at the end of a research project, or if the data is being cited in a paper. Publishing a dataset will place some restrictions on the changes you can make to the dataset in the future, such as removing your ability to delete the data. It will also generate a <a href="http://www.doi.org/">DOI</a>, which allows your dataset to be uniquely identified and located using a simple identifier.</p>
+
+<p>Please check the information in this form and make any necessary changes, as this is the information which will be entered into the published record of the dataset.</p>
+
+<p>If you have any questions about this process please contact a member of the research services team for advice or assistance.</p>
+
+<hr>
 
 <div class="row">
 	
@@ -28,6 +38,7 @@
 		echo form_label('Title', 'dataset_title', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_title);
+		echo '<span class="help-block">How you wish the title of this dataset to appear.</span>';
 		echo '</div></div>';
 
 		$form_abstract = array(
@@ -35,103 +46,33 @@
 			'required'   	=> 'required',
 			'value'			=> $dataset_metadata->get_abstract(),
 			'id'			=> 'dataset_abstract',
+			'class'			=> 'input-block-level'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Description', 'dataset_abstract', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_textarea($form_abstract);
+		echo '<span class="help-block">A description of this dataset and its contents..</span>';
+		echo '</div></div>';
+
+		$form_creators = array(
+			'name'			=> 'dataset_creators',
+			'required'   	=> 'required',
+			'value'			=> $dataset_metadata->get_creators()[0]->first_name . ' ' . $dataset_metadata->get_creators()[0]->last_name,
+			'id'			=> 'dataset_creators',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
 	
 		echo '<div class="control-group">';
-		echo form_label('Abstract', 'dataset_abstract', array('class' => 'control-label'));
+		echo form_label('Creator', 'dataset_creators', array('class' => 'control-label'));
 		echo '<div class="controls">';
-		echo form_input($form_abstract);
+		echo form_input($form_creators);
 		echo '</div></div>';
 
-		$form_uri_slug = array(
-			'name'			=> 'dataset_uri_slug',
-			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_uri_slug(),
-			'id'			=> 'dataset_uri_slug',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('URI SLUG', 'dataset_uri_slug', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_uri_slug);
-		echo '</div></div>';
-
-		$form_creator = array(
-			'name'			=> 'dataset_creator',
-			'required'   	=> 'required',
-			'value'			=> implode(',', $dataset_metadata->get_creators()),
-			'id'			=> 'dataset_creator',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Creator(s)', 'dataset_creator', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_creator);
-		echo '</div></div>';
-		
-		$credit['author'] = 'Author';
-		$credit['contributor'] = 'Contributor';
-		$credit['maintainer'] = 'Maintainer';
-		$credit['none'] = 'No Credit';
-	
-		echo '<div class="control-group">';
-		echo form_label('Dataset Credit', 'dataset_credit', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_dropdown('dataset_credit', $credit, 'id="dataset-credit" class="span4"');
-		echo '</div></div>';
-
-		$form_publisher = array(
-			'name'			=> 'dataset_publisher',
-			'id'			=> 'dataset_publisher',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Publisher', 'dataset_publisher', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_publisher);
-		echo '</div></div>';
-
-		$form_publication_date = array(
-			'name'			=> 'dataset_publication_date',
-			'required'   	=> 'required',
-			'value'			=> date("Y-m-d", $dataset_metadata->get_publication_date()),
-			'id'			=> 'dataset_publication_date',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge datepicker'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Publication date', 'dataset_publication_date', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_publication_date);
-		echo '</div></div>';
-
-		$form_date = array(
-			'name'			=> 'dataset_date',
-			'required'   	=> 'required',
-			'value'			=> date("Y-m-d", $dataset_metadata->get_date()),
-			'id'			=> 'dataset_date',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge datepicker'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Date', 'dataset_date', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_date);
-		echo '</div></div>';
-		
 		$form_contributor = array(
 			'name'			=> 'dataset_contributor',
-			'required'   	=> 'required',
 			'value'			=> $dataset_metadata->get_contributor(),
 			'id'			=> 'dataset_contributor',
 			'maxlength'		=> '200',
@@ -143,103 +84,105 @@
 		echo '<div class="controls">';
 		echo form_input($form_contributor);
 		echo '</div></div>';
-		
-		
-		$form_metadata_visibility = array(
-			'name'			=> 'dataset_metadata_visibility',
-			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_metadata_visibility(),
-			'id'			=> 'dataset_metadata_visibility',
+
+		$form_type_of_data = array(
+			'name'			=> 'dataset_type_of_data',
+			'value'			=> $dataset_metadata->get_type_of_data(),
+			'id'			=> 'dataset_type_of_data',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Type of Data', 'dataset_type_of_data', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_type_of_data);
+		echo '<span class="help-block">The type of data this dataset contains, for example "tabular", "images" or "mixed".</span>';
+		echo '</div></div>';
+		
+		if ($dataset_metadata->get_keywords() === NULL OR $dataset_metadata->get_keywords() === array())
+		{
+			$keywords = array();
+		}
+		else
+		{
+			$keywords = $dataset_metadata->get_keywords();
+		}
+		
+		$form_dataset_keywords = array(
+			'name'			=> 'dataset_keywords',
+			'id'			=> 'dataset_keywords',
+			'value'			=> implode(',', $dataset_metadata->get_keywords()),
+			'class'		=> 'form_width'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Keywords', 'dataset_keywords', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_dataset_keywords);
+		echo '<span class="help-block">Keywords that describe this dataset. You can add as many keywords as you want.</span>';
+		echo '</div></div>';
+		
+		if ($dataset_metadata->get_subjects() === NULL OR $dataset_metadata->get_subjects() === array())
+		{
+			$subjects = array();
+		}
+		else
+		{
+			$subjects = $dataset_metadata->get_subjects();
+		}
+		
+		$form_dataset_subjects = array(
+			'name'			=> 'dataset_subjects',
+			'required'   	=> 'required',
+			'id'			=> 'dataset_subjects',
+			'value'			=> implode(',', $subjects),
+			'maxlength'		=> '200',
+			'class'			=> 'form_width'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Subjects', 'dataset_subjects', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_dataset_subjects);
+		echo '<span class="help-block">These are JACS codes.</span>';
+		echo '</div></div>';
+		
+		$form_divisions = array(
+			'name'			=> 'dataset_divisions',
+			'value'			=> $dataset_metadata->get_divisions(),
+			'id'			=> 'dataset_divisions',
+			'maxlength'		=> '200',
+			'class'			=> 'input-xlarge'
+		);
+	
+		echo '<div class="control-group">';
+		echo form_label('Divisions', 'dataset_divisions', array('class' => 'control-label'));
+		echo '<div class="controls">';
+		echo form_input($form_divisions);
+		echo '</div></div>';
+		
+		$metadata_visibility['show'] = 'Show';
+		$metadata_visibility['hide'] = 'Hide';
 	
 		echo '<div class="control-group">';
 		echo form_label('Metadata visibility', 'dataset_metadata_visibility', array('class' => 'control-label'));
 		echo '<div class="controls">';
-		echo form_input($form_metadata_visibility);
+		echo form_dropdown('dataset_metadata_visibility', $metadata_visibility, 'id="dataset_metadata_visibility" class="span4"');
 		echo '</div></div>';
-		
-		
-		$form_is_published = array(
-			'name'			=> 'dataset_is_published',
+
+		$form_metadata_visibility = array(
+			'name'			=> 'dataset_metadata_visibility',
+			'id'			=> 'dataset_metadata_visibility',
 			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_is_published(),
-			'id'			=> 'dataset_is_published',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Published?', 'dataset_is_published', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_is_published);
-		echo '</div></div>';		
-		
-		
-		$form_language = array(
-			'name'			=> 'dataset_language',
-			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_language(),
-			'id'			=> 'dataset_language',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Language', 'dataset_language', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_language);
-		echo '</div></div>';	
-		
-		$form_size = array(
-			'name'			=> 'dataset_size',
-			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_size(),
-			'id'			=> 'dataset_size',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Size', 'dataset_size', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_size);
-		echo '</div></div>';	
-		
-		$form_format = array(
-			'name'			=> 'dataset_format',
-			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_format(),
-			'id'			=> 'dataset_format',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Format', 'dataset_format', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_format);
-		echo '</div></div>';	
-		
-		$form_version = array(
-			'name'			=> 'dataset_version',
-			'required'   	=> 'required',
-			'value'			=> $dataset_metadata->get_version(),
-			'id'			=> 'dataset_version',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Version', 'dataset_version', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_version);
-		echo '</div></div>';
+
 				
 		echo'
 		<div class="form-actions">
-		<button type="submit" class="btn btn-success"><i class = "icon-upload icon-white"></i> Deposit Dataset</button>
+		<button type="submit" class="btn btn-success"><i class = "icon-upload icon-white"></i> Publish Dataset</button>
 		</div>';
 
 		echo form_close();

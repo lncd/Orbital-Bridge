@@ -3,16 +3,16 @@
     "packages": [
         {
             "name": "guzzle/guzzle",
-            "version": "v3.3.0",
+            "version": "v3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "v3.3.0"
+                "reference": "v3.3.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/v3.3.0",
-                "reference": "v3.3.0",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/v3.3.1",
+                "reference": "v3.3.1",
                 "shasum": ""
             },
             "require": {
@@ -57,7 +57,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.2-dev"
+                    "dev-master": "3.3-dev"
                 }
             },
             "autoload": {
@@ -66,7 +66,7 @@
                     "Guzzle": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -92,7 +92,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2013-03-04 00:41:45"
+            "time": "2013-03-10 23:05:38"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -130,7 +130,7 @@
                     "Symfony\\Component\\EventDispatcher\\": ""
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -150,16 +150,16 @@
         },
         {
             "name": "unilincoln-ost/nucleus-php",
-            "version": "0.7.5",
+            "version": "0.7.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/unilincoln-ost/nucleus-php.git",
-                "reference": "0.7.5"
+                "reference": "0.7.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/unilincoln-ost/nucleus-php/zipball/0.7.5",
-                "reference": "0.7.5",
+                "url": "https://api.github.com/repos/unilincoln-ost/nucleus-php/zipball/0.7.7",
+                "reference": "0.7.7",
                 "shasum": ""
             },
             "require": {
@@ -172,7 +172,7 @@
                     "Nucleus": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "notification-url": "http://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -203,23 +203,15 @@
                 }
             ],
             "description": "Library for integrating with the University of Lincoln's Nucleus data platform.",
-            "time": "2013-03-05 11:31:26"
+            "time": "2013-03-11 15:35:06"
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
     "minimum-stability": "stable",
     "stability-flags": [
-
-    ],
-    "platform": [
-
-    ],
-    "platform-dev": [
 
     ]
 }
