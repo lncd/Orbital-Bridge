@@ -86,52 +86,87 @@ class Datasets extends CI_Controller {
 	            
 				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 				$this->form_validation->set_rules('dataset_title', 'Dataset Title', 'required');
+				$this->form_validation->set_rules('dataset_abstract', 'Dataset Abstract', 'required');
+				$this->form_validation->set_rules('dataset_creator', 'Dataset Creator', 'required');
+				$this->form_validation->set_rules('dataset_contributor', 'Dataset Contributor', 'required');
+				$this->form_validation->set_rules('dataset_type_of_data', 'Dataset Data Type', 'required');
+				$this->form_validation->set_rules('dataset_keywords', 'Dataset Keywords', 'required');
+				$this->form_validation->set_rules('dataset_subjects', 'Dataset Subjects', 'required');
+				$this->form_validation->set_rules('dataset_divisions', 'Dataset Divisions', 'required');
+				$this->form_validation->set_rules('dataset_metadata_visibility', 'Dataset Visibility', 'required');
 		
 				if ($this->form_validation->run())
 				{
-					$dataset_metadata->set_is_published('pub');
-					$dataset_metadata->set_title($this->input->post('dataset_title'));
-					$dataset_metadata->set_uri_slug($this->input->post('dataset_uri_slug'));
-					$dataset_metadata->unset_creators();
-					foreach (explode(',', $this->input->post('dataset_creators')) as $creator)
+					try
 					{
-						$dataset_metadata->add_creator($creator, 'creator', NULL);
+						$dataset_metadata->set_is_published('pub');
+						$dataset_metadata->set_title($this->input->post('dataset_title'));
+						$dataset_metadata->set_uri_slug($this->input->post('dataset_uri_slug'));
+						$dataset_metadata->unset_creators();
+						foreach (explode(',', $this->input->post('dataset_creators')) as $creator)
+						{
+							$dataset_metadata->add_creator($creator, 'creator', NULL);
+						}
+						$dataset_metadata->set_date(date('Y-m-d'));
+						$dataset_metadata->set_publication_date(date('Y-m-d'));
+						$dataset_metadata->set_publisher('University of Lincoln');
+						$dataset_metadata->set_type_of_data($this->input->post('dataset_type_of_data'));
+						$dataset_metadata->set_metadata_visibility($this->input->post('dataset_metadata_visibility'));
+						$dataset_metadata->set_abstract($this->input->post('dataset_abstract'));
+						$dataset_metadata->unset_keywords();
+						foreach (explode(',', $this->input->post('dataset_keywords')) as $keyword)
+						{
+							$dataset_metadata->add_keyword($keyword);
+						}
+						$dataset_metadata->unset_subjects();
+						foreach (explode(',', $this->input->post('dataset_subjects')) as $subject)
+						{
+							$dataset_metadata->add_subjects($subject);
+						}
 					}
-					$dataset_metadata->set_date(date('Y-m-d'));
-					$dataset_metadata->set_publication_date(date('Y-m-d'));
-					$dataset_metadata->set_publisher('University of Lincoln');
-					$dataset_metadata->set_type_of_data($this->input->post('dataset_type_of_data'));
-					$dataset_metadata->set_metadata_visibility($this->input->post('dataset_metadata_visibility'));
-					$dataset_metadata->set_abstract($this->input->post('dataset_abstract'));
-					$dataset_metadata->unset_keywords();
-					foreach (explode(',', $this->input->post('dataset_keywords')) as $keyword)
+					catch (Exception $e)
 					{
-						$dataset_metadata->add_keyword($keyword);
-					}
-					$dataset_metadata->unset_subjects();
-					foreach (explode(',', $this->input->post('dataset_subjects')) as $subject)
-					{
-						$dataset_metadata->add_subjects($subject);
-					}
-					
-					
-					// >> GET DOI HERE << //					
-					
-					$dataset_metadata->mint_doi();
-					
-					/*
-					
-					$this->load->library('../bridge_applications/sword');
-					if($this->sword->create_dataset($dataset_metadata))
-					{
-						$this->session->set_flashdata('message', 'Dataset deposited');
-						$this->session->set_flashdata('message_type', 'info');
+						$this->session->set_flashdata('message', 'There was an error in the project metadata. Dataset not deposited.');
+						$this->session->set_flashdata('message_type', 'error');
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
-					else
-					{	
-						$this->session->set_flashdata('message', 'Unable to deposit Dataset');
+					
+					// >> GET DOI HERE << //					
+					try
+					{
+						$dataset_metadata->mint_doi();
+					}
+					catch (Exception $e)
+					{
+						$this->session->set_flashdata('message', 'Could not get DOI. Dataset not deposited');
+						$this->session->set_flashdata('message_type', 'error');
+					
+						redirect('project/' . $dataset['result']['research_project']['id']);
+					}
+					
+					try
+					{
+						$this->load->library('../bridge_applications/sword');
+						
+						if($this->sword->create_dataset($dataset_metadata))
+						{
+							$this->session->set_flashdata('message', 'Dataset deposited');
+							$this->session->set_flashdata('message_type', 'info');
+						
+							redirect('project/' . $dataset['result']['research_project']['id']);
+						}
+						else
+						{	
+							$this->session->set_flashdata('message', 'Unable to deposit Dataset');
+							$this->session->set_flashdata('message_type', 'error');
+						
+							redirect('project/' . $dataset['result']['research_project']['id']);
+						}
+					}
+					catch (Exception $e)
+					{
+						$this->session->set_flashdata('message', 'There was an error in the deposit process. The metadata may be incorrectly formed for input to ePrints.');
 						$this->session->set_flashdata('message_type', 'error');
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
@@ -142,7 +177,7 @@ class Datasets extends CI_Controller {
 					$this->session->set_flashdata('message', 'Your dataset would have been deposited with the DOI of ' . $dataset_metadata->get_doi() . ', but the repository is unavailable right now.');
 					$this->session->set_flashdata('message_type', 'info');
 					
-					redirect('projects');
+					redirect('projects');					
 				}
 				else
 				{

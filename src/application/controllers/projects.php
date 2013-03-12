@@ -299,18 +299,6 @@ class Projects extends CI_Controller {
 		}
 	}
 	
-	public function publish_to_repository($dataset_id)
-	{
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
-
-		$this->load->view('inc/head', $header);
-		$this->load->view('projects/publish_to_repository', array('project' => $project['result']));
-		$this->load->view('inc/foot');
-	}
-	
 	public function edit($project_id)
 	{
 		if (!$this->session->userdata('access_token'))
@@ -328,7 +316,7 @@ class Projects extends CI_Controller {
 		}
 		catch(Exception $e)
 		{
-			$this->session->set_flashdata('message', 'Unable to edit project');
+			$this->session->set_flashdata('message', 'Unable to get project details');
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');			
@@ -546,7 +534,7 @@ class Projects extends CI_Controller {
 		}
 		catch(Exception $e)
 		{
-			$this->session->set_flashdata('message', 'Unable to delete project');
+			$this->session->set_flashdata('message', 'Unable get project details');
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');
