@@ -1,10 +1,20 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-pencil"></i> <?php echo $dataset_metadata->get_title(); ?><small> Edit</small>
+		<i class="icon-upload"></i> <?php echo $dataset_metadata->get_title(); ?><small> Publish to Lincoln Repository</small>
 	</h1>
 
 </div>
+
+<p class="lead">Publishing will publicly announce the existence of your dataset on the Lincoln Repository, as well as start the process of long-term preservation of your data.</p>
+
+<p>Usually you should only publish a dataset either at the end of a research project, or if the data is being cited in a paper. Publishing a dataset will place some restrictions on the changes you can make to the dataset in the future, such as removing your ability to delete the data. It will also generate a <a href="http://www.doi.org/">DOI</a>, which allows your dataset to be uniquely identified and located using a simple identifier.</p>
+
+<p>Please check the information in this form and make any necessary changes, as this is the information which will be entered into the published record of the dataset.</p>
+
+<p>If you have any questions about this process please contact a member of the research services team for advice or assistance.</p>
+
+<hr>
 
 <div class="row">
 	
@@ -28,6 +38,7 @@
 		echo form_label('Title', 'dataset_title', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_title);
+		echo '<span class="help-block">How you wish the title of this dataset to appear.</span>';
 		echo '</div></div>';
 
 		$form_abstract = array(
@@ -35,28 +46,13 @@
 			'required'   	=> 'required',
 			'value'			=> $dataset_metadata->get_abstract(),
 			'id'			=> 'dataset_abstract',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
+			'class'			=> 'input-block-level'
 		);
 	
 		echo '<div class="control-group">';
 		echo form_label('Abstract', 'dataset_abstract', array('class' => 'control-label'));
 		echo '<div class="controls">';
-		echo form_input($form_abstract);
-		echo '</div></div>';
-
-		$form_uri_slug = array(
-			'name'			=> 'dataset_uri_slug',
-			'value'			=> $dataset_metadata->get_uri_slug(),
-			'id'			=> 'dataset_uri_slug',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Official URI', 'dataset_uri_slug', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_uri_slug);
+		echo form_textarea($form_abstract);
 		echo '</div></div>';
 
 		$form_creators = array(
@@ -184,7 +180,7 @@
 				
 		echo'
 		<div class="form-actions">
-		<button type="submit" class="btn btn-success"><i class = "icon-upload icon-white"></i> Deposit Dataset</button>
+		<button type="submit" class="btn btn-success"><i class = "icon-upload icon-white"></i> Publish Dataset</button>
 		</div>';
 
 		echo form_close();
