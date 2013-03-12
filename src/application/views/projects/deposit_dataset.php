@@ -56,10 +56,12 @@
 		echo '<span class="help-block">A description of this dataset and its contents..</span>';
 		echo '</div></div>';
 
+		$creators = $dataset_metadata->get_creators();
+
 		$form_creators = array(
 			'name'			=> 'dataset_creators',
 			'required'   	=> 'required',
-			'value'			=> set_value('dataset_creators', $dataset_metadata->get_creators()[0]->first_name . ' ' . $dataset_metadata->get_creators()[0]->last_name),
+			'value'			=> set_value('dataset_creators', $creators[0]->first_name . ' ' . $creators[0]->last_name),
 			'id'			=> 'dataset_creators',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
