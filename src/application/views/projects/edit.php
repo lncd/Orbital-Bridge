@@ -32,6 +32,7 @@
 				echo form_label('Title', 'project_title', array('class' => 'control-label'));
 				echo '<div class="controls">';
 				echo form_input($form_title);
+				echo '<span class="help-block">The title of the project.</span>';
 				echo '</div></div>';
 			
 				$form_description = array(
@@ -78,6 +79,7 @@
 				echo form_label('Start Date', 'project_start_date', array('class' => 'control-label'));
 				echo '<div class="controls">';
 				echo form_input($form_start_date);
+				echo '<span class="help-block">The date the project starts or started.</span>';
 				echo '</div></div>';
 				
 				if (isset($project['end_date_unix']))
@@ -101,6 +103,7 @@
 				echo form_label('End Date', 'project_end_date', array('class' => 'control-label'));
 				echo '<div class="controls">';
 				echo form_input($form_end_date);
+				echo '<span class="help-block">If the project has one, an end date for the project.</span>';
 				echo '</div></div>';
 			}
 			
@@ -128,9 +131,10 @@
 			);
 		
 			echo '<div class="control-group">';
-			echo form_label('Research Interests', 'research_interests', array('class' => 'control-label'));
+			echo form_label('Areas of Interest', 'research_interests', array('class' => 'control-label'));
 			echo '<div class="controls">';
 			echo form_input($form_research_interests);
+				echo '<span class="help-block">Areas of research that this project covers.</span>';
 			echo '</div></div>';
 		}
 		if ($project['publicly_visible'])
@@ -154,6 +158,7 @@
 		echo form_label('Project Visibility', 'project_visibility', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_dropdown('project_visibility', $project_visibilty, set_value('project_visibility', $visible), 'id="project_visibility" class="span4"');
+				echo '<span class="help-block">Displays the project  publicly, or keeps it hidden and private.</span>';
 		echo '</div></div>';
 			
 		if ($project['research_project_status']['text'] !== 'Archived')

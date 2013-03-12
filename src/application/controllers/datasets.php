@@ -4,7 +4,7 @@ class Datasets extends CI_Controller {
 	
 	public function deposit_to_eprints($dataset_id)
 	{
-		if (!$this->session->userdata('access_token'))
+		if ( ! $this->session->userdata('access_token'))
 		{
 			redirect('signin');
 		}
