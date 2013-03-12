@@ -85,8 +85,10 @@ class Dataset_Object {
 		$creator = new stdClass;
 		try
 		{
-			$creator->first_name = explode(' ', $name, 2)[0];
-			$creator->last_name = explode(' ', $name, 2)[1];
+			$names = explode(' ', $name, 2);
+		
+			$creator->first_name = $names[0];
+			$creator->last_name = $names[1];
 		}
 		catch (Exception $e)
 		{
