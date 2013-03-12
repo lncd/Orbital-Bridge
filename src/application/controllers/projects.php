@@ -299,18 +299,6 @@ class Projects extends CI_Controller {
 		}
 	}
 	
-	public function publish_to_repository($dataset_id)
-	{
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
-
-		$this->load->view('inc/head', $header);
-		$this->load->view('projects/publish_to_repository', array('project' => $project['result']));
-		$this->load->view('inc/foot');
-	}
-	
 	public function edit($project_id)
 	{
 		if (!$this->session->userdata('access_token'))
@@ -328,7 +316,7 @@ class Projects extends CI_Controller {
 		}
 		catch(Exception $e)
 		{
-			$this->session->set_flashdata('message', 'Unable to edit project');
+			$this->session->set_flashdata('message', 'Unable to get project details');
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');			
@@ -383,7 +371,7 @@ class Projects extends CI_Controller {
             	$("#addMember").click(function()
 				{
 					new_member_id ++;
-					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][permission]"><option value="1">Member</option><option value="2">Administrator</option></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i> Remove</td></tr>\');
+					$("#members_table").append(\'<tr id="member_row_\' + new_member_id + \'"><td><input type="text" name="members[\' + new_member_id + \'][id]" id="new_member_select_\' + new_member_id + \'"></td><td><select name="members[\' + new_member_id + \'][permission]"><option value="1">Member</option><option value="2">Administrator</option></td><td><input type="text" name="members[\' + new_member_id + \'][role]" value="Contributor"></td><td><a class="btn btn-danger btn-small removeMemberButton"><i class = "icon-remove icon-white"></i>&nbsp;Remove</td></tr>\');
 				
             	$(".removeMemberButton").click(function()
 				{
@@ -475,13 +463,14 @@ class Projects extends CI_Controller {
 								{
 									$is_admin = TRUE;
 								}
-								$members[] = array('person_id' => (int) $member['id'], 'permission_id' => (int) $member['permission']);
+								$members[] = array('person_id' => (int) $member['id'], 'permission_id' => (int) $member['permission'], 'role' => $member['role']);
 							}
 							$members_test[] = $member['id'];
 						}
 					}
 					
 					$fields['project_members'] = $members;
+					
 				}
 				if($this->input->post('members') AND $is_admin === FALSE)
 				{
@@ -545,7 +534,7 @@ class Projects extends CI_Controller {
 		}
 		catch(Exception $e)
 		{
-			$this->session->set_flashdata('message', 'Unable to delete project');
+			$this->session->set_flashdata('message', 'Unable get project details');
 			$this->session->set_flashdata('message_type', 'error');
 			
 			redirect('projects');
