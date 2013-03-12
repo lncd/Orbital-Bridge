@@ -60,7 +60,7 @@ class Datasets extends CI_Controller {
 		                tokenSeparators: [","],
 		                minimumInputLength: 2
 		            });
-					 $("#dataset_subjects").select2({
+					$("#dataset_subjects").select2({
 						placeholder: "Search for a JACS code",
 						minimumInputLength: 3,
 						multiple: true,
@@ -81,7 +81,7 @@ class Datasets extends CI_Controller {
 			                    return {results: data};
 			                }					
 			            }
-			        });	
+			        });
 	            })';
 	            
 				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
@@ -117,9 +117,7 @@ class Datasets extends CI_Controller {
 					
 					// >> GET DOI HERE << //					
 					
-					echo $dataset_metadata->mint_doi();
-					
-					
+					$dataset_metadata->mint_doi();
 					
 					/*
 					
@@ -138,13 +136,13 @@ class Datasets extends CI_Controller {
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
-
-					$this->session->set_flashdata('message', 'This feature is not yet implemented');
-					$this->session->set_flashdata('message_type', 'error');
-					
-					redirect('projects');
 					
 					*/
+
+					$this->session->set_flashdata('message', 'Your dataset would have been deposited with the DOI of ' . $dataset_metadata->get_doi() . ', but the repository is unavailable right now.');
+					$this->session->set_flashdata('message_type', 'info');
+					
+					redirect('projects');
 				}
 				else
 				{

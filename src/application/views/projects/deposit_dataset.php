@@ -50,9 +50,10 @@
 		);
 	
 		echo '<div class="control-group">';
-		echo form_label('Abstract', 'dataset_abstract', array('class' => 'control-label'));
+		echo form_label('Description', 'dataset_abstract', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_textarea($form_abstract);
+		echo '<span class="help-block">A description of this dataset and its contents..</span>';
 		echo '</div></div>';
 
 		$form_creators = array(
@@ -93,9 +94,10 @@
 		);
 	
 		echo '<div class="control-group">';
-		echo form_label('Type of data', 'dataset_type_of_data', array('class' => 'control-label'));
+		echo form_label('Type of Data', 'dataset_type_of_data', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_type_of_data);
+		echo '<span class="help-block">The type of data this dataset contains, for example "tabular", "images" or "mixed".</span>';
 		echo '</div></div>';
 		
 		if ($dataset_metadata->get_keywords() === NULL OR $dataset_metadata->get_keywords() === array())
@@ -111,7 +113,6 @@
 			'name'			=> 'dataset_keywords',
 			'id'			=> 'dataset_keywords',
 			'value'			=> implode(',', $dataset_metadata->get_keywords()),
-			'maxlength'		=> '200',
 			'class'		=> 'form_width'
 		);
 	
@@ -119,6 +120,7 @@
 		echo form_label('Keywords', 'dataset_keywords', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_dataset_keywords);
+		echo '<span class="help-block">Keywords that describe this dataset. You can add as many keywords as you want.</span>';
 		echo '</div></div>';
 		
 		if ($dataset_metadata->get_subjects() === NULL OR $dataset_metadata->get_subjects() === array())
