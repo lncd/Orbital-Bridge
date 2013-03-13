@@ -13,6 +13,20 @@ class Auth extends CI_Controller {
         
         if ( ! $this->input->get('code'))
         {
+        
+        	$state = array(
+        		'token' => uniqid()
+        	);
+        
+        	if ($this->input->get('destination'))
+        	{
+	        	$state['destination'] = $this->input->get('destination');
+        	}
+        	
+        	$provider->state = serialize($state);
+        	
+        	$provider->scope = array('user.basic', 'user.contact', 'user.research');
+        	
             $provider->authorize();
         }
         else
