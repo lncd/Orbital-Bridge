@@ -119,7 +119,7 @@
 								
 								<?php else: ?>
 								
-									<li><a href="<?php echo site_url('signin'); ?>"><i class="icon-signin"></i> Sign In</a></li>
+									<li><a href="<?php echo site_url('signin'); ?>?destination=<?php echo urlencode(current_url()); ?>"><i class="icon-signin"></i> Sign In</a></li>
 								
 								<?php endif; ?>
 								</ul>
