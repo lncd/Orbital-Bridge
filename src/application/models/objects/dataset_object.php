@@ -114,15 +114,34 @@ class Dataset_Object {
 	}
 	
 	//Get and SET $subjects
-	public function add_subjects($subjects)
+	public function add_subject($subject)
 	{
-		$this->_subjects[] = $subjects;
+		$this->_subjects[] = $subject;
 		return TRUE;
 	}
 	
 	public function get_subjects()
 	{
 		return $this->_subjects;
+	}
+	
+	//UNSET $divisions
+	public function unset_divisions()
+	{
+		unset($this->_divisions);
+		return TRUE;
+	}
+	
+	//Get and SET $divisions
+	public function add_division($division)
+	{
+		$this->_divisions[] = $division;
+		return TRUE;
+	}
+	
+	public function divisions()
+	{
+		return $this->_divisions;
 	}
 	
 	//Get and SET $date

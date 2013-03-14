@@ -23,7 +23,7 @@
 	<?php 
 		echo validation_errors();
 	
-		echo form_open('dataset/' . $dataset_id . '/deposit', array('class' => 'form-horizontal'));
+		echo form_open('dataset/' . $dataset['id'] . '/deposit', array('class' => 'form-horizontal'));
 
 		$form_title = array(
 			'name'			=> 'dataset_title',
@@ -56,41 +56,11 @@
 		echo '<span class="help-block">A description of this dataset and its contents..</span>';
 		echo '</div></div>';
 
-		$creators = $dataset_metadata->get_creators();
-
-		$form_creators = array(
-			'name'			=> 'dataset_creators',
-			'required'   	=> 'required',
-			'value'			=> set_value('dataset_creators', $creators[0]->first_name . ' ' . $creators[0]->last_name),
-			'id'			=> 'dataset_creators',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Creator', 'dataset_creators', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_creators);
-		echo '</div></div>';
-
-		$form_contributor = array(
-			'name'			=> 'dataset_contributor',
-			'value'			=> set_value('dataset_contributor', $dataset_metadata->get_contributor()),
-			'id'			=> 'dataset_contributor',
-			'maxlength'		=> '200',
-			'class'			=> 'input-xlarge'
-		);
-	
-		echo '<div class="control-group">';
-		echo form_label('Contributor', 'dataset_contributor', array('class' => 'control-label'));
-		echo '<div class="controls">';
-		echo form_input($form_contributor);
-		echo '</div></div>';
-
 		$form_type_of_data = array(
 			'name'			=> 'dataset_type_of_data',
 			'value'			=> set_value('dataset_type_of_data', $dataset_metadata->get_type_of_data()),
 			'id'			=> 'dataset_type_of_data',
+			'required'   	=> 'required',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
@@ -147,13 +117,14 @@
 		echo form_label('Subjects', 'dataset_subjects', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_dataset_subjects);
-		echo '<span class="help-block">These are JACS codes.</span>';
+		echo '<span class="help-block">Subjects the dataset covers.</span>';
 		echo '</div></div>';
 		
 		$form_divisions = array(
 			'name'			=> 'dataset_divisions',
 			'value'			=> set_value('dataset_divisions', $dataset_metadata->get_divisions()),
 			'id'			=> 'dataset_divisions',
+			'required'   	=> 'required',
 			'maxlength'		=> '200',
 			'class'			=> 'input-xlarge'
 		);
@@ -162,6 +133,7 @@
 		echo form_label('Divisions', 'dataset_divisions', array('class' => 'control-label'));
 		echo '<div class="controls">';
 		echo form_input($form_divisions);
+		echo '<span class="help-block">Divisions of the University.</span>';
 		echo '</div></div>';
 		
 		$metadata_visibility['show'] = 'Show';
@@ -172,8 +144,39 @@
 		echo '<div class="controls">';
 		echo form_dropdown('dataset_metadata_visibility', $metadata_visibility, 'id="dataset_metadata_visibility" class="span4"');
 		echo '</div></div>';
+		
+			
+		echo form_label('Credit', 'project_members', array('class' => 'control-label'));
+		echo '<div class="controls">';
 
-				
+		echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
+		echo '<thead><tr><th>Members</th><th>Credit</th></tr></thead>';
+		echo '<tbody>';
+
+		$member_id = 0;
+		
+		$permissions['creator'] = 'Creator';
+		$permissions['author'] = 'Author';
+		$permissions['maintainer'] = 'Maintainer';
+		$permissions['none'] = 'No Credit';
+		
+		foreach($dataset['research_project']['research_project_members'] as $project_member)
+		{
+			$title = NULL;
+			if(isset($project_member['person']['title']))
+			{
+				$title = $project_member['person']['title'] . ' ';
+			}
+			echo '<tr id="member_row_' . $member_id . '"><td>' . $title . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['id'] . '"><input type="hidden" name="members[' . $member_id . '][name]" value="' . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '"></td><td><select name="members[' . $member_id . '][permission]">';
+			foreach ($permissions as $value => $permission)
+			{
+				echo '<option value="'. $value .'">' . $permission . '</option>';
+			}
+			
+			$member_id++;
+		}
+		echo '</tbody></table>';
+
 		echo'
 		<div class="form-actions">
 		<button type="submit" class="btn btn-success"><i class = "icon-upload icon-white"></i> Publish Dataset</button>
