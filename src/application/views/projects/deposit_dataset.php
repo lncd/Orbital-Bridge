@@ -146,11 +146,11 @@
 		echo '</div></div>';
 		
 			
-		echo form_label('Credit', 'project_members', array('class' => 'control-label'));
+		echo form_label('People', 'project_members', array('class' => 'control-label'));
 		echo '<div class="controls">';
 
 		echo '<table class = "table table-bordered table-striped" id="members_table" name="members_table">';
-		echo '<thead><tr><th>Members</th><th>Credit</th></tr></thead>';
+		echo '<thead><tr><th>Members</th><th>Credit as</th></tr></thead>';
 		echo '<tbody>';
 
 		$member_id = 0;

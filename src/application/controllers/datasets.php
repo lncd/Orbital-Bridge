@@ -196,8 +196,6 @@ class Datasets extends CI_Controller {
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
-					
-					
 
 					$this->session->set_flashdata('message', 'Your dataset would have been deposited with the DOI of ' . $dataset_metadata->get_doi() . ', but the repository is unavailable right now.');
 					$this->session->set_flashdata('message_type', 'info');
