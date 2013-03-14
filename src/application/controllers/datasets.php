@@ -169,7 +169,7 @@ class Datasets extends CI_Controller {
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
-					
+
 					try
 					{
 						$this->load->library('../bridge_applications/sword');
