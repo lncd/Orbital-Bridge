@@ -191,7 +191,7 @@ class Datasets extends CI_Controller {
 					}
 					catch (Exception $e)
 					{
-						$this->session->set_flashdata('message', 'There was an error in the deposit process. The metadata may be incorrectly formed for input to ePrints.');
+						$this->session->set_flashdata('message', 'There was an error in the deposit process: ' . $e->getMessage());
 						$this->session->set_flashdata('message_type', 'error');
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);

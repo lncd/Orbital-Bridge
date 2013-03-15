@@ -95,9 +95,8 @@ class Sword {
 
 	function create_SWORD($dataset) //$standard bridge object
 	{
-		$eprint_xml = new SimpleXMLElement("<eprints></eprints>");
-		$eprint = $eprint_xml->addChild('eprint');
-		$eprint->addAttribute('xmlns', 'http://eprints.org/ep2/data/2.0');
+		$eprint = new SimpleXMLElement('<entry xmlns="http://www.w3.org/2005/Atom" xmlns:sword="http://purl.org/net/sword/"></entry>');
+
 		//$eprint->addChild('eprintid', '1');
 		//$eprint->addChild('rev_number', '2');
 		//$eprint->addChild('eprint_status', 'archive');
@@ -110,12 +109,13 @@ class Sword {
 		$eprint->addChild('data_type', $dataset->get_type_of_data());
 		$eprint->addChild('official_url', $dataset->get_uri_slug()); //'www.example.com/data'
 		$eprint->addChild('metadata_visibility', $dataset->get_metadata_visibility());
-		$creators_name = $eprint->addChild('creators_name');
-		$item = $creators_name->addChild('item');
+		$creators_name = $eprint->addChild('creators');
 		foreach($dataset->get_creators() as $creator)
 		{
-			$item->addChild('family', $creator->last_name); //'Lericolais'
-			$item->addChild('given', $creator->first_name); //'Y.'
+			$item = $creators_name->addChild('item');
+			$name = $item->addChild('name');
+			$name->addChild('family', $creator->last_name); //'Lericolais'
+			$name->addChild('given', $creator->first_name); //'Y.'
 			$item->addChild('type', $creator->type);
 			$item->addChild('id', $creator->id);
 		}
@@ -140,7 +140,7 @@ class Sword {
 		//$eprint->addChild('event_dates', 'event_dates');
 		//$eprint->addChild('fileinfo', 'application/pdf;http://devel.eprints.org/1/01/paper.pdf');
 
-		return($eprint_xml->asXML());
+		return($eprint->asXML());
 	}
 
 	/**
@@ -158,24 +158,9 @@ class Sword {
 	{
 		//$dataset = file_get_contents("/Users/hnewton/Desktop/test-import.xml");
 		$sword_xml = $this->create_SWORD($dataset);
-
-		$url = "http://" . $_SERVER['SWORD_USER'] . ":" . $_SERVER['SWORD_PASS'] . "@" . $_SERVER['SWORD_ENDPOINT'];
-
-		//open connection
-		$ch = curl_init();
-
-		//set the url, number of POST vars, POST data
-		curl_setopt($ch,CURLOPT_URL, $url);
-		curl_setopt($ch,CURLOPT_POST, strlen($sword_xml));
-		curl_setopt($ch,CURLOPT_POSTFIELDS, $sword_xml);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'/*, 'X-On-Behalf-Of: sword-test'*/));
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-		//execute post
-		$result = curl_exec($ch);
-
-		//close connection
-		curl_close($ch);
+		$this->_ci->load->library('swordapp/swordappclient');
+		$result = $this->_ci->swordappclient->depositAtomEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], '', $sword_xml);
+		
 		
 		return $result;
 	}
