@@ -90,9 +90,7 @@ if (count($inactive) > 0):
 
 ?>
 
-<h3>Archived Projects</h3>
-
-<p><a id="inactive_button"><i class="icon-double-angle-down"></i> Show / Hide</a></p>
+<h3>Archived Projects <small><a id="inactive_button"><i class="icon-double-angle-down"></i> Show / Hide</a></small></h3>
 
 <div id="inactive" style="display:none">
 
@@ -100,6 +98,7 @@ if (count($inactive) > 0):
 	<thead>
 		<tr>
 			<th>Project Name</th>
+			<th>Project ID</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -108,6 +107,14 @@ if (count($inactive) > 0):
 			{
 				echo '<tr>';
 				echo '<td><a href = ' . site_url('project/' . $project['id']) . '>' . $project['title'] . '</a></td>';
+				if ($project['ams_id'] !== NULL)
+				{
+					echo '<td>#' . $project['ams_id'] . '</td>';
+				}
+				else
+				{
+					echo '<td><span style="color:#999">N/A</span></td>';
+				}
 				echo '</tr>';
 			}
 		?>
