@@ -1,7 +1,15 @@
 <div class="page-header">
 
 	<h1>
-		<i class="icon-beaker"></i> <?php echo($project['title']) ?>
+		<i class="icon-beaker"></i> <?php
+		
+			echo($project['title']);
+			
+			if ($project['ams_id'] !== NULL)
+			{
+				echo ' <small>#' . $project['ams_id'] . '</small>';
+			}
+		?>
 	</h1>
 
 </div>

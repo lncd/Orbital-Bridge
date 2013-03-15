@@ -57,6 +57,7 @@
 	<thead>
 		<tr>
 			<th>Project Name</th>
+			<th>Project ID</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -66,6 +67,14 @@
 		{
 			echo '<tr>';
 			echo '<td><a href = ' . site_url('project/' . $project['id']) . '>' . $project['title'] . '</a></td>';
+			if ($project['ams_id'] !== NULL)
+			{
+				echo '<td>#' . $project['ams_id'] . '</td>';
+			}
+			else
+			{
+				echo '<td><span style="color:#999">N/A</span></td>';
+			}
 			echo '</tr>';
 		}
 	?>
