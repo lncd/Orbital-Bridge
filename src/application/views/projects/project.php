@@ -250,6 +250,11 @@
 	
 		<h3>Datasets</h3>
 		
+		<div class="alert alert-info alert-block">
+			<h4>Data Management Plan</h4>
+			<p>We haven't yet detected a Data Management Plan for this research project. Creating a DMP might be mandated by your funder, and is always a good idea since it helps you determine the types and volumes of data you'll be handling and how to best store and archive it.</p>
+		</div>
+		
 		<?php if (count($project['datasets']) > 0): ?>
 		
 		<table class="table table-bordered table-striped table-condensed">
