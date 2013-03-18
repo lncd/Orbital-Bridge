@@ -2,12 +2,19 @@
 
 class Datasets extends CI_Controller {
 	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		if (!$this->session->userdata('access_token'))
+		{
+			redirect('signin?destination=' . urlencode(current_url()));
+		}
+		
+	}
+	
 	public function deposit_to_eprints($dataset_id)
 	{
-		if ( ! $this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
 		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
