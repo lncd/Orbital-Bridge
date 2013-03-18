@@ -267,7 +267,7 @@ class Projects extends CI_Controller {
 						
 						redirect('projects');
 					}
-					$this->session->set_flashdata('message', 'Project environment created');
+					$this->session->set_flashdata('message', 'A group has been created in CKAN, the University\'s research data repository, for you to store this project\'s research data in. Any data created in this group will be automatically connected to this project.');
 					$this->session->set_flashdata('message_type', 'success');
 					
 					redirect('project/' . $project_id);
