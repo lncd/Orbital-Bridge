@@ -95,8 +95,13 @@ class Sword {
 
 	function create_SWORD($dataset) //$standard bridge object
 	{
-		$eprint = new SimpleXMLElement('<entry xmlns="http://www.w3.org/2005/Atom" xmlns:sword="http://purl.org/net/sword/"></entry>');
-
+		$permission_lookup = array(
+			'creator' => 'http://www.loc.gov/loc.terms/relators/CRE',
+			'contributor' => 'http://www.loc.gov/loc.terms/relators/CTB'
+		);
+	
+		$eprint_xml = new SimpleXMLElement('<eprints xmlns="http://eprints.org/ep2/data/2.0"></eprints>');
+		$eprint = $eprint_xml->addChild('eprint');
 		//$eprint->addChild('eprintid', '1');
 		//$eprint->addChild('rev_number', '2');
 		//$eprint->addChild('eprint_status', 'archive');
@@ -105,21 +110,25 @@ class Sword {
 		//$eprint->addChild('date_stamp', $bridge_object->date); //'2006-10-25 00:45:02'
 		//$eprint->addChild('lastmod', '2006-10-25 00:45:02');
 		//$eprint->addChild('status_changed', '2006-10-25 00:45:02');
+		$eprint->addChild('title', $dataset->get_title()); //'On Testing The Atom Protocol...'
+		$eprint->addChild('abstract', $dataset->get_abstract());
 		$eprint->addChild('type', 'dataset');
-		$eprint->addChild('data_type', $dataset->get_type_of_data());
 		$eprint->addChild('official_url', $dataset->get_uri_slug()); //'www.example.com/data'
-		$eprint->addChild('metadata_visibility', $dataset->get_metadata_visibility());
-		$creators_name = $eprint->addChild('creators');
+		$eprint->addChild('metadata_visibility', 'show');
+		
+		$creators = $eprint->addChild('creators');
 		foreach($dataset->get_creators() as $creator)
 		{
-			$item = $creators_name->addChild('item');
+			$item = $creators->addChild('item');
 			$name = $item->addChild('name');
 			$name->addChild('family', $creator->last_name); //'Lericolais'
 			$name->addChild('given', $creator->first_name); //'Y.'
-			$item->addChild('type', $creator->type);
-			$item->addChild('id', $creator->id);
+			$item->addChild('type', $permission_lookup[$creator->type]);
+			if (isset($creator->id))
+			{
+				$item->addChild('id', $creator->id);
+			}
 		}
-		$eprint->addChild('title', $dataset->get_title()); //'On Testing The Atom Protocol...'
 		$eprint->addChild('ispublished', $dataset->get_is_published());
 		$subjects = $eprint->addChild('subjects');
 		foreach($dataset->get_subjects() as $subject)
@@ -131,16 +140,20 @@ class Sword {
 		{
 			$keywords->addChild('item', (string) $keyword); //'GR'
 		}
+		$divisions = $eprint->addChild('divisions');
+		foreach($dataset->get_divisions() as $division)
+		{
+			$divisions->addChild('item', (string) $division); //'GR'
+		}
 		//$eprint->addChild('full_text_status', 'public');
 		//$eprint->addChild('pres_type', 'paper');
-		$eprint->addChild('abstract', $dataset->get_abstract());
 		$eprint->addChild('date', $dataset->get_date());
 		//$eprint->addChild('event_title', '4th Conference on Animal Things');
 		//$eprint->addChild('event_location', 'Dallas, Texas');
 		//$eprint->addChild('event_dates', 'event_dates');
 		//$eprint->addChild('fileinfo', 'application/pdf;http://devel.eprints.org/1/01/paper.pdf');
 
-		return($eprint->asXML());
+		return($eprint_xml->asXML());
 	}
 
 	/**
@@ -158,10 +171,9 @@ class Sword {
 	{
 		//$dataset = file_get_contents("/Users/hnewton/Desktop/test-import.xml");
 		$sword_xml = $this->create_SWORD($dataset);
-		$this->_ci->load->library('swordapp/swordappclient');
-		$result = $this->_ci->swordappclient->depositAtomEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], '', $sword_xml);
-		
-		
-		return $result;
+
+		$this->load->library('swordapp/swordappclient');
+		return $this->swordapp->depositEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], $this->session->userdata('user_employee_id'), $sword_xml, 'application/vnd.eprints.data+xml');
+
 	}
 }

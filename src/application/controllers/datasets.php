@@ -146,7 +146,7 @@ class Datasets extends CI_Controller {
 						$dataset_metadata->unset_creators();
 						foreach ($this->input->post('members') as $member)
 						{
-							$dataset_metadata->add_creator($member['name'], $member['permission'], NULL);
+							$dataset_metadata->add_creator($member['name'], $member['permission'], $member['id']);
 						}
 					}
 					catch (Exception $e)
@@ -174,7 +174,7 @@ class Datasets extends CI_Controller {
 					{
 						$this->load->library('../bridge_applications/sword');
 						
-						if($this->sword->create_dataset($dataset_metadata))
+						if($test = $this->sword->create_dataset($dataset_metadata))
 						{
 							$this->session->set_flashdata('message', 'Dataset deposited');
 							$this->session->set_flashdata('message_type', 'info');
