@@ -138,7 +138,7 @@ class Sword {
 		$subjects = $eprint->addChild('subjects');
 		foreach($dataset->get_subjects() as $subject)
 		{
-			$subjects->addChild('item', (string) $subject); //'GR'
+			$subjects->addChild('item', 'jacs_' . (string) $subject); //'GR'
 		}
 		$keywords = $eprint->addChild('keywords');
 		foreach($dataset->get_keywords() as $keyword)
