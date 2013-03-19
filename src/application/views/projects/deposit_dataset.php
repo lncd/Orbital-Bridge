@@ -156,8 +156,8 @@
 		$member_id = 0;
 		
 		$permissions['creator'] = 'Creator';
-		$permissions['author'] = 'Author';
-		$permissions['maintainer'] = 'Maintainer';
+		$permissions['contributor'] = 'Contributor';
+		$permissions['editor'] = 'Editor';
 		$permissions['none'] = 'No Credit';
 		
 		foreach($dataset['research_project']['research_project_members'] as $project_member)

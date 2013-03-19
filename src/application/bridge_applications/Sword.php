@@ -97,7 +97,8 @@ class Sword {
 	{
 		$permission_lookup = array(
 			'creator' => 'http://www.loc.gov/loc.terms/relators/CRE',
-			'contributor' => 'http://www.loc.gov/loc.terms/relators/CTB'
+			'contributor' => 'http://www.loc.gov/loc.terms/relators/CTB',
+			'editor' => 'http://www.loc.gov/loc.terms/relators/EDT'
 		);
 	
 		$eprint_xml = new SimpleXMLElement('<eprints xmlns="http://eprints.org/ep2/data/2.0"></eprints>');
@@ -113,6 +114,7 @@ class Sword {
 		$eprint->addChild('title', $dataset->get_title()); //'On Testing The Atom Protocol...'
 		$eprint->addChild('abstract', $dataset->get_abstract());
 		$eprint->addChild('type', 'dataset');
+		$eprint->addChild('data_type', $dataset->get_type_of_data());
 		$eprint->addChild('official_url', $dataset->get_uri_slug()); //'www.example.com/data'
 		$eprint->addChild('metadata_visibility', 'show');
 		
@@ -123,7 +125,10 @@ class Sword {
 			$name = $item->addChild('name');
 			$name->addChild('family', $creator->last_name); //'Lericolais'
 			$name->addChild('given', $creator->first_name); //'Y.'
-			$item->addChild('type', $permission_lookup[$creator->type]);
+			if(isset($permission_lookup[$creator->type]))
+			{
+				$item->addChild('type', $permission_lookup[$creator->type]);
+			}
 			if (isset($creator->id))
 			{
 				$item->addChild('id', $creator->id);
@@ -172,8 +177,8 @@ class Sword {
 		//$dataset = file_get_contents("/Users/hnewton/Desktop/test-import.xml");
 		$sword_xml = $this->create_SWORD($dataset);
 
-		$this->load->library('swordapp/swordappclient');
-		return $this->swordapp->depositEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], $this->session->userdata('user_employee_id'), $sword_xml, 'application/vnd.eprints.data+xml');
+		$this->_ci->load->library('swordapp/swordappclient');
+		return $this->_ci->swordappclient->depositEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], '', $sword_xml, 'application/vnd.eprints.data+xml');
 
 	}
 }
