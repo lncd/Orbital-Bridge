@@ -111,6 +111,7 @@ class Sword {
 		//$eprint->addChild('date_stamp', $bridge_object->date); //'2006-10-25 00:45:02'
 		//$eprint->addChild('lastmod', '2006-10-25 00:45:02');
 		//$eprint->addChild('status_changed', '2006-10-25 00:45:02');
+		$eprint->addChild('id_number', $dataset->get_doi());
 		$eprint->addChild('title', $dataset->get_title()); //'On Testing The Atom Protocol...'
 		$eprint->addChild('abstract', $dataset->get_abstract());
 		$eprint->addChild('type', 'dataset');
@@ -178,7 +179,8 @@ class Sword {
 		$sword_xml = $this->create_SWORD($dataset);
 
 		$this->_ci->load->library('swordapp/swordappclient');
-		return $this->_ci->swordappclient->depositEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], '', $sword_xml, 'application/vnd.eprints.data+xml');
-
+		$result =  $this->_ci->swordappclient->depositEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], '', $sword_xml, 'application/vnd.eprints.data+xml');
+		
+		return $result;
 	}
 }

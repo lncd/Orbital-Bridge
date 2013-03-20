@@ -87,7 +87,7 @@ class Datasets extends CI_Controller {
 						minimumInputLength: 3,
 						multiple: true,
 						ajax: {
-						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/divisions",
+						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/departments",
 						    dataType: \'jsonp\',
 						    quietMillis: 100,
 						    
