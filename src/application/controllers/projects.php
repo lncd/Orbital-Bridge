@@ -2,12 +2,19 @@
 
 class Projects extends CI_Controller {
 	
-	public function my()
+	public function __construct()
 	{
+		parent::__construct();
+		
 		if (!$this->session->userdata('access_token'))
 		{
-			redirect('signin');
+			redirect('signin?destination=' . urlencode(current_url()));
 		}
+		
+	}
+	
+	public function my()
+	{
 		
 		$header = array(
 			'page' => 'me',
@@ -92,10 +99,6 @@ class Projects extends CI_Controller {
 	
 	public function start()
 	{	
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
 		
 		$header = array(
 			'page' => 'projects',
@@ -112,11 +115,6 @@ class Projects extends CI_Controller {
 	{
 		$this->load->helper('form');
 		$this->load->library('form_validation');
-		
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
 		
 		$header = array(
 			'page' => 'projects',
@@ -194,11 +192,6 @@ class Projects extends CI_Controller {
 	public function project($project_id)
 	{
 		$this->load->helper('markdown');
-	
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
 		
 		try
 		{
@@ -229,10 +222,6 @@ class Projects extends CI_Controller {
 
 	public function create_ckan_group($project_id)
 	{
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
 		try
 		{
 			$project = $this->n2->GetResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id));
@@ -278,7 +267,7 @@ class Projects extends CI_Controller {
 						
 						redirect('projects');
 					}
-					$this->session->set_flashdata('message', 'Project environment created');
+					$this->session->set_flashdata('message', 'A group has been created in CKAN, the University\'s research data repository, for you to store this project\'s research data in. Any data created in this group will be automatically connected to this project.');
 					$this->session->set_flashdata('message_type', 'success');
 					
 					redirect('project/' . $project_id);
@@ -301,10 +290,6 @@ class Projects extends CI_Controller {
 	
 	public function edit($project_id)
 	{
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
 		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -519,11 +504,7 @@ class Projects extends CI_Controller {
 	}
 	
 	public function delete($project_id)
-	{
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}		
+	{	
 		
 		$this->load->helper('form');
 		$this->load->library('form_validation');
@@ -599,10 +580,6 @@ class Projects extends CI_Controller {
 	
 	public function archive($project_id)
 	{
-		if (!$this->session->userdata('access_token'))
-		{
-			redirect('signin');
-		}
 		try
 		{
 			$project = $this->n2->EditResearchProject($this->session->userdata('access_token'), array("id" => (int) $project_id, "research_project_status_id" => 19));
@@ -620,7 +597,7 @@ class Projects extends CI_Controller {
 		}
 	}
 
-	public function project_title_check($str, $project_title)
+	private function project_title_check($str, $project_title)
 	{
 		if ($str === $project_title)
 		{

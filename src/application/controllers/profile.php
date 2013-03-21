@@ -8,7 +8,7 @@ class Profile extends CI_Controller {
 		
 		if (!$this->session->userdata('access_token'))
 		{
-			redirect('signin');
+			redirect('signin?destination=' . urlencode(current_url()));
 		}
 		
 	}
