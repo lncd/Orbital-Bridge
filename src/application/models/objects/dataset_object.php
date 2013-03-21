@@ -35,6 +35,7 @@ class Dataset_Object {
 	protected $_type_of_data;
 	protected $_divisions;
 	protected $_doi;
+	protected $_research_project;
 	
 	//Get and SET $url
 	public function set_url($url)
@@ -235,6 +236,17 @@ class Dataset_Object {
 	public function get_contributor()
 	{
 		return $this->_contributor;
+	}
+	
+	//Get and SET $research_project
+	public function set_research_project($research_project)
+	{
+		$this->_research_project = $research_project;
+		return TRUE;
+	}
+	public function get_research_project()
+	{
+		return $this->_research_project;
 	}
 	
 	//Get and SET $language

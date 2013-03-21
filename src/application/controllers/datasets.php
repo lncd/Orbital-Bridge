@@ -148,6 +148,7 @@ class Datasets extends CI_Controller {
 						{
 							$dataset_metadata->add_creator($member['name'], $member['permission'], $member['id']);
 						}
+						$dataset_metadata->set_research_project($dataset['result']['research_project']['id']);
 					}
 					catch (Exception $e)
 					{
@@ -174,12 +175,48 @@ class Datasets extends CI_Controller {
 					{
 						$this->load->library('../bridge_applications/sword');
 						
-						if($test = $this->sword->create_dataset($dataset_metadata))
+						if($eprint_metadata = $this->sword->create_dataset($dataset_metadata))
 						{
-							$this->session->set_flashdata('message', 'Dataset deposited');
-							$this->session->set_flashdata('message_type', 'info');
-						
-							redirect('project/' . $dataset['result']['research_project']['id']);
+							try
+							{
+								preg_match('/\/eprint\/([0-9]*)/', $eprint_metadata->sac_id, $eprint_id);
+															
+								$fields['eprints_id'] = $eprint_id[1];
+								$fields['title'] = $dataset_metadata->get_title();
+								$fields['doi'] = $dataset_metadata->get_doi();
+								$fields['date_year'] = (int) date('Y', strtotime($dataset_metadata->get_date()));
+								$fields['publisher'] = $dataset_metadata->get_publisher();								
+								
+								$fields['eprints_type']['id'] = 8;
+								
+								$fields['research_project']['id'] = $dataset_metadata->get_research_project();
+											
+								//POST to N2
+					
+								try
+								{
+									$curl_response = $this->n2->CreateEprint($this->session->userdata('access_token'), $fields);
+									
+									$this->session->set_flashdata('message', 'Dataset deposited to Lincoln repository');
+									$this->session->set_flashdata('message_type', 'success');
+									
+									redirect('projects');
+								}
+								catch(Exception $e)
+								{
+									$this->session->set_flashdata('message', $e->getMessage());
+									$this->session->set_flashdata('message_type', 'error');
+																	
+									redirect('project/' . $dataset['result']['research_project']['id']);
+								}							
+							}
+							catch(Exception $e)
+							{
+								$this->session->set_flashdata('message', 'Dataset deposited, but was not recorded in the database');
+								$this->session->set_flashdata('message_type', 'warning');
+							
+								redirect('project/' . $dataset['result']['research_project']['id']);
+							}
 						}
 						else
 						{	
