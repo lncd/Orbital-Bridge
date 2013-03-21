@@ -195,6 +195,7 @@ class Datasets extends CI_Controller {
 								$fields['publisher'] = $dataset_metadata->get_publisher();								
 								
 								$fields['eprints_type']['id'] = 8;
+								$fields['dataset_id'] = $dataset_id;
 								
 								$fields['research_project']['id'] = $dataset_metadata->get_research_project();
 											
