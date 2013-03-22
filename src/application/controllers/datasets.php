@@ -191,6 +191,7 @@ class Datasets extends CI_Controller {
 								$fields['eprints_id'] = $eprint_id[1];
 								$fields['title'] = $dataset_metadata->get_title();
 								$fields['doi'] = $dataset_metadata->get_doi();
+								$fields['abstract'] = $dataset_metadata->get_abstract();
 								$fields['date_year'] = (int) date('Y', strtotime($dataset_metadata->get_date()));
 								$fields['publisher'] = $dataset_metadata->get_publisher();								
 								
