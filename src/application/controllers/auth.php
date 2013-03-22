@@ -27,7 +27,7 @@ class Auth extends CI_Controller {
         	
         	$provider->state = serialize($state);
         	
-        	$provider->scope = array('user.basic', 'user.contact', 'user.research');
+        	$provider->scope = array('user.basic', 'user.contact', 'user.research', 'user.profile');
         	
             $provider->authorize();
         }

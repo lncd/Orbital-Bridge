@@ -16,6 +16,8 @@ class Profile extends CI_Controller {
 	public function index()
 	{
 	
+		$data['person'] = $this->n2->GetPerson($this->session->userdata('access_token'), array("id" => (int) $this->session->userdata('user_id')));
+	
 		$header = array(
 			'page' => 'me',
 			'categories' => $this->bridge->categories(),
