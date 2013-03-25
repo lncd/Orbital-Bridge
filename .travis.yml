@@ -4,7 +4,11 @@ php:
   - 5.4
   - 5.3
 
+services:
+  - mysql
+
 before_script:
   - cd src; composer install
+  - mysql -e 'create database orbital_bridge_test;'
 
 script: phpunit -c build/phpunit.xml
