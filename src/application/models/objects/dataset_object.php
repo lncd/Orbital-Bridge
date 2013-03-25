@@ -35,6 +35,7 @@ class Dataset_Object {
 	protected $_type_of_data;
 	protected $_divisions;
 	protected $_doi;
+	protected $_research_project;
 	
 	//Get and SET $url
 	public function set_url($url)
@@ -114,15 +115,34 @@ class Dataset_Object {
 	}
 	
 	//Get and SET $subjects
-	public function add_subjects($subjects)
+	public function add_subject($subject)
 	{
-		$this->_subjects[] = $subjects;
+		$this->_subjects[] = $subject;
 		return TRUE;
 	}
 	
 	public function get_subjects()
 	{
 		return $this->_subjects;
+	}
+	
+	//UNSET $divisions
+	public function unset_divisions()
+	{
+		unset($this->_divisions);
+		return TRUE;
+	}
+	
+	//Get and SET $divisions
+	public function add_division($division)
+	{
+		$this->_divisions[] = $division;
+		return TRUE;
+	}
+	
+	public function divisions()
+	{
+		return $this->_divisions;
 	}
 	
 	//Get and SET $date
@@ -216,6 +236,17 @@ class Dataset_Object {
 	public function get_contributor()
 	{
 		return $this->_contributor;
+	}
+	
+	//Get and SET $research_project
+	public function set_research_project($research_project)
+	{
+		$this->_research_project = $research_project;
+		return TRUE;
+	}
+	public function get_research_project()
+	{
+		return $this->_research_project;
 	}
 	
 	//Get and SET $language

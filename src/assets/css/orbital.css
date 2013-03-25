@@ -59,3 +59,21 @@
 .align-right{
 	text-align: right;
 }
+
+.pagecontent h2 {
+	font-size: 1.7em;
+}
+
+.pagecontent h3 {
+	font-size: 1.4em;
+}
+
+.pagecontent h4 {
+	font-size: 1.2em;
+}
+
+.pagecontent blockquote {
+	border-left: 15px solid #358863;
+	background: #F5F5F5;
+	padding: 5px 15px;
+}
