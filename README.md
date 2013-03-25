@@ -2,6 +2,11 @@
 
 Connecting all the parts of the [University of Lincoln](http://lincoln.ac.uk)'s [Orbital project](http://orbital.blogs.lincoln.ac.uk), funded by [JISC](http://www.jisc.ac.uk/) under their [Managing Research Data programme](http://www.jisc.ac.uk/whatwedo/programmes/di_researchmanagement/managingresearchdata.aspx).
 
+## Build Status
+
+* Master: [![Build Status](https://travis-ci.org/lncd/Orbital-Bridge.png?branch=master)](https://travis-ci.org/lncd/Orbital-Bridge)
+* Develop: [![Build Status](https://travis-ci.org/lncd/Orbital-Bridge.png?branch=develop)](https://travis-ci.org/lncd/Orbital-Bridge)
+
 ## Thanks To...
 
 Orbital Bridge makes use of the following bits and pieces.
