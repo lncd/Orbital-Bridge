@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="0" assertions="0" failures="0" errors="0" time="0.000000">
+    <testsuite name="ControllerTests" tests="0" assertions="0" failures="0" errors="0" time="0.000000"/>
+    <testsuite name="HelperTests" tests="0" assertions="0" failures="0" errors="0" time="0.000000"/>
+    <testsuite name="LibTests" tests="0" assertions="0" failures="0" errors="0" time="0.000000"/>
+    <testsuite name="ModelTests" tests="0" assertions="0" failures="0" errors="0" time="0.000000"/>
+    <testsuite name="SystemTests" tests="0" assertions="0" failures="0" errors="0" time="0.000000"/>
+  </testsuite>
+</testsuites>

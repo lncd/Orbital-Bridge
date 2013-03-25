@@ -1,5 +1,8 @@
 {
 	"require": {
 		"unilincoln-ost/nucleus-php": "*"
-	}
+	},
+	"require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    }
 }
