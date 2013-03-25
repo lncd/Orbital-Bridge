@@ -387,14 +387,26 @@ class Ckan {
 		$dataset = new Dataset_Object();
 
 		$dataset->set_url($_SERVER['CKAN_BASE_URL'] . '/dataset/' . $data->id);
-		$dataset->set_title($data->title);
-		$dataset->add_creator($data->author, 'creator', NULL);
-		$dataset->set_date(strtotime($data->metadata_created));
-		foreach($data->tags as $tag)
+		if(isset($data->title) AND $data->title !== '')
 		{
-			$dataset->add_keyword($tag);
+			$dataset->set_title($data->title);
+			$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
 		}
-		$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
+		if(isset($data->author) AND $data->author !== '')
+		{
+			$dataset->add_creator($data->author, 'creator', NULL);
+		}
+		if(isset($data->metadata_created) AND $data->metadata_created !== '')
+		{
+			$dataset->set_date(strtotime($data->metadata_created));
+		}
+		if(isset($data->tags))
+		{	
+			foreach($data->tags as $tag)
+			{
+				$dataset->add_keyword($tag);
+			}
+		}	
 
 		return $dataset;
 	}
@@ -424,14 +436,26 @@ class Ckan {
 			$this->_ci->load->model('objects/Dataset_Object');
 			$dataset = new Dataset_Object();
 
-			$dataset->set_title($data->title);
-			$dataset->add_creator($data->author, 'creator', NULL);
-			$dataset->set_date(strtotime($data->metadata_created));
-			foreach($data->tags as $tag)
+			if(isset($data->title) AND $data->title !== '')
 			{
-				$dataset->add_keyword($tag);
+				$dataset->set_title($data->title);
+				$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
 			}
-			$dataset->set_uri_slug(url_title($data->title, '_', TRUE));
+			if(isset($data->author) AND $data->author !== '')
+			{
+				$dataset->add_creator($data->author, 'creator', NULL);
+			}
+			if(isset($data->metadata_created) AND $data->metadata_created !== '')
+			{	
+				$dataset->set_date(strtotime($data->metadata_created));
+			}
+			if(isset($data->tags))
+			{	
+				foreach($data->tags as $tag)
+				{
+					$dataset->add_keyword($tag);
+				}
+			}
 
 			$datasets[] = $dataset;
 		}

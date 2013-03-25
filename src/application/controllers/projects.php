@@ -313,13 +313,7 @@ class Projects extends CI_Controller {
 			'category_pages' => $this->bridge->category_pages()
 		);
 		
-		if ($project['result']['current_user_permission'] !== 'Administrator')
-        {
-			$this->load->view('inc/head', $header);
-			$this->load->view('projects/unauthorised');
-			$this->load->view('inc/foot');
-        }
-        else
+		if ($project['result']['current_user_permission'] === 'Administrator' OR $project['result']['current_user_permission'] === 'Editor')
         {
         	$num_project_members = count($project['result']['research_project_members']);
         
@@ -500,7 +494,13 @@ class Projects extends CI_Controller {
 				$this->load->view('projects/edit', $data);
 				$this->load->view('inc/foot', $footer);
 			}
-		}		
+		}
+		else
+		{
+			$this->load->view('inc/head', $header);
+			$this->load->view('projects/unauthorised');
+			$this->load->view('inc/foot');
+	    }		
 	}
 	
 	public function delete($project_id)
