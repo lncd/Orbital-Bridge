@@ -51,7 +51,7 @@ class Datasets extends CI_Controller {
 			{
 				$data = array(
 					'dataset_metadata' => $dataset_metadata,
-					'dataset_id' => $dataset_id
+					'dataset' => $dataset['result']
 				);
 				
 				$footer['javascript'] = '$(document).ready(function() {
@@ -68,11 +68,33 @@ class Datasets extends CI_Controller {
 		                minimumInputLength: 2
 		            });
 					$("#dataset_subjects").select2({
-						placeholder: "Search for a JACS code",
+						placeholder: "Search for a subject",
 						minimumInputLength: 3,
 						multiple: true,
 						ajax: {
 						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/jacs_codes",
+						    dataType: \'jsonp\',
+						    quietMillis: 100,
+						    
+			                data: function (term, page) { // page is the one-based page number tracked by Select2
+			                    return {
+			                        q: term //search term
+			                    };
+			                },
+			                results: function (data, page) {
+			                    var more = (page * 10) < data.total; // whether or not there are more results available
+			 
+			                    // notice we return the value of more so Select2 knows if more results can be loaded
+			                    return {results: data};
+			                }					
+			            }
+			        });
+					$("#dataset_divisions").select2({
+						placeholder: "Search for a Division",
+						minimumInputLength: 3,
+						multiple: true,
+						ajax: {
+						    url: "' . $_SERVER['NUCLEUS_BASE_URI'] . 'typeahead/departments",
 						    dataType: \'jsonp\',
 						    quietMillis: 100,
 						    
@@ -94,7 +116,6 @@ class Datasets extends CI_Controller {
 				$this->form_validation->set_error_delimiters('<div class="alert alert-error">', '</div>');
 				$this->form_validation->set_rules('dataset_title', 'Title', 'required');
 				$this->form_validation->set_rules('dataset_abstract', 'Abstract', 'required');
-				$this->form_validation->set_rules('dataset_creators', 'Creator', 'required');
 				$this->form_validation->set_rules('dataset_type_of_data', 'Type of Data', 'required');
 				$this->form_validation->set_rules('dataset_keywords', 'Keywords', 'required');
 				$this->form_validation->set_rules('dataset_subjects', 'Subjects', 'required');
@@ -108,11 +129,6 @@ class Datasets extends CI_Controller {
 						$dataset_metadata->set_is_published('pub');
 						$dataset_metadata->set_title($this->input->post('dataset_title'));
 						$dataset_metadata->set_uri_slug($this->input->post('dataset_uri_slug'));
-						$dataset_metadata->unset_creators();
-						foreach (explode(',', $this->input->post('dataset_creators')) as $creator)
-						{
-							$dataset_metadata->add_creator($creator, 'creator', NULL);
-						}
 						$dataset_metadata->set_date(date('Y-m-d'));
 						$dataset_metadata->set_publication_date(date('Y-m-d'));
 						$dataset_metadata->set_publisher('University of Lincoln');
@@ -127,8 +143,19 @@ class Datasets extends CI_Controller {
 						$dataset_metadata->unset_subjects();
 						foreach (explode(',', $this->input->post('dataset_subjects')) as $subject)
 						{
-							$dataset_metadata->add_subjects($subject);
+							$dataset_metadata->add_subject($subject);
 						}
+						$dataset_metadata->unset_divisions();
+						foreach (explode(',', $this->input->post('dataset_divisions')) as $division)
+						{
+							$dataset_metadata->add_division($division);
+						}
+						$dataset_metadata->unset_creators();
+						foreach ($this->input->post('members') as $member)
+						{
+							$dataset_metadata->add_creator($member['name'], $member['permission'], $member['id']);
+						}
+						$dataset_metadata->set_research_project($dataset['result']['research_project']['id']);
 					}
 					catch (Exception $e)
 					{
@@ -150,19 +177,55 @@ class Datasets extends CI_Controller {
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
-					
-					/*
-					
+
 					try
 					{
 						$this->load->library('../bridge_applications/sword');
 						
-						if($this->sword->create_dataset($dataset_metadata))
+						if($eprint_metadata = $this->sword->create_dataset($dataset_metadata))
 						{
-							$this->session->set_flashdata('message', 'Dataset deposited');
-							$this->session->set_flashdata('message_type', 'info');
-						
-							redirect('project/' . $dataset['result']['research_project']['id']);
+							try
+							{
+								preg_match('/\/eprint\/([0-9]*)/', $eprint_metadata->sac_id, $eprint_id);
+															
+								$fields['eprints_id'] = $eprint_id[1];
+								$fields['title'] = $dataset_metadata->get_title();
+								$fields['doi'] = $dataset_metadata->get_doi();
+								$fields['abstract'] = $dataset_metadata->get_abstract();
+								$fields['date_year'] = (int) date('Y', strtotime($dataset_metadata->get_date()));
+								$fields['publisher'] = $dataset_metadata->get_publisher();								
+								
+								$fields['eprints_type']['id'] = 8;
+								$fields['dataset_id'] = $dataset_id;
+								
+								$fields['research_project']['id'] = $dataset_metadata->get_research_project();
+											
+								//POST to N2
+					
+								try
+								{
+									$curl_response = $this->n2->CreateEprint($this->session->userdata('access_token'), $fields);
+									
+									$this->session->set_flashdata('message', 'Dataset deposited to Lincoln repository');
+									$this->session->set_flashdata('message_type', 'success');
+									
+									redirect('projects');
+								}
+								catch(Exception $e)
+								{
+									$this->session->set_flashdata('message', $e->getMessage());
+									$this->session->set_flashdata('message_type', 'error');
+																	
+									redirect('project/' . $dataset['result']['research_project']['id']);
+								}							
+							}
+							catch(Exception $e)
+							{
+								$this->session->set_flashdata('message', 'Dataset deposited, but was not recorded in the database');
+								$this->session->set_flashdata('message_type', 'warning');
+							
+								redirect('project/' . $dataset['result']['research_project']['id']);
+							}
 						}
 						else
 						{	
@@ -174,18 +237,16 @@ class Datasets extends CI_Controller {
 					}
 					catch (Exception $e)
 					{
-						$this->session->set_flashdata('message', 'There was an error in the deposit process. The metadata may be incorrectly formed for input to ePrints.');
+						$this->session->set_flashdata('message', 'There was an error in the deposit process: ' . $e->getMessage());
 						$this->session->set_flashdata('message_type', 'error');
 					
 						redirect('project/' . $dataset['result']['research_project']['id']);
 					}
-					
-					*/
 
 					$this->session->set_flashdata('message', 'Your dataset would have been deposited with the DOI of ' . $dataset_metadata->get_doi() . ', but the repository is unavailable right now.');
 					$this->session->set_flashdata('message_type', 'info');
 					
-					redirect('projects');					
+					redirect('project/' . $dataset['result']['research_project']['id']);
 				}
 				else
 				{

@@ -161,7 +161,7 @@
 				echo '<span class="help-block">Displays the project  publicly, or keeps it hidden and private.</span>';
 		echo '</div></div>';
 			
-		if ($project['research_project_status']['text'] !== 'Archived')
+		if ($project['research_project_status']['text'] !== 'Archived' AND $project['current_user_permission'] === 'Administrator')
 		{
 			echo '<h2>';
 			echo '<i class="icon-cogs"></i>' . ' Project Team';
