@@ -175,11 +175,12 @@ class Sword {
 
 	function create_dataset($dataset)
 	{
+	
 		//$dataset = file_get_contents("/Users/hnewton/Desktop/test-import.xml");
 		$sword_xml = $this->create_SWORD($dataset);
 
 		$this->_ci->load->library('swordapp/swordappclient');
-		$result =  $this->_ci->swordappclient->depositEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], '', $sword_xml, 'application/vnd.eprints.data+xml');
+		$result =  $this->_ci->swordappclient->depositEntryString($_SERVER['SWORD_ENDPOINT'], $_SERVER['SWORD_USER'], $_SERVER['SWORD_PASS'], $this->_ci->session->userdata('user_sam_id'), $sword_xml, 'application/vnd.eprints.data+xml');
 		
 		return $result;
 	}
