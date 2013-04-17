@@ -186,7 +186,7 @@ class Projects extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/create');
 			$this->load->view('inc/foot', $footer);
-		}		
+		}
 	}
 	
 	public function project($project_id)
