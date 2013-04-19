@@ -10,7 +10,7 @@
 
 <p>You can view your public profile, as well as edit your biography and research interests using the University's Staff Directory.</p>
 
-<p><a href="http://staff.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam_id'); ?>" class="btn btn-primary"><i class="icon-chevron-right"></i> View my Staff Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit my Staff Profile</a></p>
+<p><a href="http://staff.lincoln.ac.uk/<?php echo $this->session->userdata('user_sam_id'); ?>" class="btn btn-primary"><i class="icon-chevron-right"></i> View Staff Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit Staff Profile</a></p>
 
 <hr>
 
@@ -95,3 +95,61 @@ endif;
 <h2><i class="icon-file-alt"></i> Research Data</h2>
 
 <p><a href="https://ckan.lincoln.ac.uk" class="btn"><i class="icon-chevron-right"></i> Manage my Datasets on CKAN</a></p>
+
+<hr>
+
+<h2><i class="icon-external-link"></i> External Profiles</h2>
+
+<p>As a researcher, your work might be featured in various external profiles. Here are some of the more popular that either you have told us about or that you might want to consider registering for.</p>
+
+<div class="row">
+
+	<div class="span6">
+	
+		<h4>ORCID</h4>
+		
+		<p>ORCID provides a persistent digital identifier that distinguishes you from every other researcher and, through integration in key research workflows such as manuscript and grant submission, supports automated linkages between you and your professional activities ensuring that your work is recognized.</p>
+	
+		<?php
+		
+		if ($person['result']['profile']['orcid_id'] !== NULL)
+		{
+			echo '<p>Your ORCID:<br><span style="font-size:1.2em;">' . $person['result']['profile']['orcid_id'] .'</span></p>';
+			
+			echo '<p><a href="http://orcid.org/' . $person['result']['profile']['orcid_id'] .'" class="btn"><i class="icon-external-link"></i> Visit ORCID Profile</a></p>';
+		}
+		else
+		{
+			echo '<p>You either don\'t have an ORCID ID, or we don\'t know it. You can register with ORCID, or if you are already registered you can update your Staff Profile to include your ORCID ID.</p>';
+			
+			echo '<p><a href="https://orcid.org/register" class="btn"><i class="icon-external-link"></i> Register for an ORCID ID</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit Staff Profile</a></p>';
+		}
+
+		?>
+		
+	</div>
+	
+	<div class="span6">
+	
+		<h4>Google Scholar</h4>
+		
+		<p>Google Scholar represents what Google has been able to discover about your published works and citations. By customising your Google Scholar profile you can increase the visibility of your work on Google as well as ensure the correctness of your record.</p>
+	
+		<?php
+		
+		if ($person['result']['profile']['google_scholar_id'] !== NULL)
+		{
+			echo '<p><a href="http://scholar.google.com/citations?user=' . $person['result']['profile']['google_scholar_id'] .'" class="btn"><i class="icon-external-link"></i> Visit Google Scholar Profile</a></p>';
+		}
+		else
+		{
+			echo '<p>You either don\'t have a Google Scholar profile, or we don\'t know your unique identifier. You can register with Google, or if you are already registered you can update your Staff Profile to include your Google Scholar ID.</p>';
+			
+			echo '<p><a href="http://scholar.google.co.uk/citations" class="btn"><i class="icon-external-link"></i> Register for a Google Scholar Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit Staff Profile</a></p>';
+		}
+
+		?>
+		
+	</div>
+
+</div>

@@ -176,9 +176,7 @@ class Projects extends CI_Controller {
 				$this->session->set_flashdata('message', $e->getMessage());
 				$this->session->set_flashdata('message_type', 'error');
 												
-				$this->load->view('inc/head', $header);
-				$this->load->view('projects/create');
-				$this->load->view('inc/foot', $footer);
+				redirect('projects/create');
 			}
 		}
 		else
@@ -186,7 +184,7 @@ class Projects extends CI_Controller {
 			$this->load->view('inc/head', $header);
 			$this->load->view('projects/create');
 			$this->load->view('inc/foot', $footer);
-		}		
+		}
 	}
 	
 	public function project($project_id)

@@ -150,16 +150,16 @@
         },
         {
             "name": "unilincoln-ost/nucleus-php",
-            "version": "0.7.7",
+            "version": "0.7.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/unilincoln-ost/nucleus-php.git",
-                "reference": "0.7.7"
+                "reference": "0.7.8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/unilincoln-ost/nucleus-php/zipball/0.7.7",
-                "reference": "0.7.7",
+                "url": "https://api.github.com/repos/unilincoln-ost/nucleus-php/zipball/0.7.8",
+                "reference": "0.7.8",
                 "shasum": ""
             },
             "require": {
@@ -203,7 +203,7 @@
                 }
             ],
             "description": "Library for integrating with the University of Lincoln's Nucleus data platform.",
-            "time": "2013-03-11 15:35:06"
+            "time": "2013-03-22 12:37:07"
         }
     ],
     "packages-dev": null,

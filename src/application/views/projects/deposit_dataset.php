@@ -167,7 +167,7 @@
 			{
 				$title = $project_member['person']['title'] . ' ';
 			}
-			echo '<tr id="member_row_' . $member_id . '"><td>' . $title . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['id'] . '"><input type="hidden" name="members[' . $member_id . '][name]" value="' . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '"></td><td><select name="members[' . $member_id . '][permission]">';
+			echo '<tr id="member_row_' . $member_id . '"><td>' . $title . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '<input type="hidden" name="members[' . $member_id . '][id]" value="' . $project_member['person']['employee_id'] . '"><input type="hidden" name="members[' . $member_id . '][name]" value="' . $project_member['person']['first_name'] . ' ' . $project_member['person']['last_name'] . '"></td><td><select name="members[' . $member_id . '][permission]">';
 			foreach ($permissions as $value => $permission)
 			{
 				echo '<option value="'. $value .'">' . $permission . '</option>';
