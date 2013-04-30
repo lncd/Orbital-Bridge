@@ -108,15 +108,15 @@ endif;
 	
 		<h4>ORCID</h4>
 		
-		<p>ORCID provides a persistent digital identifier that distinguishes you from every other researcher and, through integration in key research workflows such as manuscript and grant submission, supports automated linkages between you and your professional activities ensuring that your work is recognized.</p>
+		<p>ORCID provides a persistent digital identifier that distinguishes you from every other researcher and, through integration in key research workflows such as manuscript and grant submission, supports automated linkages between you and your professional activities ensuring that your work is recognised.</p>
 	
 		<?php
 		
-		if ($person['result']['profile']['orcid_id'] !== NULL)
+		if (isset($person['result']['profile']['external_orcid_id']))
 		{
-			echo '<p>Your ORCID:<br><span style="font-size:1.2em;">' . $person['result']['profile']['orcid_id'] .'</span></p>';
+			echo '<p>Your ORCID:<br><span style="font-size:1.2em;">' . $person['result']['profile']['external_orcid_id'] .'</span></p>';
 			
-			echo '<p><a href="http://orcid.org/' . $person['result']['profile']['orcid_id'] .'" class="btn"><i class="icon-external-link"></i> Visit ORCID Profile</a></p>';
+			echo '<p><a href="http://orcid.org/' . $person['result']['profile']['external_orcid_id'] .'" class="btn"><i class="icon-external-link"></i> Visit ORCID Profile</a></p>';
 		}
 		else
 		{
@@ -137,15 +137,66 @@ endif;
 	
 		<?php
 		
-		if ($person['result']['profile']['google_scholar_id'] !== NULL)
+		if (isset($person['result']['profile']['external_google_scholar_id']))
 		{
-			echo '<p><a href="http://scholar.google.com/citations?user=' . $person['result']['profile']['google_scholar_id'] .'" class="btn"><i class="icon-external-link"></i> Visit Google Scholar Profile</a></p>';
+			echo '<p><a href="http://scholar.google.com/citations?user=' . $person['result']['profile']['external_google_scholar_id'] .'" class="btn"><i class="icon-external-link"></i> Visit Google Scholar Profile</a></p>';
 		}
 		else
 		{
 			echo '<p>You either don\'t have a Google Scholar profile, or we don\'t know your unique identifier. You can register with Google, or if you are already registered you can update your Staff Profile to include your Google Scholar ID.</p>';
 			
 			echo '<p><a href="http://scholar.google.co.uk/citations" class="btn"><i class="icon-external-link"></i> Register for a Google Scholar Profile</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit Staff Profile</a></p>';
+		}
+
+		?>
+		
+	</div>
+	
+</div>
+<div class="row">
+	
+	<div class="span6">
+	
+		<h4>ResearcherID</h4>
+		
+		<p>ResearcherID provides a persistent digital identifier that distinguishes you from every other researcher and, through integration in key research workflows such as manuscript and grant submission, supports automated linkages between you and your professional activities ensuring that your work is recognised.</p>
+	
+		<?php
+		
+		if (isset($person['result']['profile']['external_researcherid']))
+		{
+			echo '<p>Your ResearcherID:<br><span style="font-size:1.2em;">' . $person['result']['profile']['external_researcherid'] .'</span></p>';
+			
+			echo '<p><a href="http://www.researcherid.com/rid/' . $person['result']['profile']['external_researcherid'] .'" class="btn"><i class="icon-external-link"></i> Visit ResearcherID Profile</a></p>';
+		}
+		else
+		{
+			echo '<p>You either don\'t have a ResearcherID, or we don\'t know it. You can register with ResearcherID, or if you are already registered you can update your Staff Profile to include your ResearcherID.</p>';
+			
+			echo '<p><a href="http://www.researcherid.com/SelfRegistration.action" class="btn"><i class="icon-external-link"></i> Register for a ResearcherID</a> <a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit Staff Profile</a></p>';
+		}
+
+		?>
+		
+	</div>
+	
+	<div class="span6">
+	
+		<h4>Scopus Author ID</h4>
+		
+		<p>Your Scopus Author ID is a digital identifier which tries to distinguish you from other researchers and group your work together.</p>
+	
+		<?php
+		
+		if (isset($person['result']['profile']['external_scopus_author_id']))
+		{
+			echo '<p><a href="http://www.scopus.com/authid/detail.url?authorId=' . $person['result']['profile']['external_scopus_author_id'] .'" class="btn"><i class="icon-external-link"></i> Visit Scoups Author Profile</a></p>';
+		}
+		else
+		{
+			echo '<p>You either don\'t have a Scopus Author ID, or we don\'t know your unique identifier. If you already have a Scopus Author IDyou can update your Staff Profile to include it, but you cannot register for one yourself. Scopus Author IDs are created for you automatically if your work is published in certain journals.</p>';
+			
+			echo '<p><a href="http://staff.lincoln.ac.uk/editor" class="btn"><i class="icon-chevron-right"></i> Edit Staff Profile</a></p>';
 		}
 
 		?>
