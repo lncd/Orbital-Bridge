@@ -242,8 +242,6 @@
 	</div>
 </div>
 
-<?php if (count($project['datasets']) > 0): ?>
-
 <div class="row">
 	
 	<div class="span6">
@@ -284,6 +282,8 @@
 		<p>There aren't currently any datasets in CKAN which are associated with this project's group.</p>
 		
 		<?php endif; ?>
+		
+		<p><a class="btn btn-mini" data-toggle="modal" href="#requestDSRefresh"><i class="icon-refresh"></i> Refresh Datasets</a></p>
 	
 	</div>
 	
@@ -313,8 +313,6 @@
 	</div>
 		
 </div>
-
-<?php endif; ?>
 
 <div class="row">
 	
@@ -354,6 +352,20 @@
 	<div class="modal-footer">
 		<a class="btn" data-dismiss="modal">Cancel</a>
 		<a href=" <?php echo(site_url('project/' . $project['id'] . '/archive')); ?>" class="btn btn-warning"><i class="icon-folder-close"></i> Archive</a>
+	</div>
+</div>
+
+<div class="modal fade" id="requestDSRefresh">
+	<div class="modal-header">
+		<button class="close" data-dismiss="modal">×</button>
+		<h3>Refresh Datasets</h3>
+	</div>
+	<div class="modal-body">
+		Although the datasets for a project are updated regularly, if you have recently made some changes they might not have been detected yet. Choose to refresh the datasets for these changes to be detected and brought into your Researcher Dashboard. This process might take a few seconds to complete once you click the button.
+	</div>
+	<div class="modal-footer">
+		<a class="btn" data-dismiss="modal">Cancel</a>
+		<a href=" <?php echo(site_url('project/' . $project['id'] . '/refresh_datasets')); ?>" class="btn btn-primary"><i class="icon-refresh"></i> Refresh Datasets</a>
 	</div>
 </div>
 
