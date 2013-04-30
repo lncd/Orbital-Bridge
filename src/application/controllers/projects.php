@@ -218,6 +218,24 @@ class Projects extends CI_Controller {
 		$this->load->view('inc/foot');
 	}
 
+	public function refresh_datasets($project_id)
+	{
+		try
+		{
+			$project = $this->n2->ProjectDatasetsRefresh($this->session->userdata('access_token'), array("id" => (int) $project_id));
+			
+			$this->session->set_flashdata('message', 'Project datasets refreshed');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('project/' . $project_id);
+		}
+		catch(Exception $e)
+		{
+			$this->session->set_flashdata('message', 'Unable to refresh datasets');
+			$this->session->set_flashdata('message_type', 'error');
+			redirect('projects');			
+		}		
+	}
+
 	public function create_ckan_group($project_id)
 	{
 		try
