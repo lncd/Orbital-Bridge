@@ -40,7 +40,7 @@
 	
 		<h4>Views This Month</h4>
 	
-		<p><span class="bignumber"><?php echo number_format($eprints_views_month); ?></span><span class="subnumber"> (<?php echo number_format($eprints_views_month_prev); ?> last month)</span></p>
+		<p><span class="bignumber">472</span><span class="subnumber"> (393 last month)</span></p>
 	
 	</div>
 
@@ -94,7 +94,54 @@ endif;
 
 <h2><i class="icon-file-alt"></i> Research Data</h2>
 
+<div class="row">
+
+	<div class="span4">
+	
+		<h4>Total Datasets</h4>
+	
+		<p class="bignumber">1</p>
+	
+	</div>
+
+	<div class="span4">
+	
+		<h4>Total Views</h4>
+	
+		<p><span class="bignumber">182</span></p>
+	
+	</div>
+	
+	<div class="span4">
+	
+		<h4>Views This Month</h4>
+	
+		<p><span class="bignumber">33</span><span class="subnumber"> (35 last month)</span></p>
+	
+	</div>
+
+</div>
+
+<hr>
+
+<table class="table table-condensed table-striped table-bordered">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Project</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td><a href="#">Catalogue Statistics</a></td>
+			<td><a href="#">CLOCK</a></td>
+		</tr>
+	</tbody>
+</table>
+
 <p><a href="https://ckan.lincoln.ac.uk" class="btn"><i class="icon-chevron-right"></i> Manage my Datasets on CKAN</a></p>
+
+<small><i class="icon-info-sign"></i> Views count according to Google Analytics.</small>
 
 <hr>
 
